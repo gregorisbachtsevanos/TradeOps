@@ -1,0 +1,142 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id        String   @id @default(cuid())
+    email     String   @unique
+    name      String
+    password  String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    accounts   Account[]
+    strategies Strategy[]
+
+    @@map("users")
+}
+
+model Account {
+    id     String @id @default(cuid())
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    externalId String @unique // MT5 Account ID
+    balance    Float
+    equity     Float
+    exposure   Float  @default(0)
+
+    isActive  Boolean  @default(true)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    trades     Trade[]
+    signals    Signal[]
+    riskStates RiskState[]
+
+    @@map("accounts")
+}
+
+model Signal {
+    id         String   @id @default(cuid())
+    accountId  String
+    account    Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+    strategyId String
+    strategy   Strategy @relation(fields: [strategyId], references: [id], onDelete: Cascade)
+
+    symbol     String
+    action     String // "BUY" | "SELL" | "CLOSE"
+    price      Float
+    timestamp  DateTime
+    rawPayload Json
+
+    isDuplicate Boolean   @default(false)
+    processedAt DateTime?
+    createdAt   DateTime  @default(now())
+
+    trades Trade[]
+
+    @@map("signals")
+}
+
+model Trade {
+    id         String   @id @default(cuid())
+    accountId  String
+    account    Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+    signalId   String?
+    signal     Signal?  @relation(fields: [signalId], references: [id], onDelete: SetNull)
+    strategyId String
+    strategy   Strategy @relation(fields: [strategyId], references: [id], onDelete: Cascade)
+
+    externalTradeId String?  @unique // MT5 Trade ID
+    symbol          String
+    direction       String // "BUY" | "SELL"
+    entryPrice      Float
+    entryTime       DateTime
+
+    exitPrice Float?
+    exitTime  DateTime?
+    status    String // "OPEN" | "CLOSED" | "REJECTED"
+
+    quantity   Float
+    commission Float  @default(0)
+    pnl        Float?
+    pnlPercent Float?
+
+    reason    String? // Rejection reason if applicable
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@map("trades")
+}
+
+model Strategy {
+    id     String @id @default(cuid())
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    name        String
+    description String?
+
+    isActive    Boolean @default(true)
+    riskPercent Float   @default(2) // Position sizing
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    signals    Signal[]
+    trades     Trade[]
+    riskStates RiskState[]
+
+    @@map("strategies")
+}
+
+model RiskState {
+    id         String   @id @default(cuid())
+    accountId  String
+    account    Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+    strategyId String
+    strategy   Strategy @relation(fields: [strategyId], references: [id], onDelete: Cascade)
+
+    date DateTime
+
+    dailyPnL    Float @default(0)
+    openTrades  Int   @default(0)
+    maxExposure Float @default(0)
+
+    breachedLimit Boolean @default(false)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([accountId, strategyId, date])
+    @@map("risk_states")
+}

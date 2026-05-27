@@ -1,0 +1,48 @@
+.equity-overview {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.equity-overview h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #333;
+  font-size: 16px;
+}
+
+.equity-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.equity-item {
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+}
+
+.equity-item .label {
+  font-size: 12px;
+  color: #999;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.equity-item .value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+}
+
+.equity-item .value.positive {
+  color: #2ed573;
+}
+
+.equity-item .value.negative {
+  color: #ff4757;
+}
