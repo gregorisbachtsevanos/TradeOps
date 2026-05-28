@@ -11,7 +11,7 @@ export const useTrades = (
   return useQuery(
     ["trades", accountId, page, limit, status],
     () => apiService.getTrades(accountId, page, limit, status),
-    { staleTime: 5000 },
+    { enabled: Boolean(accountId), staleTime: 5000 },
   );
 };
 
@@ -122,6 +122,7 @@ export const useAccountInfo = (accountId: string) => {
     ["accountInfo", accountId],
     () => apiService.getAccountInfo(accountId),
     {
+      enabled: Boolean(accountId),
       refetchInterval: 5000,
     },
   );
@@ -170,6 +171,7 @@ export const useAccountMetrics = (accountId: string) => {
     ["accountMetrics", accountId],
     () => apiService.getAccountMetrics(accountId),
     {
+      enabled: Boolean(accountId),
       staleTime: 60000,
     },
   );
@@ -180,6 +182,7 @@ export const useRecentTrades = (accountId: string, limit: number = 20) => {
     ["recentTrades", accountId, limit],
     () => apiService.getRecentTrades(accountId, limit),
     {
+      enabled: Boolean(accountId),
       staleTime: 10000,
     },
   );
@@ -190,6 +193,7 @@ export const useDailyPnL = (accountId: string, days: number = 30) => {
     ["dailyPnL", accountId, days],
     () => apiService.getDailyPnL(accountId, days),
     {
+      enabled: Boolean(accountId),
       staleTime: 60000,
     },
   );
