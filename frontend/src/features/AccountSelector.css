@@ -8,6 +8,13 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+.account-selector.empty-state {
+  align-items: flex-start;
+  justify-content: space-between;
+  border: 1px dashed #c7d2fe;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+}
+
 .account-selector label {
   font-weight: 600;
   color: #333;
@@ -30,7 +37,43 @@
 }
 
 .no-accounts {
-  color: #999;
+  color: #666;
   font-size: 14px;
+  margin: 4px 0 0;
+  max-width: 520px;
+}
+
+.empty-title {
+  color: #333;
+  font-size: 16px;
+  font-weight: 700;
   margin: 0;
+}
+
+.btn-create-account {
+  padding: 10px 14px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.btn-create-account:hover:not(:disabled) {
+  background: #5568d3;
+}
+
+.btn-create-account:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.account-status {
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
 }

@@ -1,7 +1,7 @@
-import { prisma } from "../db.js";
-import { config } from "../config/index.js";
-import logger from "../config/logger.js";
-import { RiskCheckResult } from "../types/index.js";
+import { prisma } from "../../db.js";
+import { config } from "../../config/index.js";
+import logger from "../../config/logger.js";
+import { RiskCheckResult } from "../../types/index.js";
 
 /**
  * Risk Management Service

@@ -1,6 +1,6 @@
-import { prisma } from "../db.js";
-import logger from "../config/logger.js";
-import { AnalyticsMetrics } from "../types/index.js";
+import { prisma } from "../../db.js";
+import logger from "../../config/logger.js";
+import { AnalyticsMetrics } from "../../types/index.js";
 
 /**
  * Analytics Service
@@ -41,7 +41,7 @@ export class AnalyticsService {
         totalLoss > 0
           ? totalProfit / totalLoss
           : totalProfit > 0
-            ? Infinity
+            ? null
             : 0;
 
       const maxDrawdown = await this.calculateMaxDrawdown(closedTrades);
@@ -104,7 +104,7 @@ export class AnalyticsService {
         totalLoss > 0
           ? totalProfit / totalLoss
           : totalProfit > 0
-            ? Infinity
+            ? null
             : 0;
 
       const maxDrawdown = await this.calculateMaxDrawdown(closedTrades);
@@ -196,7 +196,8 @@ export class AnalyticsService {
       currentEquity += trade.pnl || 0;
       maxEquity = Math.max(maxEquity, currentEquity);
 
-      const drawdown = ((currentEquity - maxEquity) / maxEquity) * 100;
+      const drawdown =
+        maxEquity === 0 ? 0 : ((currentEquity - maxEquity) / maxEquity) * 100;
       maxDrawdown = Math.min(maxDrawdown, drawdown);
     }
 

@@ -75,6 +75,14 @@
   background: #5568d3;
 }
 
+.demo-hint {
+  margin: 16px 0 0;
+  color: #777;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+
 .header {
   background: white;
   border-bottom: 1px solid #e0e0e0;

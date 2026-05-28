@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
-import logger from "../config/logger.js";
-import { TradeExecutionResult, AccountInfo } from "../types/index.js";
+import logger from "../../config/logger.js";
+import { TradeExecutionResult, AccountInfo } from "../../types/index.js";
 
 /**
  * Mock MT5 Connector - Abstraction layer for trade execution
@@ -9,7 +9,7 @@ import { TradeExecutionResult, AccountInfo } from "../types/index.js";
 export class MT5ConnectorService {
   private mockTrades: Map<
     string,
-    { symbol: string; direction: string; price: number }
+    { symbol: string; direction: string; entryPrice: number }
   > = new Map();
 
   async executeTrade(
@@ -40,7 +40,7 @@ export class MT5ConnectorService {
         };
       }
 
-      this.mockTrades.set(externalTradeId, { symbol, direction, price });
+      this.mockTrades.set(externalTradeId, { symbol, direction, entryPrice: price });
 
       logger.info("Trade executed", {
         tradeId,
@@ -98,14 +98,14 @@ export class MT5ConnectorService {
       logger.info("Trade closed", {
         externalTradeId,
         symbol: trade.symbol,
-        entryPrice: trade.price,
+        entryPrice: trade.entryPrice,
         exitPrice,
       });
 
       return {
         success: true,
         details: {
-          pnl: (exitPrice - trade.price) * 1, // Assuming 1 unit quantity
+          pnl: (exitPrice - trade.entryPrice) * 1, // Assuming 1 unit quantity
           closeTime: new Date().toISOString(),
         },
       };

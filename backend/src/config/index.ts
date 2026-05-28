@@ -24,7 +24,7 @@ export const config = {
 };
 
 export const validateConfig = (): void => {
-  if (!config.database.url) {
+  if (process.env.MOCK_DATA !== "true" && !config.database.url) {
     throw new Error("DATABASE_URL environment variable is not set");
   }
   if (!config.trading.webhookSecret) {

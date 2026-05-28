@@ -40,15 +40,15 @@ export const createAccountSchema = z.object({
 });
 
 export const signalFilterSchema = z.object({
-  page: z.number().int().positive().optional().default(1),
-  limit: z.number().int().positive().max(100).optional().default(20),
+  page: z.coerce.number().int().positive().optional().default(1),
+  limit: z.coerce.number().int().positive().max(100).optional().default(20),
   symbol: z.string().optional(),
-  isDuplicate: z.boolean().optional(),
+  isDuplicate: z.coerce.boolean().optional(),
 });
 
 export const tradeFilterSchema = z.object({
-  page: z.number().int().positive().optional().default(1),
-  limit: z.number().int().positive().max(100).optional().default(20),
+  page: z.coerce.number().int().positive().optional().default(1),
+  limit: z.coerce.number().int().positive().max(100).optional().default(20),
   status: z.enum(["OPEN", "CLOSED", "REJECTED"]).optional(),
   symbol: z.string().optional(),
 });

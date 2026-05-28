@@ -46,6 +46,15 @@ export interface Account {
   createdAt: string;
 }
 
+export interface AccountInfo {
+  id: string;
+  balance: number;
+  equity: number;
+  exposure: number;
+  openTrades: number;
+  dailyPnL: number;
+}
+
 export interface AnalyticsMetrics {
   winRate: number;
   totalTrades: number;
@@ -53,7 +62,7 @@ export interface AnalyticsMetrics {
   totalLosingTrades: number;
   totalProfit: number;
   totalLoss: number;
-  profitFactor: number;
+  profitFactor: number | null;
   maxDrawdown: number;
   averageWin: number;
   averageLoss: number;

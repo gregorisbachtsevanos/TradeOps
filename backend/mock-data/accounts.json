@@ -1,0 +1,13 @@
+[
+  {
+    "id": "account_mock_1",
+    "userId": "user_mock_1",
+    "externalId": "MT5-DEMO-001",
+    "balance": 10000,
+    "equity": 10250,
+    "exposure": 1200,
+    "isActive": true,
+    "createdAt": "2026-05-01T09:10:00.000Z",
+    "updatedAt": "2026-05-20T12:00:00.000Z"
+  }
+]

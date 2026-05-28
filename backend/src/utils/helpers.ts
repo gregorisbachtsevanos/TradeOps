@@ -1,3 +1,4 @@
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import { ApiResponse } from "../types/index.js";
 
 export class AppError extends Error {
@@ -28,6 +29,18 @@ export const createErrorResponse = (
   error,
   timestamp: new Date().toISOString(),
 });
+
+export const asyncHandler =
+  (
+    fn: (
+      req: Request,
+      res: Response,
+      next: NextFunction,
+    ) => Promise<void> | void,
+  ): RequestHandler =>
+  (req: Request, res: Response, next: NextFunction): void => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
 
 export const isProduction = (): boolean =>
   process.env.NODE_ENV === "production";

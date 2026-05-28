@@ -1,4 +1,3 @@
-import React from "react";
 import { Account } from "../types/index.js";
 import "./AccountSelector.css";
 
@@ -6,37 +5,57 @@ interface AccountSelectorProps {
   accounts: Account[];
   selectedId: string | null;
   onSelect: (accountId: string) => void;
+  onCreateDemoAccount?: () => void;
+  isCreating?: boolean;
 }
 
 function AccountSelector({
   accounts,
   selectedId,
   onSelect,
+  onCreateDemoAccount,
+  isCreating = false,
 }: AccountSelectorProps) {
   if (accounts.length === 0) {
     return (
-      <div className="account-selector">
-        <p className="no-accounts">
-          No trading accounts found. Create one to get started.
-        </p>
+      <div className="account-selector empty-state">
+        <div>
+          <p className="empty-title">No trading accounts connected</p>
+          <p className="no-accounts">
+            Spin up a demo MT5 account to explore the dashboard with realistic
+            mock data.
+          </p>
+        </div>
+        {onCreateDemoAccount && (
+          <button
+            className="btn-create-account"
+            onClick={onCreateDemoAccount}
+            disabled={isCreating}
+          >
+            {isCreating ? "Creating..." : "Create Demo Account"}
+          </button>
+        )}
       </div>
     );
   }
 
   return (
     <div className="account-selector">
-      <label>Select Trading Account:</label>
+      <label>Trading Account</label>
       <select
         value={selectedId || ""}
         onChange={(e) => onSelect(e.target.value)}
       >
-        <option value="">-- Select Account --</option>
         {accounts.map((account) => (
           <option key={account.id} value={account.id}>
-            {account.externalId} - Balance: ${account.balance.toFixed(2)}
+            {account.externalId} · ${account.balance.toFixed(2)} balance ·{" "}
+            {account.isActive ? "Active" : "Inactive"}
           </option>
         ))}
       </select>
+      <div className="account-status">
+        {accounts.length} account{accounts.length === 1 ? "" : "s"} synced
+      </div>
     </div>
   );
 }

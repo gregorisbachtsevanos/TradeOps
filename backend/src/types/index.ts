@@ -58,7 +58,7 @@ export interface AnalyticsMetrics {
   totalLosingTrades: number;
   totalProfit: number;
   totalLoss: number;
-  profitFactor: number;
+  profitFactor: number | null;
   maxDrawdown: number;
   averageWin: number;
   averageLoss: number;

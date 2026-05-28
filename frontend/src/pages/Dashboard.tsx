@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "../hooks/useStore.js";
-import { useAccounts } from "../hooks/useApi.js";
+import { useAccounts, useCreateAccount } from "../hooks/useApi.js";
 import AccountSelector from "../features/AccountSelector.js";
 import LiveTradesTable from "../features/LiveTradesTable.js";
 import EquityOverview from "../features/EquityOverview.js";
@@ -13,9 +13,42 @@ function Dashboard() {
   const { data: accountsResponse, isLoading: accountsLoading } = useAccounts(
     user?.id || "",
   );
+  const createAccount = useCreateAccount();
   const [activeTab, setActiveTab] = useState<
     "overview" | "trades" | "analytics"
   >("overview");
+
+  const accounts = accountsResponse?.data?.accounts;
+  const accountIds = accounts?.map((account) => account.id).join("|") || "";
+  const firstAccountId = accounts?.[0]?.id;
+
+  useEffect(() => {
+    if (!accountsResponse?.data) {
+      return;
+    }
+
+    if (!accounts || accounts.length === 0) {
+      if (selectedAccountId !== null) {
+        setSelectedAccountId(null);
+      }
+      return;
+    }
+
+    const selectedAccountExists = accounts.some(
+      (account) => account.id === selectedAccountId,
+    );
+
+    if (!selectedAccountId || !selectedAccountExists) {
+      setSelectedAccountId(firstAccountId || null);
+    }
+  }, [
+    accountIds,
+    accounts,
+    accountsResponse?.data,
+    firstAccountId,
+    selectedAccountId,
+    setSelectedAccountId,
+  ]);
 
   if (accountsLoading) {
     return <div className="loading">Loading accounts...</div>;
@@ -25,15 +58,37 @@ function Dashboard() {
     return <div className="error">Failed to load accounts</div>;
   }
 
-  const accounts = accountsResponse.data.accounts || [];
+  const handleCreateDemoAccount = async () => {
+    if (!user?.id) return;
+
+    const suffix = Math.floor(100 + Math.random() * 900);
+    const response = await createAccount.mutateAsync({
+      userId: user.id,
+      data: {
+        externalId: `MT5-DEMO-${suffix}`,
+        balance: 25000,
+        equity: 25240,
+      },
+    });
+
+    if (response.data?.id) {
+      setSelectedAccountId(response.data.id);
+    }
+  };
 
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <AccountSelector
-          accounts={accounts}
+        <div>
+          <p className="eyebrow">Demo trading workspace</p>
+          <h2>Portfolio Command Center</h2>
+        </div>
+          <AccountSelector
+          accounts={accounts || []}
           selectedId={selectedAccountId}
           onSelect={setSelectedAccountId}
+          onCreateDemoAccount={handleCreateDemoAccount}
+          isCreating={createAccount.isLoading}
         />
       </div>
 

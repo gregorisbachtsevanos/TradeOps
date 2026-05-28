@@ -1,0 +1,21 @@
+[
+  {
+    "id": "signal_mock_1",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_1",
+    "symbol": "EURUSD",
+    "action": "BUY",
+    "price": 1.0835,
+    "timestamp": "2026-05-20T10:30:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-05-20T10:30:00.000Z",
+      "ticker": "EURUSD",
+      "close": 1.0835,
+      "strategy_signal": "BUY"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-05-20T10:30:01.000Z",
+    "createdAt": "2026-05-20T10:30:00.000Z"
+  }
+]

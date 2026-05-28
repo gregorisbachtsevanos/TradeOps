@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { FormEvent, useState } from "react";
 import { QueryClientProvider, QueryClient } from "react-query";
 import { useStore } from "./hooks/useStore.js";
 import Dashboard from "./pages/Dashboard.js";
@@ -49,12 +49,11 @@ interface LoginPageProps {
 
 function LoginPage({ onLogin }: LoginPageProps) {
   const [email, setEmail] = useState("demo@example.com");
-  const [password, setPassword] = useState("password");
+  const [password, setPassword] = useState("mock-password");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // Mock login - in production, validate against backend
-    onLogin("user_123", email, email.split("@")[0]);
+    onLogin("user_mock_1", email, "Demo Trader");
   };
 
   return (
@@ -81,8 +80,11 @@ function LoginPage({ onLogin }: LoginPageProps) {
             />
           </div>
           <button type="submit" className="btn-primary">
-            Login
+            Enter Demo Trading Desk
           </button>
+          <p className="demo-hint">
+            Demo workspace uses seeded mock data from the backend JSON store.
+          </p>
         </form>
       </div>
     </div>

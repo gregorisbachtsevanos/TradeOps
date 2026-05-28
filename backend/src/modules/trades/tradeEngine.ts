@@ -1,10 +1,10 @@
-import { prisma } from "../db.js";
-import { mt5ConnectorService } from "../modules/execution/mt5Connector.js";
-import { riskManagementService } from "../modules/risk/riskManagement.js";
-import { calculatePositionSize } from "../utils/helpers.js";
-import { config } from "../config/index.js";
-import logger from "../config/logger.js";
-import { TradeIntent, TradeExecutionResult } from "../types/index.js";
+import { prisma } from "../../db.js";
+import { mt5ConnectorService } from "../execution/mt5Connector.js";
+import { riskManagementService } from "../risk/riskManagement.js";
+import { calculatePositionSize } from "../../utils/helpers.js";
+import { config } from "../../config/index.js";
+import logger from "../../config/logger.js";
+import { TradeIntent, TradeExecutionResult } from "../../types/index.js";
 
 /**
  * Trade Engine Service

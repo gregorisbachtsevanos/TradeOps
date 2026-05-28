@@ -1,4 +1,3 @@
-import React from "react";
 import { useAccountInfo } from "../hooks/useApi.js";
 import "./RiskPanel.css";
 

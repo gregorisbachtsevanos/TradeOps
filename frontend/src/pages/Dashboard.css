@@ -7,7 +7,26 @@
 }
 
 .dashboard-header {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.8fr) minmax(420px, 1.2fr);
+  gap: 24px;
+  align-items: center;
   margin-bottom: 24px;
+}
+
+.dashboard-header h2 {
+  margin: 4px 0 0;
+  color: #222;
+  font-size: 28px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #667eea;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .dashboard-tabs {

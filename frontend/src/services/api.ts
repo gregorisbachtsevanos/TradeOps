@@ -3,9 +3,11 @@ import {
   Trade,
   Strategy,
   Account,
+  AccountInfo,
   AnalyticsMetrics,
   DailyPnL,
   ApiResponse,
+  PaginatedResponse,
 } from "../types/index.js";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
@@ -29,7 +31,7 @@ class ApiService {
     limit: number = 20,
     status?: string,
     symbol?: string,
-  ): Promise<ApiResponse> {
+  ): Promise<ApiResponse<PaginatedResponse<Trade>>> {
     const response = await this.client.get("/trades", {
       params: { account_id: accountId, page, limit, status, symbol },
     });
@@ -62,7 +64,7 @@ class ApiService {
     return response.data;
   }
 
-  async getStrategies(userId: string): Promise<ApiResponse> {
+  async getStrategies(userId: string): Promise<ApiResponse<{ strategies: Strategy[] }>> {
     const response = await this.client.get("/strategies", {
       params: { user_id: userId },
     });
@@ -98,7 +100,7 @@ class ApiService {
     return response.data;
   }
 
-  async getAccounts(userId: string): Promise<ApiResponse> {
+  async getAccounts(userId: string): Promise<ApiResponse<{ accounts: Account[] }>> {
     const response = await this.client.get("/accounts", {
       params: { user_id: userId },
     });
@@ -110,7 +112,7 @@ class ApiService {
     return response.data;
   }
 
-  async getAccountInfo(accountId: string): Promise<ApiResponse> {
+  async getAccountInfo(accountId: string): Promise<ApiResponse<AccountInfo>> {
     const response = await this.client.get(`/accounts/${accountId}/info`);
     return response.data;
   }
@@ -123,7 +125,7 @@ class ApiService {
     return response.data;
   }
 
-  async deleteAccount(accountId: string): Promise<ApiResponse> {
+  async deleteAccount(accountId: string): Promise<ApiResponse<null>> {
     const response = await this.client.delete(`/accounts/${accountId}`);
     return response.data;
   }
@@ -150,7 +152,7 @@ class ApiService {
   async getRecentTrades(
     accountId: string,
     limit: number = 20,
-  ): Promise<ApiResponse> {
+  ): Promise<ApiResponse<{ trades: Trade[] }>> {
     const response = await this.client.get(
       `/analytics/account/${accountId}/trades`,
       {

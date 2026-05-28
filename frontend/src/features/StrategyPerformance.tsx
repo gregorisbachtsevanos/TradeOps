@@ -1,4 +1,3 @@
-import React from "react";
 import { useAccountMetrics, useDailyPnL } from "../hooks/useApi.js";
 import "./StrategyPerformance.css";
 
@@ -24,6 +23,14 @@ function StrategyPerformance({ accountId }: StrategyPerformanceProps) {
 
   const metrics = metricsResponse.data;
   const dailyPnL = pnlResponse.data.dailyPnL || [];
+  const formatMoney = (value: number | null | undefined) =>
+    `$${(value ?? 0).toFixed(2)}`;
+  const formatPercent = (value: number | null | undefined) =>
+    `${(value ?? 0).toFixed(2)}%`;
+  const formatProfitFactor = (value: number | null | undefined) =>
+    typeof value === "number" && Number.isFinite(value)
+      ? value.toFixed(2)
+      : "N/A";
 
   return (
     <div className="strategy-performance">
@@ -34,7 +41,7 @@ function StrategyPerformance({ accountId }: StrategyPerformanceProps) {
         </div>
         <div className="metric-card">
           <span className="label">Win Rate</span>
-          <span className="value">{metrics.winRate.toFixed(1)}%</span>
+          <span className="value">{(metrics.winRate ?? 0).toFixed(1)}%</span>
         </div>
         <div className="metric-card">
           <span className="label">Wins/Losses</span>
@@ -45,33 +52,31 @@ function StrategyPerformance({ accountId }: StrategyPerformanceProps) {
         <div className="metric-card">
           <span className="label">Total Profit</span>
           <span className="value positive">
-            ${metrics.totalProfit.toFixed(2)}
+            {formatMoney(metrics.totalProfit)}
           </span>
         </div>
         <div className="metric-card">
           <span className="label">Total Loss</span>
           <span className="value negative">
-            ${metrics.totalLoss.toFixed(2)}
+            {formatMoney(metrics.totalLoss)}
           </span>
         </div>
         <div className="metric-card">
           <span className="label">Profit Factor</span>
           <span className="value">
-            {isFinite(metrics.profitFactor)
-              ? metrics.profitFactor.toFixed(2)
-              : "N/A"}
+            {formatProfitFactor(metrics.profitFactor)}
           </span>
         </div>
         <div className="metric-card">
           <span className="label">Max Drawdown</span>
           <span className="value negative">
-            {metrics.maxDrawdown.toFixed(2)}%
+            {formatPercent(metrics.maxDrawdown)}
           </span>
         </div>
         <div className="metric-card">
           <span className="label">Avg Win/Loss</span>
           <span className="value">
-            ${metrics.averageWin.toFixed(2)} / ${metrics.averageLoss.toFixed(2)}
+            {formatMoney(metrics.averageWin)} / {formatMoney(metrics.averageLoss)}
           </span>
         </div>
       </div>
@@ -87,7 +92,8 @@ function StrategyPerformance({ accountId }: StrategyPerformanceProps) {
                 const maxPnL = Math.max(
                   ...dailyPnL.map((d) => Math.abs(d.pnl)),
                 );
-                const height = (Math.abs(day.pnl) / maxPnL) * 100;
+                const height =
+                  maxPnL === 0 ? 5 : (Math.abs(day.pnl) / maxPnL) * 100;
                 return (
                   <div
                     key={day.date}

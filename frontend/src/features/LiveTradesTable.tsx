@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useTrades, useCloseTrade } from "../hooks/useApi.js";
 import "./LiveTradesTable.css";
 
@@ -56,7 +56,7 @@ function LiveTradesTable({ accountId }: LiveTradesTableProps) {
               </tr>
             </thead>
             <tbody>
-              {trades.map((trade: any) => (
+              {trades.map((trade) => (
                 <tr
                   key={trade.id}
                   className={`status-${trade.status.toLowerCase()}`}
@@ -71,7 +71,7 @@ function LiveTradesTable({ accountId }: LiveTradesTableProps) {
                     {trade.exitPrice ? `$${trade.exitPrice.toFixed(2)}` : "-"}
                   </td>
                   <td
-                    className={`pnl ${trade.pnl >= 0 ? "positive" : "negative"}`}
+                    className={`pnl ${(trade.pnl ?? 0) >= 0 ? "positive" : "negative"}`}
                   >
                     {trade.pnl ? `$${trade.pnl.toFixed(2)}` : "-"}
                   </td>
