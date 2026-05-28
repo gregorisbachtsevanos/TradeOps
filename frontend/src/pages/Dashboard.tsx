@@ -10,6 +10,7 @@ import Sidebar from "../features/Sidebar.js";
 import KpiStrip from "../features/KpiStrip.js";
 import TradingViewChart from "../features/TradingViewChart.js";
 import "./Dashboard.css";
+import ChartWorkspace from "../features/ChartWorkspace.js";
 
 interface DashboardProps {
   theme: "dark" | "light";
@@ -108,7 +109,8 @@ function Dashboard({ theme }: DashboardProps) {
           <div className="dashboard-content">
             {activeTab === "overview" && (
               <>
-                <TradingViewChart accountId={selectedAccountId} theme={theme} />
+                <ChartWorkspace accountId={selectedAccountId} theme={theme} />
+                {/* <TradingViewChart accountId={selectedAccountId} theme={theme} /> */}
                 <div className="overview-grid">
                   <EquityOverview accountId={selectedAccountId} />
                   <RiskPanel accountId={selectedAccountId} />
