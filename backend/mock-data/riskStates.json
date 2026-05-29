@@ -10,5 +10,113 @@
     "breachedLimit": false,
     "createdAt": "2026-05-20T00:00:00.000Z",
     "updatedAt": "2026-05-20T12:00:00.000Z"
+  },
+  {
+    "id": "risk_mock_2",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_1",
+    "date": "2026-05-21T00:00:00.000Z",
+    "dailyPnL": -85,
+    "openTrades": 3,
+    "maxExposure": 3500,
+    "breachedLimit": false,
+    "createdAt": "2026-05-21T00:00:00.000Z",
+    "updatedAt": "2026-05-21T14:15:00.000Z"
+  },
+  {
+    "id": "risk_mock_3",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_2",
+    "date": "2026-05-22T00:00:00.000Z",
+    "dailyPnL": 125,
+    "openTrades": 2,
+    "maxExposure": 5000,
+    "breachedLimit": false,
+    "createdAt": "2026-05-22T00:00:00.000Z",
+    "updatedAt": "2026-05-22T13:40:00.000Z"
+  },
+  {
+    "id": "risk_mock_4",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_3",
+    "date": "2026-05-23T00:00:00.000Z",
+    "dailyPnL": -240,
+    "openTrades": 5,
+    "maxExposure": 9500,
+    "breachedLimit": true,
+    "createdAt": "2026-05-23T00:00:00.000Z",
+    "updatedAt": "2026-05-23T15:25:00.000Z"
+  },
+  {
+    "id": "risk_mock_5",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_2",
+    "date": "2026-05-24T00:00:00.000Z",
+    "dailyPnL": 310,
+    "openTrades": 4,
+    "maxExposure": 7200,
+    "breachedLimit": false,
+    "createdAt": "2026-05-24T00:00:00.000Z",
+    "updatedAt": "2026-05-24T11:55:00.000Z"
+  },
+  {
+    "id": "risk_mock_6",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_4",
+    "date": "2026-05-25T00:00:00.000Z",
+    "dailyPnL": -45,
+    "openTrades": 1,
+    "maxExposure": 1800,
+    "breachedLimit": false,
+    "createdAt": "2026-05-25T00:00:00.000Z",
+    "updatedAt": "2026-05-25T10:10:00.000Z"
+  },
+  {
+    "id": "risk_mock_7",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_5",
+    "date": "2026-05-26T00:00:00.000Z",
+    "dailyPnL": 520,
+    "openTrades": 6,
+    "maxExposure": 11000,
+    "breachedLimit": true,
+    "createdAt": "2026-05-26T00:00:00.000Z",
+    "updatedAt": "2026-05-26T16:45:00.000Z"
+  },
+  {
+    "id": "risk_mock_8",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_1",
+    "date": "2026-05-27T00:00:00.000Z",
+    "dailyPnL": 75,
+    "openTrades": 2,
+    "maxExposure": 2600,
+    "breachedLimit": false,
+    "createdAt": "2026-05-27T00:00:00.000Z",
+    "updatedAt": "2026-05-27T12:20:00.000Z"
+  },
+  {
+    "id": "risk_mock_9",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_3",
+    "date": "2026-05-28T00:00:00.000Z",
+    "dailyPnL": -150,
+    "openTrades": 4,
+    "maxExposure": 8400,
+    "breachedLimit": true,
+    "createdAt": "2026-05-28T00:00:00.000Z",
+    "updatedAt": "2026-05-28T17:05:00.000Z"
+  },
+  {
+    "id": "risk_mock_10",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_6",
+    "date": "2026-05-29T00:00:00.000Z",
+    "dailyPnL": 95,
+    "openTrades": 3,
+    "maxExposure": 4300,
+    "breachedLimit": false,
+    "createdAt": "2026-05-29T00:00:00.000Z",
+    "updatedAt": "2026-05-29T13:30:00.000Z"
   }
 ]
