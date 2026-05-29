@@ -146,6 +146,14 @@ BARS
   opacity: 0.9;
 }
 
+.bar.positive {
+  background-color: var(--positive);
+}
+
+.bar.negative {
+  background-color: var(--negative);
+}
+
 .bar:hover {
   transform: scaleY(1.15);
   opacity: 1;

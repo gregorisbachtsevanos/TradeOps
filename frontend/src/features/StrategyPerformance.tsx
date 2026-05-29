@@ -76,7 +76,8 @@ function StrategyPerformance({ accountId }: StrategyPerformanceProps) {
         <div className="metric-card">
           <span className="label">Avg Win/Loss</span>
           <span className="value">
-            {formatMoney(metrics.averageWin)} / {formatMoney(metrics.averageLoss)}
+            {formatMoney(metrics.averageWin)} /{" "}
+            {formatMoney(metrics.averageLoss)}
           </span>
         </div>
       </div>
@@ -97,11 +98,10 @@ function StrategyPerformance({ accountId }: StrategyPerformanceProps) {
                 return (
                   <div
                     key={day.date}
-                    className="bar"
+                    className={`bar ${day.pnl >= 0 ? "positive" : "negative"}`}
                     title={`${day.date}: $${day.pnl.toFixed(2)}`}
                     style={{
                       height: `${Math.max(height, 5)}%`,
-                      backgroundColor: day.pnl >= 0 ? "#2ed573" : "#ff4757",
                     }}
                   />
                 );
