@@ -1,4 +1,4 @@
-import { Account } from "../types/index.js";
+import { Account } from "../../types/index.js";
 import "./AccountSelector.css";
 
 interface AccountSelectorProps {
