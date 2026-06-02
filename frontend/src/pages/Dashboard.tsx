@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
-import { useStore } from "../hooks/useStore.js";
+import AccountSelector from "../components/AccountSelector/AccountSelector.js";
+import ChartWorkspace from "../components/ChartWorkspace/ChartWorkspace.js";
+import EquityOverview from "../components/EquityOverview/EquityOverview.js";
+import KpiStrip from "../components/KpiStrip/KpiStrip.js";
+import LiveTradesTable from "../components/LiveTradesTable/LiveTradesTable.js";
+import RiskPanel from "../components/RiskPanel/RiskPanel.js";
+import Sidebar from "../components/Sidebar/Sidebar.js";
+import StrategyPerformance from "../components/StrategyPerformance/StrategyPerformance.js";
 import { useAccounts, useCreateAccount } from "../hooks/useApi.js";
-import AccountSelector from "../features/AccountSelector.js";
-import LiveTradesTable from "../features/LiveTradesTable.js";
-import EquityOverview from "../features/EquityOverview.js";
-import RiskPanel from "../features/RiskPanel.js";
-import StrategyPerformance from "../features/StrategyPerformance.js";
-import Sidebar from "../features/Sidebar.js";
-import KpiStrip from "../features/KpiStrip.js";
-import TradingViewChart from "../features/TradingViewChart.js";
+import { useStore } from "../hooks/useStore.js";
 import "./Dashboard.css";
-import ChartWorkspace from "../features/ChartWorkspace.js";
 
 interface DashboardProps {
   theme: "dark" | "light";
