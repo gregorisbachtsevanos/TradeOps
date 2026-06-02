@@ -19,7 +19,7 @@ A production-ready automated trading platform that receives TradingView webhook 
 
 - Node.js 18+
 - PostgreSQL 14+
-- npm or yarn
+- npm
 
 ### Backend Setup
 
@@ -463,7 +463,7 @@ Logs are written to:
 
 ## Support & Documentation
 
-- Backend API: See `/swagger` endpoint (add swagger docs)
+- Backend API: See `/swagger` endpoint (coming soon)
 - Database: See `prisma/schema.prisma`
 - TradingView Integration: See webhook examples above
 - Frontend Components: See React component documentation
