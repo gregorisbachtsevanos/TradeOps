@@ -109,7 +109,6 @@ function Dashboard({ theme }: DashboardProps) {
             {activeTab === "overview" && (
               <>
                 <ChartWorkspace accountId={selectedAccountId} theme={theme} />
-                {/* <TradingViewChart accountId={selectedAccountId} theme={theme} /> */}
                 <div className="overview-grid">
                   <EquityOverview accountId={selectedAccountId} />
                   <RiskPanel accountId={selectedAccountId} />

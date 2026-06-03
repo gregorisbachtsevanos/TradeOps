@@ -77,8 +77,7 @@ function ChartWorkspace({ accountId, theme }: ChartWorkspaceProps) {
             <span className="chart-badge">TradingView</span>
           </div>
         </div>
-        <TradingViewChart accountId={accountId} theme={theme} />
-
+        <TradingViewChart accountId={accountId} theme={theme} params={params} />
         {/* <iframe
           title="TradingView advanced chart"
           src={`https://s.tradingview.com/widgetembed/?${params.toString()}`}
@@ -87,7 +86,7 @@ function ChartWorkspace({ accountId, theme }: ChartWorkspaceProps) {
         /> */}
       </div>
 
-      {/* <aside className="workspace-side">
+      <aside className="workspace-side">
         <div className="workspace-card watchlist">
           <div className="workspace-card-header">
             <span>Watchlist</span>
@@ -148,9 +147,9 @@ function ChartWorkspace({ accountId, theme }: ChartWorkspaceProps) {
             Place {orderSide} Demo Order
           </button>
         </div>
-      </aside> */}
+      </aside>
 
-      {/* <div className="workspace-bottom">
+      <div className="workspace-bottom">
         <div className="workspace-card positions-mini">
           <div className="workspace-card-header">
             <span>Positions</span>
@@ -181,7 +180,7 @@ function ChartWorkspace({ accountId, theme }: ChartWorkspaceProps) {
             </div>
           ))}
         </div>
-      </div> */}
+      </div>
     </section>
   );
 }

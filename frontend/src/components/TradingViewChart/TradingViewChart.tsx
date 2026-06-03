@@ -5,9 +5,10 @@ import { Trade } from "../../types/index.js";
 interface TradingViewChartProps {
   accountId: string;
   theme: "dark" | "light";
+  params: URLSearchParams;
 }
 
-function TradingViewChart({ accountId, theme }: TradingViewChartProps) {
+function TradingViewChart({ accountId, theme, params }: TradingViewChartProps) {
   const { data: tradesResponse, isLoading } = useRecentTrades(accountId, 20);
   const [selectedSymbol, setSelectedSymbol] = useState("FX:EURUSD");
 
@@ -34,41 +35,8 @@ function TradingViewChart({ accountId, theme }: TradingViewChartProps) {
     }
   }, [chartSymbols, selectedSymbol]);
 
-  const params = new URLSearchParams({
-    symbol: selectedSymbol,
-    interval: "60",
-    theme,
-    style: "1",
-    timezone: "Etc/UTC",
-    withdateranges: "1",
-    hide_side_toolbar: "0",
-    allow_symbol_change: "1",
-    save_image: "0",
-    studies: "MACD@tv-basicstudies,RSI@tv-basicstudies",
-  });
-
   return (
     <section className="tradingview-panel">
-      <div className="panel-header">
-        <div>
-          <p className="eyebrow">Live market chart</p>
-          <h3>{selectedSymbol.replace(/^[A-Z]+:/, "")}</h3>
-        </div>
-        <div className="chart-actions">
-          <select
-            value={selectedSymbol}
-            onChange={(event) => setSelectedSymbol(event.target.value)}
-            disabled={isLoading}
-          >
-            {chartSymbols.map((chartSymbol) => (
-              <option key={chartSymbol} value={chartSymbol}>
-                {chartSymbol}
-              </option>
-            ))}
-          </select>
-          <span className="chart-badge">TradingView</span>
-        </div>
-      </div>
       <iframe
         title="TradingView advanced chart"
         src={`https://s.tradingview.com/widgetembed/?${params.toString()}`}

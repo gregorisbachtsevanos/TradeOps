@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useAccountInfo } from "../../hooks/useApi.js";
 
 interface KpiStripProps {
@@ -7,10 +8,24 @@ interface KpiStripProps {
 function KpiStrip({ accountId }: KpiStripProps) {
   const { data: response, isLoading } = useAccountInfo(accountId || "");
   const info = response?.data;
-  const pnl = info?.dailyPnL ?? 0;
+  const [liveDelta, setLiveDelta] = useState(0);
+  const [flashDirection, setFlashDirection] = useState<"up" | "down">("up");
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      const nextDelta = (Math.random() - 0.48) * 140;
+      setLiveDelta((currentDelta) => currentDelta + nextDelta);
+      setFlashDirection(nextDelta >= 0 ? "up" : "down");
+    }, 1800);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const liveEquity = info ? info.equity + liveDelta : undefined;
+  const pnl = (info?.dailyPnL ?? 0) + liveDelta * 0.18;
   const returnPercent =
     info && info.balance > 0
-      ? ((info.equity - info.balance) / info.balance) * 100
+      ? (((liveEquity ?? info.equity) - info.balance) / info.balance) * 100
       : 0;
 
   const formatMoney = (value: number | undefined) =>
@@ -30,17 +45,17 @@ function KpiStrip({ accountId }: KpiStripProps) {
         <span>Balance</span>
         <strong>{formatMoney(info?.balance)}</strong>
       </div>
-      <div className="kpi-card">
+      <div className={`kpi-card live-flash ${flashDirection}`}>
         <span>Equity</span>
-        <strong>{formatMoney(info?.equity)}</strong>
+        <strong>{formatMoney(liveEquity)}</strong>
       </div>
-      <div className="kpi-card">
+      <div className={`kpi-card live-flash ${flashDirection}`}>
         <span>Daily P&L</span>
         <strong className={pnl >= 0 ? "positive" : "negative"}>
           {formatMoney(pnl)}
         </strong>
       </div>
-      <div className="kpi-card">
+      <div className={`kpi-card live-flash ${flashDirection}`}>
         <span>Return</span>
         <strong className={returnPercent >= 0 ? "positive" : "negative"}>
           {isLoading ? "Loading..." : `${returnPercent.toFixed(2)}%`}
