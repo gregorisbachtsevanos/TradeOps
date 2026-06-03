@@ -99,15 +99,132 @@ PNL SECTION
 
 .pnl-history {
   margin-top: 22px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  padding-top: 22px;
+  padding: 22px;
+  background:
+    radial-gradient(circle at top right, rgba(34, 197, 94, 0.1), transparent 34%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 22px;
+}
+
+.pnl-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.section-kicker {
+  display: inline-flex;
+  margin-bottom: 6px;
+  color: var(--positive);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .pnl-history h3 {
-  margin: 0 0 16px;
-  color: #f9fafb;
-  font-size: 16px;
-  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.pnl-header p {
+  margin: 6px 0 0;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.pnl-range-switcher {
+  display: inline-flex;
+  gap: 4px;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+}
+
+.pnl-range-switcher button {
+  min-width: 52px;
+  padding: 9px 12px;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+  transition: all 0.18s ease;
+}
+
+.pnl-range-switcher button:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.pnl-range-switcher button.active {
+  color: white;
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+  box-shadow: 0 8px 18px rgba(34, 197, 94, 0.22);
+}
+
+.pnl-total-card {
+  min-width: 170px;
+  padding: 14px 16px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 18px;
+  text-align: right;
+}
+
+.pnl-total-card.negative {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.pnl-total-card span,
+.pnl-summary-row span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pnl-total-card strong {
+  display: block;
+  margin-top: 6px;
+  color: inherit;
+  font-size: 26px;
+  font-weight: 950;
+  letter-spacing: -0.05em;
+}
+
+.pnl-summary-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.pnl-summary-row div {
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+}
+
+.pnl-summary-row strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 900;
 }
 
 /* =========================
@@ -116,13 +233,50 @@ CHART AREA
 
 .pnl-chart {
   width: 100%;
-  height: 220px;
-  background:
-    linear-gradient(180deg,
-      rgba(255, 255, 255, 0.02),
-      transparent);
-  border-radius: 16px;
-  padding: 12px;
+  height: 280px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    rgba(34, 197, 94, 0.07) 0%,
+    rgba(255, 255, 255, 0.018) 50%,
+    rgba(239, 68, 68, 0.07) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 18px 16px 28px;
+}
+
+.pnl-chart::before {
+  content: "";
+  position: absolute;
+  inset: 18px 16px 28px;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 100% 48px, 64px 100%;
+  mask-image: linear-gradient(180deg, transparent, black 15%, black 85%, transparent);
+  pointer-events: none;
+}
+
+.zero-line {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  right: 16px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.18);
+  z-index: 1;
+}
+
+.zero-line::after {
+  content: "0";
+  position: absolute;
+  right: 0;
+  top: -18px;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 800;
 }
 
 /* =========================
@@ -131,31 +285,58 @@ BARS
 
 .chart-bars {
   display: flex;
-  align-items: flex-end;
+  align-items: stretch;
   height: 100%;
-  gap: 3px;
-  padding: 6px;
+  gap: 6px;
+  position: relative;
+  z-index: 2;
+}
+
+.pnl-day {
+  flex: 1;
+  display: grid;
+  grid-template-rows: 1fr 18px;
+  gap: 8px;
+  min-width: 0;
+}
+
+.pnl-day > span {
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 800;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.bar-track {
+  position: relative;
 }
 
 .bar {
-  flex: 1;
-  min-height: 4px;
-  border-radius: 6px;
+  position: absolute;
+  left: 50%;
+  width: min(16px, 72%);
+  min-height: 3px;
+  border-radius: 999px;
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.2s ease;
+  transform: translateX(-50%);
+  transition: transform 0.15s ease, opacity 0.2s ease, filter 0.2s ease;
   opacity: 0.9;
 }
 
 .bar.positive {
-  background-color: var(--positive);
+  background: linear-gradient(180deg, #34d399, var(--positive));
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.28);
 }
 
 .bar.negative {
-  background-color: var(--negative);
+  background: linear-gradient(180deg, var(--negative), #fb7185);
+  box-shadow: 0 0 18px rgba(239, 68, 68, 0.22);
 }
 
 .bar:hover {
-  transform: scaleY(1.15);
+  transform: translateX(-50%) scaleY(1.12);
+  filter: brightness(1.18);
   opacity: 1;
 }
 
@@ -179,7 +360,25 @@ RESPONSIVE
     grid-template-columns: 1fr;
   }
 
+  .pnl-header,
+  .pnl-total-card {
+    text-align: left;
+  }
+
+  .pnl-header {
+    flex-direction: column;
+  }
+
+  .pnl-range-switcher {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .pnl-summary-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .pnl-chart {
-    height: 180px;
+    height: 230px;
   }
 }

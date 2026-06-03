@@ -77,13 +77,7 @@ function ChartWorkspace({ accountId, theme }: ChartWorkspaceProps) {
             <span className="chart-badge">TradingView</span>
           </div>
         </div>
-        <TradingViewChart accountId={accountId} theme={theme} params={params} />
-        {/* <iframe
-          title="TradingView advanced chart"
-          src={`https://s.tradingview.com/widgetembed/?${params.toString()}`}
-          className="tradingview-frame"
-          allowFullScreen
-        /> */}
+        <TradingViewChart params={params} />
       </div>
 
       <aside className="workspace-side">
