@@ -8,7 +8,10 @@ export const validateWebhookSecret = (
   _res: Response,
   next: NextFunction,
 ): void => {
-  const passphrase = req.body.passphrase;
+  const passphrase =
+    req.body.passphrase ||
+    (req.headers["x-webhook-secret"] as string) ||
+    (req.headers["x-tradingview-webhook-secret"] as string);
 
   if (!passphrase || passphrase !== config.trading.webhookSecret) {
     logger.warn("Invalid webhook secret attempted", {

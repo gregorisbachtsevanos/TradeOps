@@ -12,6 +12,7 @@ export class TradeEngineService {
     symbol: string,
     action: "BUY" | "SELL" | "CLOSE",
     price: number,
+    quantityOverride?: number,
   ): Promise<{ success: boolean; tradeId?: string; reason?: string }> {
     try {
       logger.info("Processing signal", {
@@ -81,15 +82,21 @@ export class TradeEngineService {
       }
 
       const stopLoss = direction === "BUY" ? price * 0.98 : price * 1.02;
-      const quantity = calculatePositionSize(
-        account.balance,
-        strategy.riskPercent,
-        price,
-        stopLoss,
-      );
+      const quantity =
+        quantityOverride !== undefined && quantityOverride > 0
+          ? quantityOverride
+          : calculatePositionSize(
+              account.balance,
+              strategy.riskPercent,
+              price,
+              stopLoss,
+            );
 
       if (quantity <= 0) {
-        const reason = "Invalid position size calculated";
+        const reason =
+          quantityOverride !== undefined && quantityOverride <= 0
+            ? "Invalid quantity provided"
+            : "Invalid position size calculated";
         await this.rejectTrade(
           signalId,
           accountId,

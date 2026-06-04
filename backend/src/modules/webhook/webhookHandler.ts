@@ -106,6 +106,7 @@ export class WebhookHandlerService {
         payload.ticker,
         payload.strategy_signal,
         payload.close,
+        payload.quantity,
       );
 
       if (!processResult.success) {

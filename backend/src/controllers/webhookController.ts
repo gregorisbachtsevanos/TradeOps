@@ -19,14 +19,16 @@ export const receiveTradingViewWebhook = asyncHandler(
       // Validate payload schema
       const validatedPayload = tradingViewWebhookSchema.parse(req.body);
 
-      // Extract account and strategy from query params or payload
-      const accountId = req.query.account_id as string;
-      const strategyId = req.query.strategy_id as string;
+      // Extract account and strategy from query params
+      const accountId =
+        (req.query.account_id as string) || validatedPayload.account_id;
+      const strategyId =
+        (req.query.strategy_id as string) || validatedPayload.strategy_id;
 
       if (!accountId || !strategyId) {
         throw new AppError(
           400,
-          "Missing required query parameters: account_id and strategy_id",
+          "Missing required account and strategy identifiers. Provide account_id and strategy_id in query string or webhook payload",
         );
       }
 
