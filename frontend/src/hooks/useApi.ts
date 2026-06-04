@@ -1,6 +1,47 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { apiService } from "../services/api.js";
 
+// Auth
+export const useLogin = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({ email, password }: { email: string; password: string }) =>
+      apiService.login(email, password),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("user");
+      },
+    },
+  );
+};
+
+export const useRegister = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ({
+      email,
+      password,
+      name,
+    }: {
+      email: string;
+      password: string;
+      name: string;
+    }) => apiService.register(email, password, name),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("user");
+      },
+    },
+  );
+};
+
+export const useCurrentUser = () => {
+  return useQuery(["user"], () => apiService.getCurrentUser(), {
+    staleTime: 60000,
+    retry: false,
+  });
+};
+
 // Trades
 export const useTrades = (
   accountId: string,
@@ -41,14 +82,10 @@ export const useCloseTrade = () => {
 };
 
 // Strategies
-export const useStrategies = (userId: string) => {
-  return useQuery(
-    ["strategies", userId],
-    () => apiService.getStrategies(userId),
-    {
-      staleTime: 30000,
-    },
-  );
+export const useStrategies = () => {
+  return useQuery(["strategies"], () => apiService.getStrategies(), {
+    staleTime: 30000,
+  });
 };
 
 export const useStrategy = (strategyId: string) => {
@@ -64,11 +101,11 @@ export const useStrategy = (strategyId: string) => {
 export const useCreateStrategy = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    ({ userId, data }: { userId: string; data: any }) =>
-      apiService.createStrategy(userId, data),
+    (data: { name: string; description?: string; riskPercent: number }) =>
+      apiService.createStrategy(data),
     {
-      onSuccess: (_, variables) => {
-        queryClient.invalidateQueries(["strategies", variables.userId]);
+      onSuccess: () => {
+        queryClient.invalidateQueries(["strategies"]);
       },
     },
   );
@@ -101,8 +138,8 @@ export const useDeleteStrategy = () => {
 };
 
 // Accounts
-export const useAccounts = (userId: string) => {
-  return useQuery(["accounts", userId], () => apiService.getAccounts(userId), {
+export const useAccounts = () => {
+  return useQuery(["accounts"], () => apiService.getAccounts(), {
     staleTime: 30000,
   });
 };
@@ -131,11 +168,11 @@ export const useAccountInfo = (accountId: string) => {
 export const useCreateAccount = () => {
   const queryClient = useQueryClient();
   return useMutation(
-    ({ userId, data }: { userId: string; data: any }) =>
-      apiService.createAccount(userId, data),
+    (data: { externalId: string; balance: number; equity: number }) =>
+      apiService.createAccount(data),
     {
-      onSuccess: (_, variables) => {
-        queryClient.invalidateQueries(["accounts", variables.userId]);
+      onSuccess: () => {
+        queryClient.invalidateQueries(["accounts"]);
       },
     },
   );

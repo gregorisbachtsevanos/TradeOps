@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { prisma } from "../db.js";
 import {
   createStrategySchema,
@@ -10,29 +10,40 @@ import {
   asyncHandler,
 } from "../utils/helpers.js";
 import logger from "../config/logger.js";
+import { AuthenticatedRequest } from "../middleware/auth.js";
+
+const requireCurrentUser = (req: AuthenticatedRequest): string => {
+  if (!req.user?.id) {
+    throw new AppError(401, "Unauthorized");
+  }
+  return req.user.id;
+};
+
+const assertStrategyOwnership = async (
+  strategyId: string,
+  userId: string,
+): Promise<{ userId: string; name: string }> => {
+  const strategy = await prisma.strategy.findUnique({
+    where: { id: strategyId },
+  });
+
+  if (!strategy) {
+    throw new AppError(404, "Strategy not found");
+  }
+  if (strategy.userId !== userId) {
+    throw new AppError(403, "Unauthorized access to strategy");
+  }
+  return strategy as { userId: string; name: string };
+};
 
 /**
  * POST /strategies
  * Create a new trading strategy
  */
 export const createStrategy = asyncHandler(
-  async (req: Request, res: Response) => {
-    const userId = req.query.user_id as string;
-
-    if (!userId) {
-      throw new AppError(400, "user_id query parameter is required");
-    }
-
+  async (req: AuthenticatedRequest, res: Response) => {
+    const userId = requireCurrentUser(req);
     const validatedData = createStrategySchema.parse(req.body);
-
-    // Verify user exists
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new AppError(404, "User not found");
-    }
 
     const strategy = await prisma.strategy.create({
       data: {
@@ -57,39 +68,36 @@ export const createStrategy = asyncHandler(
  * GET /strategies/:strategyId
  * Get strategy details
  */
-export const getStrategy = asyncHandler(async (req: Request, res: Response) => {
-  const { strategyId } = req.params;
+export const getStrategy = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const userId = requireCurrentUser(req);
+    const { strategyId } = req.params;
 
-  const strategy = await prisma.strategy.findUnique({
-    where: { id: strategyId },
-    include: {
-      _count: {
-        select: {
-          trades: true,
-          signals: true,
+    await assertStrategyOwnership(strategyId, userId);
+
+    const strategy = await prisma.strategy.findUnique({
+      where: { id: strategyId },
+      include: {
+        _count: {
+          select: {
+            trades: true,
+            signals: true,
+          },
         },
       },
-    },
-  });
+    });
 
-  if (!strategy) {
-    throw new AppError(404, "Strategy not found");
-  }
-
-  res.status(200).json(createSuccessResponse(strategy));
-});
+    res.status(200).json(createSuccessResponse(strategy));
+  },
+);
 
 /**
- * GET /strategies?user_id=xxx
+ * GET /strategies
  * List strategies for a user
  */
 export const listStrategies = asyncHandler(
-  async (req: Request, res: Response) => {
-    const userId = req.query.user_id as string;
-
-    if (!userId) {
-      throw new AppError(400, "user_id query parameter is required");
-    }
+  async (req: AuthenticatedRequest, res: Response) => {
+    const userId = requireCurrentUser(req);
 
     const strategies = await prisma.strategy.findMany({
       where: { userId },
@@ -113,16 +121,11 @@ export const listStrategies = asyncHandler(
  * Update strategy
  */
 export const updateStrategy = asyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
+    const userId = requireCurrentUser(req);
     const { strategyId } = req.params;
 
-    const strategy = await prisma.strategy.findUnique({
-      where: { id: strategyId },
-    });
-
-    if (!strategy) {
-      throw new AppError(404, "Strategy not found");
-    }
+    await assertStrategyOwnership(strategyId, userId);
 
     const validatedData = updateStrategySchema.parse(req.body);
 
@@ -149,16 +152,11 @@ export const updateStrategy = asyncHandler(
  * Delete strategy
  */
 export const deleteStrategy = asyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
+    const userId = requireCurrentUser(req);
     const { strategyId } = req.params;
 
-    const strategy = await prisma.strategy.findUnique({
-      where: { id: strategyId },
-    });
-
-    if (!strategy) {
-      throw new AppError(404, "Strategy not found");
-    }
+    const strategy = await assertStrategyOwnership(strategyId, userId);
 
     await prisma.strategy.delete({
       where: { id: strategyId },

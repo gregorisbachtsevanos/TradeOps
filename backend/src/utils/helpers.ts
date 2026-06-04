@@ -64,10 +64,13 @@ export const calculatePnL = (
   entryPrice: number,
   exitPrice: number,
   quantity: number,
+  direction: "BUY" | "SELL" = "BUY",
   commission: number = 0,
 ): { pnl: number; pnlPercent: number } => {
-  const pnl = (exitPrice - entryPrice) * quantity - commission;
-  const pnlPercent = ((exitPrice - entryPrice) / entryPrice) * 100;
+  const priceDifference =
+    direction === "BUY" ? exitPrice - entryPrice : entryPrice - exitPrice;
+  const pnl = priceDifference * quantity - commission;
+  const pnlPercent = (priceDifference / entryPrice) * 100;
   return { pnl, pnlPercent };
 };
 

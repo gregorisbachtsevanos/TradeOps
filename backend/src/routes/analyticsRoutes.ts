@@ -6,8 +6,10 @@ import {
   getDailyPnL,
 } from "../controllers/analyticsController.js";
 import { asyncHandler } from "../utils/helpers.js";
+import { authenticate } from "../middleware/auth.js";
 
 const router = Router();
+router.use(authenticate);
 
 router.get("/strategy/:strategyId/metrics", asyncHandler(getStrategyMetrics));
 router.get("/account/:accountId/metrics", asyncHandler(getAccountMetrics));

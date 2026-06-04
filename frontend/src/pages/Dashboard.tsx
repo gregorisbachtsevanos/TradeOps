@@ -16,10 +16,8 @@ interface DashboardProps {
 }
 
 function Dashboard({ theme }: DashboardProps) {
-  const { user, selectedAccountId, setSelectedAccountId } = useStore();
-  const { data: accountsResponse, isLoading: accountsLoading } = useAccounts(
-    user?.id || "",
-  );
+  const { selectedAccountId, setSelectedAccountId } = useStore();
+  const { data: accountsResponse, isLoading: accountsLoading } = useAccounts();
   const createAccount = useCreateAccount();
   const [activeTab, setActiveTab] = useState<
     "overview" | "trades" | "analytics"
@@ -66,16 +64,11 @@ function Dashboard({ theme }: DashboardProps) {
   }
 
   const handleCreateDemoAccount = async () => {
-    if (!user?.id) return;
-
     const suffix = Math.floor(100 + Math.random() * 900);
     const response = await createAccount.mutateAsync({
-      userId: user.id,
-      data: {
-        externalId: `MT5-DEMO-${suffix}`,
-        balance: 25000,
-        equity: 25240,
-      },
+      externalId: `MT5-DEMO-${suffix}`,
+      balance: 25000,
+      equity: 25240,
     });
 
     if (response.data?.id) {
@@ -90,7 +83,7 @@ function Dashboard({ theme }: DashboardProps) {
       <main className="dashboard">
         <div className="dashboard-header">
           <div>
-            <p className="eyebrow">Demo trading workspace</p>
+            <p className="eyebrow">Trading workspace</p>
             <h2>Portfolio Command Center</h2>
           </div>
           <AccountSelector
@@ -126,7 +119,7 @@ function Dashboard({ theme }: DashboardProps) {
           </div>
         ) : (
           <div className="placeholder">
-            <p>Select an account to view data</p>
+            <p>Create or select an account to view data</p>
           </div>
         )}
       </main>

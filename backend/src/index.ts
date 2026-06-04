@@ -4,6 +4,7 @@ import { config, validateConfig } from "./config/index.js";
 import logger from "./config/logger.js";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
 import webhookRoutes from "./routes/webhookRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import tradeRoutes from "./routes/tradeRoutes.js";
 import strategyRoutes from "./routes/strategyRoutes.js";
 import accountRoutes from "./routes/accountRoutes.js";
@@ -39,6 +40,7 @@ app.get("/health", (_req, res) => {
 
 // Routes
 app.use("/webhook", webhookRoutes);
+app.use("/auth", authRoutes);
 app.use("/trades", tradeRoutes);
 app.use("/strategies", strategyRoutes);
 app.use("/accounts", accountRoutes);

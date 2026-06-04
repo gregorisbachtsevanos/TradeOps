@@ -3,32 +3,29 @@ import { config } from "../../config/index.js";
 import logger from "../../config/logger.js";
 import { RiskCheckResult } from "../../types/index.js";
 
-/**
- * Risk Management Service
- * Enforces trading rules and validates position constraints
- */
 export class RiskManagementService {
+  private getTodayStart(): Date {
+    const today = new Date().toDateString();
+    return new Date(today);
+  }
+
   async checkRiskLimits(
     accountId: string,
     strategyId: string,
     proposedExposure: number,
   ): Promise<RiskCheckResult> {
     try {
-      const today = new Date().toDateString();
-      const startOfDay = new Date(today);
-
-      // Get today's risk state
-      const riskState = await prisma.riskState.findFirst({
+      const startOfDay = this.getTodayStart();
+      const riskState = await prisma.riskState.findUnique({
         where: {
-          accountId,
-          strategyId,
-          date: {
-            gte: startOfDay,
+          accountId_strategyId_date: {
+            accountId,
+            strategyId,
+            date: startOfDay,
           },
         },
       });
 
-      // Get account info
       const account = await prisma.account.findUnique({
         where: { id: accountId },
       });
@@ -40,26 +37,30 @@ export class RiskManagementService {
         };
       }
 
-      // Check 1: Max daily loss limit
-      if (riskState && riskState.breachedLimit) {
+      const maxDailyLoss =
+        account.balance * (config.riskManagement.maxDailyLossPercent / 100);
+      const maxExposure =
+        account.balance * (config.riskManagement.maxExposurePercent / 100);
+
+      if (riskState?.breachedLimit) {
         return {
           allowed: false,
           reason: "Daily loss limit breached",
         };
       }
 
-      const maxDailyLoss =
-        account.balance * (config.riskManagement.maxDailyLossPercent / 100);
-      if (riskState && riskState.dailyPnL < -maxDailyLoss) {
+      if (
+        riskState?.dailyPnL !== undefined &&
+        riskState.dailyPnL < -maxDailyLoss
+      ) {
         return {
           allowed: false,
           reason: `Daily loss limit exceeded: ${-riskState.dailyPnL} / ${maxDailyLoss}`,
         };
       }
 
-      // Check 2: Max open trades limit
       if (
-        riskState &&
+        riskState?.openTrades !== undefined &&
         riskState.openTrades >= config.riskManagement.maxOpenTrades
       ) {
         return {
@@ -68,16 +69,15 @@ export class RiskManagementService {
         };
       }
 
-      // Check 3: Max exposure limit
-      const maxExposure = account.balance * 0.5; // 50% of balance
-      const newExposure = (riskState?.maxExposure || 0) + proposedExposure;
+      const currentExposure = riskState?.maxExposure ?? 0;
+      const newExposure = currentExposure + proposedExposure;
 
       if (newExposure > maxExposure) {
         return {
           allowed: false,
           reason: `Exposure limit exceeded: ${newExposure} / ${maxExposure}`,
-          currentExposure: riskState?.maxExposure || 0,
-          availableExposure: maxExposure - (riskState?.maxExposure || 0),
+          currentExposure,
+          availableExposure: maxExposure - currentExposure,
         };
       }
 
@@ -85,14 +85,14 @@ export class RiskManagementService {
         accountId,
         strategyId,
         proposedExposure,
-        currentExposure: riskState?.maxExposure || 0,
-        openTrades: riskState?.openTrades || 0,
+        currentExposure,
+        openTrades: riskState?.openTrades ?? 0,
       });
 
       return {
         allowed: true,
-        currentExposure: riskState?.maxExposure || 0,
-        availableExposure: maxExposure - (riskState?.maxExposure || 0),
+        currentExposure,
+        availableExposure: maxExposure - currentExposure,
       };
     } catch (error) {
       logger.error("Risk check error", {
@@ -101,7 +101,6 @@ export class RiskManagementService {
         error: error instanceof Error ? error.message : "Unknown error",
       });
 
-      // Fail closed - reject trade on error
       return {
         allowed: false,
         reason: "Risk check failed",
@@ -115,8 +114,24 @@ export class RiskManagementService {
     pnlDelta: number,
   ): Promise<void> {
     try {
-      const today = new Date().toDateString();
-      const startOfDay = new Date(today);
+      const startOfDay = this.getTodayStart();
+      const account = await prisma.account.findUnique({
+        where: { id: accountId },
+      });
+
+      if (!account) {
+        logger.warn(
+          "Unable to update daily PnL because account was not found",
+          {
+            accountId,
+            strategyId,
+          },
+        );
+        return;
+      }
+
+      const maxDailyLoss =
+        account.balance * (config.riskManagement.maxDailyLossPercent / 100);
 
       const riskState = await prisma.riskState.upsert({
         where: {
@@ -131,7 +146,9 @@ export class RiskManagementService {
           strategyId,
           date: startOfDay,
           dailyPnL: pnlDelta,
-          openTrades: 1,
+          openTrades: 0,
+          maxExposure: 0,
+          breachedLimit: pnlDelta < -maxDailyLoss,
         },
         update: {
           dailyPnL: {
@@ -140,13 +157,7 @@ export class RiskManagementService {
         },
       });
 
-      // Check if daily loss limit breached
-      const maxDailyLoss =
-        (await prisma.account.findUnique({ where: { id: accountId } }))
-          ?.balance! *
-        (config.riskManagement.maxDailyLossPercent / 100);
-
-      if (riskState.dailyPnL < -maxDailyLoss) {
+      if (riskState.dailyPnL < -maxDailyLoss && !riskState.breachedLimit) {
         await prisma.riskState.update({
           where: {
             accountId_strategyId_date: {
@@ -180,8 +191,7 @@ export class RiskManagementService {
     strategyId: string,
   ): Promise<void> {
     try {
-      const today = new Date().toDateString();
-      const startOfDay = new Date(today);
+      const startOfDay = this.getTodayStart();
 
       await prisma.riskState.upsert({
         where: {
@@ -196,6 +206,8 @@ export class RiskManagementService {
           strategyId,
           date: startOfDay,
           openTrades: 1,
+          maxExposure: 0,
+          dailyPnL: 0,
         },
         update: {
           openTrades: {
@@ -217,10 +229,8 @@ export class RiskManagementService {
     strategyId: string,
   ): Promise<void> {
     try {
-      const today = new Date().toDateString();
-      const startOfDay = new Date(today);
-
-      await prisma.riskState.upsert({
+      const startOfDay = this.getTodayStart();
+      const riskState = await prisma.riskState.findUnique({
         where: {
           accountId_strategyId_date: {
             accountId,
@@ -228,22 +238,91 @@ export class RiskManagementService {
             date: startOfDay,
           },
         },
-        create: {
-          accountId,
-          strategyId,
-          date: startOfDay,
-          openTrades: 0,
-        },
-        update: {
-          openTrades: {
-            decrement: 1,
+      });
+
+      if (!riskState) {
+        await prisma.riskState.create({
+          data: {
+            accountId,
+            strategyId,
+            date: startOfDay,
+            openTrades: 0,
+            maxExposure: 0,
+            dailyPnL: 0,
           },
+        });
+        return;
+      }
+
+      await prisma.riskState.update({
+        where: {
+          accountId_strategyId_date: {
+            accountId,
+            strategyId,
+            date: startOfDay,
+          },
+        },
+        data: {
+          openTrades: Math.max(0, riskState.openTrades - 1),
         },
       });
     } catch (error) {
       logger.error("Failed to decrement open trades", {
         accountId,
         strategyId,
+        error: error instanceof Error ? error.message : "Unknown error",
+      });
+    }
+  }
+
+  async adjustExposure(
+    accountId: string,
+    strategyId: string,
+    amount: number,
+  ): Promise<void> {
+    try {
+      const startOfDay = this.getTodayStart();
+      const riskState = await prisma.riskState.findUnique({
+        where: {
+          accountId_strategyId_date: {
+            accountId,
+            strategyId,
+            date: startOfDay,
+          },
+        },
+      });
+
+      if (!riskState) {
+        await prisma.riskState.create({
+          data: {
+            accountId,
+            strategyId,
+            date: startOfDay,
+            openTrades: 0,
+            maxExposure: Math.max(0, amount),
+            dailyPnL: 0,
+          },
+        });
+        return;
+      }
+
+      await prisma.riskState.update({
+        where: {
+          accountId_strategyId_date: {
+            accountId,
+            strategyId,
+            date: startOfDay,
+          },
+        },
+        data: {
+          maxExposure: Math.max(0, riskState.maxExposure + amount),
+        },
+      });
+    } catch (error) {
+      logger.error("Failed to adjust exposure", {
+        accountId,
+        strategyId,
+        amount,
         error: error instanceof Error ? error.message : "Unknown error",
       });
     }

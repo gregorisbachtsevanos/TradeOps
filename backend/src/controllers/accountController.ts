@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { prisma } from "../db.js";
 import { createAccountSchema } from "../utils/validation.js";
 import {
@@ -7,32 +7,43 @@ import {
   asyncHandler,
 } from "../utils/helpers.js";
 import { mt5ConnectorService } from "../modules/execution/mt5Connector.js";
+import { config } from "../config/index.js";
 import logger from "../config/logger.js";
+import { AuthenticatedRequest } from "../middleware/auth.js";
+
+const requireCurrentUser = (req: AuthenticatedRequest): string => {
+  if (!req.user?.id) {
+    throw new AppError(401, "Unauthorized");
+  }
+  return req.user.id;
+};
+
+const assertAccountOwnership = async (
+  accountId: string,
+  userId: string,
+): Promise<{ userId: string; externalId: string }> => {
+  const account = await prisma.account.findUnique({
+    where: { id: accountId },
+  });
+
+  if (!account) {
+    throw new AppError(404, "Account not found");
+  }
+  if (account.userId !== userId) {
+    throw new AppError(403, "Unauthorized access to account");
+  }
+  return account as { userId: string; externalId: string };
+};
 
 /**
  * POST /accounts
  * Create a new trading account
  */
 export const createAccount = asyncHandler(
-  async (req: Request, res: Response) => {
-    const userId = req.query.user_id as string;
-
-    if (!userId) {
-      throw new AppError(400, "user_id query parameter is required");
-    }
-
+  async (req: AuthenticatedRequest, res: Response) => {
+    const userId = requireCurrentUser(req);
     const validatedData = createAccountSchema.parse(req.body);
 
-    // Verify user exists
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new AppError(404, "User not found");
-    }
-
-    // Check for duplicate external ID
     const existing = await prisma.account.findUnique({
       where: { externalId: validatedData.externalId },
     });
@@ -41,10 +52,20 @@ export const createAccount = asyncHandler(
       throw new AppError(400, "Account with this external ID already exists");
     }
 
+    const accountPayload = { ...validatedData };
+
+    if (!config.broker.useMockBroker) {
+      const brokerInfo = await mt5ConnectorService.getAccountInfo(
+        validatedData.externalId,
+      );
+      accountPayload.balance = brokerInfo.balance;
+      accountPayload.equity = brokerInfo.equity;
+    }
+
     const account = await prisma.account.create({
       data: {
         userId,
-        ...validatedData,
+        ...accountPayload,
       },
     });
 
@@ -64,31 +85,24 @@ export const createAccount = asyncHandler(
  * GET /accounts/:accountId
  * Get account details
  */
-export const getAccount = asyncHandler(async (req: Request, res: Response) => {
-  const { accountId } = req.params;
+export const getAccount = asyncHandler(
+  async (req: AuthenticatedRequest, res: Response) => {
+    const userId = requireCurrentUser(req);
+    const { accountId } = req.params;
 
-  const account = await prisma.account.findUnique({
-    where: { id: accountId },
-  });
+    const account = await assertAccountOwnership(accountId, userId);
 
-  if (!account) {
-    throw new AppError(404, "Account not found");
-  }
-
-  res.status(200).json(createSuccessResponse(account));
-});
+    res.status(200).json(createSuccessResponse(account));
+  },
+);
 
 /**
- * GET /accounts?user_id=xxx
- * List accounts for a user
+ * GET /accounts
+ * List accounts for the authenticated user
  */
 export const listAccounts = asyncHandler(
-  async (req: Request, res: Response) => {
-    const userId = req.query.user_id as string;
-
-    if (!userId) {
-      throw new AppError(400, "user_id query parameter is required");
-    }
+  async (req: AuthenticatedRequest, res: Response) => {
+    const userId = requireCurrentUser(req);
 
     const accounts = await prisma.account.findMany({
       where: { userId },
@@ -104,18 +118,22 @@ export const listAccounts = asyncHandler(
  * Get live account info from MT5
  */
 export const getAccountInfo = asyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
+    const userId = requireCurrentUser(req);
     const { accountId } = req.params;
 
-    const account = await prisma.account.findUnique({
-      where: { id: accountId },
-    });
-
-    if (!account) {
-      throw new AppError(404, "Account not found");
-    }
+    const account = await assertAccountOwnership(accountId, userId);
 
     const info = await mt5ConnectorService.getAccountInfo(account.externalId);
+
+    await prisma.account.update({
+      where: { id: accountId },
+      data: {
+        balance: info.balance,
+        equity: info.equity,
+        exposure: info.exposure,
+      },
+    });
 
     res.status(200).json(createSuccessResponse(info));
   },
@@ -126,17 +144,12 @@ export const getAccountInfo = asyncHandler(
  * Update account
  */
 export const updateAccount = asyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
+    const userId = requireCurrentUser(req);
     const { accountId } = req.params;
     const { balance, equity, isActive } = req.body;
 
-    const account = await prisma.account.findUnique({
-      where: { id: accountId },
-    });
-
-    if (!account) {
-      throw new AppError(404, "Account not found");
-    }
+    await assertAccountOwnership(accountId, userId);
 
     const updatedAccount = await prisma.account.update({
       where: { id: accountId },
@@ -167,16 +180,11 @@ export const updateAccount = asyncHandler(
  * Delete account
  */
 export const deleteAccount = asyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
+    const userId = requireCurrentUser(req);
     const { accountId } = req.params;
 
-    const account = await prisma.account.findUnique({
-      where: { id: accountId },
-    });
-
-    if (!account) {
-      throw new AppError(404, "Account not found");
-    }
+    await assertAccountOwnership(accountId, userId);
 
     await prisma.account.delete({
       where: { id: accountId },
@@ -184,7 +192,6 @@ export const deleteAccount = asyncHandler(
 
     logger.info("Account deleted", {
       accountId,
-      externalId: account.externalId,
     });
 
     res

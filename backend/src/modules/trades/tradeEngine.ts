@@ -1,16 +1,9 @@
 import { prisma } from "../../db.js";
 import { mt5ConnectorService } from "../execution/mt5Connector.js";
 import { riskManagementService } from "../risk/riskManagement.js";
-import { calculatePositionSize } from "../../utils/helpers.js";
-import { config } from "../../config/index.js";
+import { calculatePositionSize, calculatePnL } from "../../utils/helpers.js";
 import logger from "../../config/logger.js";
-import { TradeIntent, TradeExecutionResult } from "../../types/index.js";
 
-/**
- * Trade Engine Service
- * Converts trading signals into executed trades
- * Applies risk management rules and position sizing
- */
 export class TradeEngineService {
   async processSignal(
     signalId: string,
@@ -29,40 +22,65 @@ export class TradeEngineService {
         price,
       });
 
-      // Get account and strategy info
       const [account, strategy] = await Promise.all([
-        prisma.account.findUnique({ where: { id: accountId } }),
-        prisma.strategy.findUnique({ where: { id: strategyId } }),
+        prisma.account.findUnique({ where: { id: accountId } }) as Promise<{
+          id: string;
+          externalId: string;
+          isActive: boolean;
+          balance: number;
+        } | null>,
+        prisma.strategy.findUnique({ where: { id: strategyId } }) as Promise<{
+          id: string;
+          isActive: boolean;
+          riskPercent: number;
+        } | null>,
       ]);
 
-      if (!account || !strategy) {
-        const reason = "Account or strategy not found";
-        await this.rejectTrade(signalId, reason);
+      if (!account) {
+        const reason = "Account not found";
+        logger.warn(reason, { signalId, accountId });
         return { success: false, reason };
       }
 
+      if (!strategy) {
+        const reason = "Strategy not found";
+        logger.warn(reason, { signalId, strategyId });
+        return { success: false, reason };
+      }
+
+      const direction = action === "CLOSE" ? "BUY" : action;
+
       if (!account.isActive) {
         const reason = "Account is not active";
-        await this.rejectTrade(signalId, reason);
+        await this.rejectTrade(
+          signalId,
+          accountId,
+          strategyId,
+          symbol,
+          direction,
+          reason,
+        );
         return { success: false, reason };
       }
 
       if (!strategy.isActive) {
         const reason = "Strategy is not active";
-        await this.rejectTrade(signalId, reason);
+        await this.rejectTrade(
+          signalId,
+          accountId,
+          strategyId,
+          symbol,
+          direction,
+          reason,
+        );
         return { success: false, reason };
       }
 
-      // Handle CLOSE action
       if (action === "CLOSE") {
-        return await this.closePosition(accountId, symbol);
+        return await this.closePosition(account, strategyId, symbol);
       }
 
-      // For BUY/SELL actions
-      const direction = action === "BUY" ? "BUY" : "SELL";
-
-      // Calculate position size
-      const stopLoss = direction === "BUY" ? price * 0.98 : price * 1.02; // 2% stop loss
+      const stopLoss = direction === "BUY" ? price * 0.98 : price * 1.02;
       const quantity = calculatePositionSize(
         account.balance,
         strategy.riskPercent,
@@ -72,13 +90,19 @@ export class TradeEngineService {
 
       if (quantity <= 0) {
         const reason = "Invalid position size calculated";
-        await this.rejectTrade(signalId, reason);
+        await this.rejectTrade(
+          signalId,
+          accountId,
+          strategyId,
+          symbol,
+          direction,
+          reason,
+        );
         return { success: false, reason };
       }
 
       const proposedExposure = price * quantity;
 
-      // Check risk limits
       const riskCheck = await riskManagementService.checkRiskLimits(
         accountId,
         strategyId,
@@ -87,16 +111,23 @@ export class TradeEngineService {
 
       if (!riskCheck.allowed) {
         const reason = riskCheck.reason || "Risk limits exceeded";
-        await this.rejectTrade(signalId, reason);
         logger.warn("Trade rejected due to risk limits", {
           signalId,
           reason,
         });
+        await this.rejectTrade(
+          signalId,
+          accountId,
+          strategyId,
+          symbol,
+          direction,
+          reason,
+        );
         return { success: false, reason };
       }
 
-      // Execute trade
       const executionResult = await mt5ConnectorService.executeTrade(
+        account.externalId,
         symbol,
         direction,
         price,
@@ -106,11 +137,17 @@ export class TradeEngineService {
 
       if (!executionResult.success) {
         const reason = executionResult.error || "Execution failed";
-        await this.rejectTrade(signalId, reason);
+        await this.rejectTrade(
+          signalId,
+          accountId,
+          strategyId,
+          symbol,
+          direction,
+          reason,
+        );
         return { success: false, reason };
       }
 
-      // Record trade in database
       const trade = await prisma.trade.create({
         data: {
           accountId,
@@ -126,8 +163,12 @@ export class TradeEngineService {
         },
       });
 
-      // Update risk state
       await riskManagementService.incrementOpenTrades(accountId, strategyId);
+      await riskManagementService.adjustExposure(
+        accountId,
+        strategyId,
+        proposedExposure,
+      );
 
       logger.info("Trade created", {
         tradeId: trade.id,
@@ -148,14 +189,14 @@ export class TradeEngineService {
   }
 
   private async closePosition(
-    accountId: string,
+    account: { id: string; externalId: string },
+    strategyId: string,
     symbol: string,
   ): Promise<{ success: boolean; tradeId?: string; reason?: string }> {
     try {
-      // Find open trade for symbol
       const openTrade = await prisma.trade.findFirst({
         where: {
-          accountId,
+          accountId: account.id,
           symbol,
           status: "OPEN",
         },
@@ -175,30 +216,38 @@ export class TradeEngineService {
         return { success: false, reason: "Trade has no external ID" };
       }
 
-      // Get current market price (in mock, this is approximate)
-      const currentPrice = await this.getCurrentPrice(symbol);
-
-      // Close via MT5 connector
       const closeResult = await mt5ConnectorService.closeTrade(
+        account.externalId,
         openTrade.externalTradeId,
-        currentPrice,
       );
 
       if (!closeResult.success) {
         return { success: false, reason: closeResult.error };
       }
 
-      // Update trade record
-      const { pnl, pnlPercent } = this.calculateTradeResult(
+      const exitPrice = Number(
+        closeResult.details?.exitPrice ?? closeResult.details?.executionPrice,
+      );
+
+      if (!exitPrice || Number.isNaN(exitPrice)) {
+        return {
+          success: false,
+          reason: "Invalid exit price returned by broker",
+        };
+      }
+
+      const { pnl, pnlPercent } = calculatePnL(
         openTrade.entryPrice,
-        currentPrice,
+        exitPrice,
         openTrade.quantity,
+        openTrade.direction as "BUY" | "SELL",
+        openTrade.commission || 0,
       );
 
       const updatedTrade = await prisma.trade.update({
         where: { id: openTrade.id },
         data: {
-          exitPrice: currentPrice,
+          exitPrice,
           exitTime: new Date(),
           status: "CLOSED",
           pnl,
@@ -206,15 +255,19 @@ export class TradeEngineService {
         },
       });
 
-      // Update risk state
       await riskManagementService.updateDailyPnL(
-        accountId,
+        account.id,
         openTrade.strategyId,
         pnl,
       );
       await riskManagementService.decrementOpenTrades(
-        accountId,
+        account.id,
         openTrade.strategyId,
+      );
+      await riskManagementService.adjustExposure(
+        account.id,
+        openTrade.strategyId,
+        -openTrade.entryPrice * openTrade.quantity,
       );
 
       logger.info("Trade closed", {
@@ -227,7 +280,7 @@ export class TradeEngineService {
       return { success: true, tradeId: updatedTrade.id };
     } catch (error) {
       logger.error("Close position error", {
-        accountId,
+        accountId: account.id,
         symbol,
         error: error instanceof Error ? error.message : "Unknown error",
       });
@@ -235,15 +288,34 @@ export class TradeEngineService {
     }
   }
 
-  private async rejectTrade(signalId: string, reason: string): Promise<void> {
+  private async rejectTrade(
+    signalId: string,
+    accountId: string,
+    strategyId: string,
+    symbol: string,
+    direction: "BUY" | "SELL",
+    reason: string,
+  ): Promise<void> {
+    if (!accountId || !strategyId) {
+      logger.warn(
+        "Reject record skipped because account or strategy is missing",
+        {
+          signalId,
+          accountId,
+          strategyId,
+        },
+      );
+      return;
+    }
+
     try {
       await prisma.trade.create({
         data: {
-          accountId: "", // Placeholder
+          accountId,
           signalId,
-          strategyId: "", // Placeholder
-          symbol: "",
-          direction: "BUY",
+          strategyId,
+          symbol,
+          direction,
           entryPrice: 0,
           entryTime: new Date(),
           quantity: 0,
@@ -254,24 +326,11 @@ export class TradeEngineService {
     } catch (error) {
       logger.error("Failed to record rejected trade", {
         signalId,
+        accountId,
+        strategyId,
         error: error instanceof Error ? error.message : "Unknown error",
       });
     }
-  }
-
-  private calculateTradeResult(
-    entryPrice: number,
-    exitPrice: number,
-    quantity: number,
-  ): { pnl: number; pnlPercent: number } {
-    const pnl = (exitPrice - entryPrice) * quantity;
-    const pnlPercent = ((exitPrice - entryPrice) / entryPrice) * 100;
-    return { pnl, pnlPercent };
-  }
-
-  private async getCurrentPrice(symbol: string): Promise<number> {
-    // Mock: return random price near 100
-    return 100 + (Math.random() - 0.5) * 5;
   }
 }
 

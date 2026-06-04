@@ -7,8 +7,10 @@ import {
   deleteStrategy,
 } from "../controllers/strategyController.js";
 import { asyncHandler } from "../utils/helpers.js";
+import { authenticate } from "../middleware/auth.js";
 
 const router = Router();
+router.use(authenticate);
 
 router.post("/", asyncHandler(createStrategy));
 router.get("/", asyncHandler(listStrategies));

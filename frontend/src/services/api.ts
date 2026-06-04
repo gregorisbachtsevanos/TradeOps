@@ -14,6 +14,7 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 class ApiService {
   private client: AxiosInstance;
+  private token: string | null = null;
 
   constructor() {
     this.client = axios.create({
@@ -22,6 +23,92 @@ class ApiService {
         "Content-Type": "application/json",
       },
     });
+
+    // Load token from localStorage
+    const storedToken = localStorage.getItem("auth_token");
+    if (storedToken) {
+      this.token = storedToken;
+      this.updateAuthHeader();
+    }
+
+    // Interceptor to handle token expiration
+    this.client.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          localStorage.removeItem("auth_token");
+          window.location.href = "/";
+        }
+        return Promise.reject(error);
+      },
+    );
+  }
+
+  private updateAuthHeader(): void {
+    if (this.token) {
+      this.client.defaults.headers.common["Authorization"] =
+        `Bearer ${this.token}`;
+    }
+  }
+
+  setToken(token: string): void {
+    this.token = token;
+    localStorage.setItem("auth_token", token);
+    this.updateAuthHeader();
+  }
+
+  clearToken(): void {
+    this.token = null;
+    localStorage.removeItem("auth_token");
+    delete this.client.defaults.headers.common["Authorization"];
+  }
+
+  // Auth endpoints
+  async register(
+    email: string,
+    password: string,
+    name: string,
+  ): Promise<
+    ApiResponse<{
+      token: string;
+      user: { id: string; email: string; name: string };
+    }>
+  > {
+    const response = await this.client.post("/auth/register", {
+      email,
+      password,
+      name,
+    });
+    if (response.data.data?.token) {
+      this.setToken(response.data.data.token);
+    }
+    return response.data;
+  }
+
+  async login(
+    email: string,
+    password: string,
+  ): Promise<
+    ApiResponse<{
+      token: string;
+      user: { id: string; email: string; name: string };
+    }>
+  > {
+    const response = await this.client.post("/auth/login", {
+      email,
+      password,
+    });
+    if (response.data.data?.token) {
+      this.setToken(response.data.data.token);
+    }
+    return response.data;
+  }
+
+  async getCurrentUser(): Promise<
+    ApiResponse<{ id: string; email: string; name: string }>
+  > {
+    const response = await this.client.get("/auth/me");
+    return response.data;
   }
 
   // Trades
@@ -54,20 +141,17 @@ class ApiService {
   }
 
   // Strategies
-  async createStrategy(
-    userId: string,
-    data: { name: string; description?: string; riskPercent: number },
-  ): Promise<ApiResponse<Strategy>> {
-    const response = await this.client.post("/strategies", data, {
-      params: { user_id: userId },
-    });
+  async createStrategy(data: {
+    name: string;
+    description?: string;
+    riskPercent: number;
+  }): Promise<ApiResponse<Strategy>> {
+    const response = await this.client.post("/strategies", data);
     return response.data;
   }
 
-  async getStrategies(userId: string): Promise<ApiResponse<{ strategies: Strategy[] }>> {
-    const response = await this.client.get("/strategies", {
-      params: { user_id: userId },
-    });
+  async getStrategies(): Promise<ApiResponse<{ strategies: Strategy[] }>> {
+    const response = await this.client.get("/strategies");
     return response.data;
   }
 
@@ -90,20 +174,17 @@ class ApiService {
   }
 
   // Accounts
-  async createAccount(
-    userId: string,
-    data: { externalId: string; balance: number; equity: number },
-  ): Promise<ApiResponse<Account>> {
-    const response = await this.client.post("/accounts", data, {
-      params: { user_id: userId },
-    });
+  async createAccount(data: {
+    externalId: string;
+    balance: number;
+    equity: number;
+  }): Promise<ApiResponse<Account>> {
+    const response = await this.client.post("/accounts", data);
     return response.data;
   }
 
-  async getAccounts(userId: string): Promise<ApiResponse<{ accounts: Account[] }>> {
-    const response = await this.client.get("/accounts", {
-      params: { user_id: userId },
-    });
+  async getAccounts(): Promise<ApiResponse<{ accounts: Account[] }>> {
+    const response = await this.client.get("/accounts");
     return response.data;
   }
 
