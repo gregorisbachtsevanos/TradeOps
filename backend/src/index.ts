@@ -3,16 +3,17 @@ import cors from "cors";
 import { config, validateConfig } from "./config/index.js";
 import logger from "./config/logger.js";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
-import webhookRoutes from "./routes/webhookRoutes.js";
-import authRoutes from "./routes/authRoutes.js";
-import tradeRoutes from "./routes/tradeRoutes.js";
-import strategyRoutes from "./routes/strategyRoutes.js";
-import accountRoutes from "./routes/accountRoutes.js";
-import analyticsRoutes from "./routes/analyticsRoutes.js";
+import { webhookRoutes } from "./modules/webhook/index.js";
+import { authRoutes } from "./modules/auth/index.js";
+import { tradeRoutes } from "./modules/trades/index.js";
+import { strategyRoutes } from "./modules/strategies/index.js";
+import { analyticsRoutes } from "./modules/analytics/index.js";
+import { accountRoutes } from "./modules/accounts/index.js";
 
 // Validate environment
 validateConfig();
 
+const { port: PORT } = config.server;
 const app = express();
 
 // Middleware
@@ -53,7 +54,6 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 // Start server
-const PORT = config.server.port;
 app.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`, {
     environment: config.server.nodeEnv,
