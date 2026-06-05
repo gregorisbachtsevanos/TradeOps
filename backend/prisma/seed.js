@@ -1,12 +1,14 @@
 import bcrypt from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
+import dotenv from "dotenv";
+dotenv.config();
 
 const prisma = new PrismaClient();
 
 async function main() {
   console.log("Seeding database...");
 
-  const hashedPassword = await bcrypt.hash("demoPass123", 10);
+  const hashedPassword = await bcrypt.hash(process.env.DEMO_PASSWORD, 10);
 
   // Create a demo user
   const user = await prisma.user.upsert({
