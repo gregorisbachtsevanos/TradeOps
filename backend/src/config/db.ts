@@ -1,9 +1,9 @@
 import { createRequire } from "node:module";
 import { MockPrismaClient } from "../mock/mockPrisma.js";
-import { appMode } from "./index.js";
+import { isMockMode } from "./index.js";
 
 const prismaClientSingleton = () => {
-  if (appMode) {
+  if (isMockMode) {
     return new MockPrismaClient();
   }
 

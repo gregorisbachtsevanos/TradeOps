@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export const appMode = process.env.APP_MODE;
+export const isMockMode = process.env.APP_MODE === "mock";
 
 export const config = {
   server: {
@@ -21,7 +21,7 @@ export const config = {
   broker: {
     apiBaseUrl: process.env.BROKER_API_BASE_URL || "",
     apiKey: process.env.BROKER_API_KEY || "",
-    useMockBroker: appMode === "mock",
+    useMockBroker: isMockMode,
   },
   riskManagement: {
     maxDailyLossPercent: parseFloat(process.env.MAX_DAILY_LOSS_PERCENT || "5"),
@@ -35,7 +35,7 @@ export const config = {
 };
 
 export const validateConfig = (): void => {
-  if (!appMode && !config.database.url) {
+  if (!isMockMode && !config.database.url) {
     throw new Error("DATABASE_URL environment variable is not set");
   }
   if (!config.auth.jwtSecret) {
