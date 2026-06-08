@@ -36,9 +36,11 @@ export const useRegister = () => {
 };
 
 export const useCurrentUser = () => {
+  const hasToken = Boolean(localStorage.getItem("auth_token"));
   return useQuery(["user"], () => apiService.getCurrentUser(), {
     staleTime: 60000,
     retry: false,
+    enabled: hasToken,
   });
 };
 

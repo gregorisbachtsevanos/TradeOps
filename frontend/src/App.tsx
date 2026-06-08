@@ -1,13 +1,13 @@
 import { FormEvent, useEffect, useState } from "react";
-import { QueryClientProvider, QueryClient } from "react-query";
 import { useStore } from "./hooks/useStore.js";
 import { useLogin, useRegister, useCurrentUser } from "./hooks/useApi.js";
 import Dashboard from "./pages/Dashboard.js";
 import "./App.css";
+import { QueryClient } from "react-query";
 
 type Theme = "dark" | "light";
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 1,
@@ -39,34 +39,32 @@ function App() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className="app" data-theme={theme}>
-        {!user ? (
-          <LoginRegisterPage
+    <div className="app" data-theme={theme}>
+      {!user ? (
+        <LoginRegisterPage
+          theme={theme}
+          onThemeToggle={() =>
+            setTheme((currentTheme) =>
+              currentTheme === "dark" ? "light" : "dark",
+            )
+          }
+        />
+      ) : (
+        <>
+          <Header
+            user={user}
             theme={theme}
             onThemeToggle={() =>
               setTheme((currentTheme) =>
                 currentTheme === "dark" ? "light" : "dark",
               )
             }
+            onLogout={() => setUser(null)}
           />
-        ) : (
-          <>
-            <Header
-              user={user}
-              theme={theme}
-              onThemeToggle={() =>
-                setTheme((currentTheme) =>
-                  currentTheme === "dark" ? "light" : "dark",
-                )
-              }
-              onLogout={() => setUser(null)}
-            />
-            <Dashboard theme={theme} />
-          </>
-        )}
-      </div>
-    </QueryClientProvider>
+          <Dashboard theme={theme} />
+        </>
+      )}
+    </div>
   );
 }
 

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
+import { isMockMode } from "../../../config/index.js";
 import { prisma } from "../../../config/db.js";
 import {
   createSuccessResponse,
@@ -21,7 +22,9 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     throw new AppError(409, "User with that email already exists");
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = isMockMode
+    ? password
+    : await bcrypt.hash(password, 10);
 
   const user = await prisma.user.create({
     data: {
@@ -60,7 +63,9 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     throw new AppError(401, "Invalid credentials");
   }
 
-  const passwordMatches = await bcrypt.compare(password, user.password);
+  const passwordMatches = isMockMode
+    ? user.password === password
+    : await bcrypt.compare(password, user.password);
 
   if (!passwordMatches) {
     throw new AppError(401, "Invalid credentials");
@@ -98,11 +103,13 @@ export const me = asyncHandler(
       throw new AppError(401, "Unauthorized");
     }
 
+    const { password: _, ...safeUser } = user;
+
     res.status(200).json(
       createSuccessResponse({
-        id: user.id,
-        email: user.email,
-        name: user.name,
+        id: safeUser.id,
+        email: safeUser.email,
+        name: safeUser.name,
       }),
     );
   },
