@@ -9,9 +9,9 @@ export {
 
 export { default as tradeRoutes } from "./routes/trade.routes.js";
 
-export {
-  TradeIntent,
-  TradeExecutionResult,
+export type {
+  ITradeIntent,
+  ITradeExecutionResult,
 } from "./schema/types/trades.types.js";
 
 export {

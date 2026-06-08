@@ -1,4 +1,4 @@
-export interface TradeIntent {
+export interface ITradeIntent {
   symbol: string;
   direction: "BUY" | "SELL";
   entryPrice: number;
@@ -9,7 +9,7 @@ export interface TradeIntent {
   signalId: string;
 }
 
-export interface TradeExecutionResult {
+export interface ITradeExecutionResult {
   success: boolean;
   tradeId?: string;
   externalTradeId?: string;

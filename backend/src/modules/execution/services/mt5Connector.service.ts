@@ -2,8 +2,8 @@ import { createRequire } from "node:module";
 import { v4 as uuidv4 } from "uuid";
 import logger from "../../../config/logger.js";
 import { config } from "../../../config/index.js";
-import { AccountInfo } from "../../accounts/index.js";
-import { TradeExecutionResult } from "../../trades/index.js";
+import { IAccountInfo } from "../../accounts/index.js";
+import { ITradeExecutionResult } from "../../trades/index.js";
 
 const require = createRequire(import.meta.url);
 
@@ -76,7 +76,7 @@ export class MT5ConnectorService {
     quantity: number,
     stopLoss?: number,
     takeProfit?: number,
-  ): Promise<TradeExecutionResult> {
+  ): Promise<ITradeExecutionResult> {
     if (this.isMockBroker) {
       try {
         const tradeId = uuidv4();
@@ -194,7 +194,7 @@ export class MT5ConnectorService {
     accountExternalId: string,
     externalTradeId: string,
     exitPrice?: number,
-  ): Promise<TradeExecutionResult> {
+  ): Promise<ITradeExecutionResult> {
     if (this.isMockBroker) {
       try {
         const trade = this.mockTrades.get(externalTradeId);
@@ -285,7 +285,7 @@ export class MT5ConnectorService {
     }
   }
 
-  async getAccountInfo(accountExternalId: string): Promise<AccountInfo> {
+  async getAccountInfo(accountExternalId: string): Promise<IAccountInfo> {
     if (this.isMockBroker) {
       await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -306,7 +306,7 @@ export class MT5ConnectorService {
     try {
       const response = await this.request<{
         success?: boolean;
-        data?: AccountInfo;
+        data?: IAccountInfo;
         error?: string;
       }>(`/accounts/${encodeURIComponent(accountExternalId)}/info`, {
         method: "GET",
@@ -316,7 +316,7 @@ export class MT5ConnectorService {
         throw new Error(response.error || "Broker returned an error");
       }
 
-      const accountInfo = response.data ?? (response as AccountInfo);
+      const accountInfo = response.data ?? (response as IAccountInfo);
       return {
         id: accountInfo.id,
         balance: Number(accountInfo.balance),

@@ -1,4 +1,4 @@
-export interface TradingViewWebhookPayload {
+export interface ITradingViewWebhookPayload {
   passphrase: string;
   time: string | number;
   ticker: string;

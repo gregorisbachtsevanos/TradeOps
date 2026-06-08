@@ -1,7 +1,7 @@
 import logger from "../../../config/logger.js";
 import { prisma } from "../../../config/db.js";
 import { tradeEngineService } from "../../trades/services/tradeEngine.service.js";
-import { TradingViewWebhookPayload } from "../index.js";
+import { ITradingViewWebhookPayload } from "../index.js";
 
 /**
  * Webhook Handler Service
@@ -10,7 +10,7 @@ import { TradingViewWebhookPayload } from "../index.js";
  */
 export class WebhookHandlerService {
   async handleTradingViewSignal(
-    payload: TradingViewWebhookPayload,
+    payload: ITradingViewWebhookPayload,
     accountId: string,
     strategyId: string,
   ): Promise<{ success: boolean; signalId?: string; reason?: string }> {

@@ -1,7 +1,7 @@
 import { prisma } from "../../../config/db.js";
 import { config } from "../../../config/index.js";
 import logger from "../../../config/logger.js";
-import { RiskCheckResult } from "../types/riskManagement.types.js";
+import { IRiskCheckResult } from "../types/riskManagement.types.js";
 
 export class RiskManagementService {
   private getTodayStart(): Date {
@@ -13,7 +13,7 @@ export class RiskManagementService {
     accountId: string,
     strategyId: string,
     proposedExposure: number,
-  ): Promise<RiskCheckResult> {
+  ): Promise<IRiskCheckResult> {
     try {
       const startOfDay = this.getTodayStart();
       const riskState = await prisma.riskState.findUnique({

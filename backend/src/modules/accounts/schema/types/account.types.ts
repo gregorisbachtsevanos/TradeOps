@@ -1,4 +1,4 @@
-export interface AccountInfo {
+export interface IAccountInfo {
   id: string;
   balance: number;
   equity: number;

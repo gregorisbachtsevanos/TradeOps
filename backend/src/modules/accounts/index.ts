@@ -9,6 +9,6 @@ export {
 
 export { default as accountRoutes } from "./routes/account.routes.js";
 
-export { AccountInfo } from "./schema/types/account.types.js";
+export type { IAccountInfo } from "./schema/types/account.types.js";
 
 export { createAccountSchema } from "./schema/dto/account.dto.js";

@@ -1,13 +1,13 @@
 import { prisma } from "../../../config/db.js";
 import logger from "../../../config/logger.js";
-import { AnalyticsMetrics } from "../types/analytics.types.js";
+import { IAnalyticsMetrics } from "../types/analytics.types.js";
 
 /**
  * Analytics Service
  * Provides trading metrics and performance analysis
  */
 export class AnalyticsService {
-  async getStrategyMetrics(strategyId: string): Promise<AnalyticsMetrics> {
+  async getStrategyMetrics(strategyId: string): Promise<IAnalyticsMetrics> {
     try {
       // Get all closed trades for the strategy
       const trades = await prisma.trade.findMany({
@@ -67,7 +67,7 @@ export class AnalyticsService {
     }
   }
 
-  async getAccountMetrics(accountId: string): Promise<AnalyticsMetrics> {
+  async getAccountMetrics(accountId: string): Promise<IAnalyticsMetrics> {
     try {
       const trades = await prisma.trade.findMany({
         where: {
@@ -196,7 +196,7 @@ export class AnalyticsService {
     return Math.abs(maxDrawdown);
   }
 
-  private getEmptyMetrics(): AnalyticsMetrics {
+  private getEmptyMetrics(): IAnalyticsMetrics {
     return {
       winRate: 0,
       totalTrades: 0,

@@ -9,4 +9,4 @@ export { default as analyticsRoutes } from "./routes/analytics.routes.js";
 
 export { analyticsService } from "./services/analytics.service.js";
 
-export { AnalyticsMetrics } from "./types/analytics.types.js";
+export type { IAnalyticsMetrics } from "./types/analytics.types.js";

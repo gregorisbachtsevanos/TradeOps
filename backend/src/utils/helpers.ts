@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import { ApiResponse } from "../types/index.js";
+import { IApiResponse } from "../types/index.js";
 
 export class AppError extends Error {
   constructor(
@@ -15,7 +15,7 @@ export class AppError extends Error {
 export const createSuccessResponse = <T>(
   data: T,
   message: string = "Success",
-): ApiResponse<T> => ({
+): IApiResponse<T> => ({
   success: true,
   data,
   timestamp: new Date().toISOString(),
@@ -24,7 +24,7 @@ export const createSuccessResponse = <T>(
 export const createErrorResponse = (
   error: string,
   statusCode: number = 400,
-): ApiResponse => ({
+): IApiResponse => ({
   success: false,
   error,
   timestamp: new Date().toISOString(),

@@ -1,11 +1,11 @@
-export interface ApiResponse<T = unknown> {
+export interface IApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: string;
   timestamp: string;
 }
 
-export interface PaginatedResponse<T> {
+export interface IPaginatedResponse<T> {
   data: T[];
   pagination: {
     total: number;

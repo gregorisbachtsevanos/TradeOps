@@ -1,4 +1,4 @@
-export interface AnalyticsMetrics {
+export interface IAnalyticsMetrics {
   winRate: number;
   totalTrades: number;
   totalWinningTrades: number;

@@ -1,10 +1,10 @@
-export interface RiskManagementRules {
+export interface IRiskManagementRules {
   maxDailyLossPercent: number;
   maxOpenTrades: number;
   positionRiskPercent: number;
 }
 
-export interface RiskCheckResult {
+export interface IRiskCheckResult {
   allowed: boolean;
   reason?: string;
   availableExposure?: number;
