@@ -1,5 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { IApiResponse } from "../types/index.js";
+import logger from "../config/logger.js";
 
 export class AppError extends Error {
   constructor(
@@ -15,20 +16,26 @@ export class AppError extends Error {
 export const createSuccessResponse = <T>(
   data: T,
   message: string = "Success",
-): IApiResponse<T> => ({
-  success: true,
-  data,
-  timestamp: new Date().toISOString(),
-});
+): IApiResponse<T> => {
+  logger.info(message);
+  return {
+    success: true,
+    data,
+    timestamp: new Date().toISOString(),
+  };
+};
 
 export const createErrorResponse = (
   error: string,
   statusCode: number = 400,
-): IApiResponse => ({
-  success: false,
-  error,
-  timestamp: new Date().toISOString(),
-});
+): IApiResponse => {
+  logger.error({ error, statusCode });
+  return {
+    success: false,
+    error,
+    timestamp: new Date().toISOString(),
+  };
+};
 
 export const asyncHandler =
   (
