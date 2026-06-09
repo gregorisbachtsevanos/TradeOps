@@ -76,7 +76,7 @@ interface LoginRegisterPageProps {
 function LoginRegisterPage({ theme, onThemeToggle }: LoginRegisterPageProps) {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("demo@example.com");
-  const [password, setPassword] = useState("demo-password");
+  const [password, setPassword] = useState("demo123");
   const [name, setName] = useState("Demo User");
   const [error, setError] = useState("");
 

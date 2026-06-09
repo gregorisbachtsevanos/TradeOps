@@ -1,0 +1,8 @@
+export const MOCK_USER = {
+  id: "user_mock_1",
+  email: "demo@example.com",
+  name: "Demo Trader",
+  password: "demo123",
+  createdAt: "2026-05-01T09:00:00.000Z",
+  updatedAt: "2026-05-01T09:00:00.000Z",
+};
