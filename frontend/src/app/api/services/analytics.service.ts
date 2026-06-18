@@ -1,5 +1,5 @@
-import { IDailyPnL } from "@/features/StrategyPerformance/types/strategyPerformance.types";
-import { ITrade } from "@/features/ChartWorkspace/types/chartWorkspace.types";
+import { IDailyPnL } from "@/features/analytics/types/analytics.types";
+import { ITrade } from "@/features/overview/types/overview.types";
 import { apiService } from "../api";
 import { IAnalyticsMetrics, IApiResponse } from "@/app/types";
 

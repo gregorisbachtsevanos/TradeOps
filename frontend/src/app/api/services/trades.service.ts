@@ -1,4 +1,4 @@
-import { ITrade } from "@/features/ChartWorkspace/types/chartWorkspace.types";
+import { ITrade } from "@/features/overview/types/overview.types";
 import { apiService } from "../api";
 import { IApiResponse, IPaginatedResponse } from "@/app/types";
 

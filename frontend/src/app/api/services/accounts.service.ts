@@ -1,7 +1,7 @@
 import {
   IAccount,
   IAccountInfo,
-} from "@/features/AccountSelector/types/accountSelector.types";
+} from "@/features/Dashboard/types/dashboard.types";
 import { apiService } from "../api";
 import { IApiResponse } from "@/app/types";
 
