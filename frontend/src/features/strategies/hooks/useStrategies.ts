@@ -1,8 +1,17 @@
-import { useAppQuery } from "../../app/lib/reactQuery.js";
-import { queryKeys } from "../../app/lib/queryKeys.js";
-import { strategiesApi } from "../../app/api/";
+import { useAppQuery } from "../../../app/lib/reactQuery.js";
+import { queryKeys } from "../../../app/lib/queryKeys.js";
+import { analyticsApi, strategiesApi } from "../../../app/api/index.js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { IStrategy } from "../../app/types/index.js";
+import { IStrategy } from "@/app/types/index.js";
+
+export function useStrategyMetrics(strategyId: string) {
+  return useAppQuery({
+    queryKey: queryKeys.analytics.strategy(strategyId),
+    queryFn: () => analyticsApi.strategyMetrics(strategyId),
+    enabled: Boolean(strategyId),
+    select: (response) => response.data,
+  });
+}
 
 export function useStrategies() {
   return useAppQuery({

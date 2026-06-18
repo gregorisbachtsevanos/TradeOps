@@ -29,7 +29,7 @@ export interface IAccountInfo {
   dailyPnL: number;
 }
 
-export type TDashboardTab = "overview" | "trades" | "analytics";
+export type TDashboardTab = "overview" | "trades" | "strategies" | "analytics";
 
 export interface ISidebarProps {
   activeTab: TDashboardTab;

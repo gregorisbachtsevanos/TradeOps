@@ -25,6 +25,10 @@ export interface ITrade {
   pnl?: number;
   pnlPercent?: number;
   commission: number;
+  strategy?: {
+    id: string;
+    name: string;
+  };
 }
 
 export interface IEquityProps {

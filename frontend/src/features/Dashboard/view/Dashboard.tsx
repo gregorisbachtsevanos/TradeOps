@@ -5,6 +5,7 @@ import { useAccounts, useCreateAccount } from "../hooks/useAccount.js";
 import { useStore } from "../../../app/hooks/useStore.js";
 import Analytics from "../../analytics/index.js";
 import Trades from "../../trades/index.js";
+import Strategies from "../../strategies/index.js";
 
 import { AccountSelector, KpiStrip, Sidebar } from "../";
 import { IDashboardProps } from "../types/dashboard.types.js";
@@ -15,7 +16,7 @@ const Dashboard = ({ theme }: IDashboardProps) => {
   const { data: accounts, isLoading: accountsLoading } = useAccounts();
   const createAccount = useCreateAccount();
   const [activeTab, setActiveTab] = useState<
-    "overview" | "trades" | "analytics"
+    "overview" | "trades" | "strategies" | "analytics"
   >("overview");
 
   const accountIds = accounts?.map((account) => account.id).join("|") || "";
@@ -93,6 +94,10 @@ const Dashboard = ({ theme }: IDashboardProps) => {
             )}
 
             {activeTab === "trades" && <Trades accountId={selectedAccountId} />}
+
+            {activeTab === "strategies" && (
+              <Strategies selectedAccountId={selectedAccountId} />
+            )}
 
             {activeTab === "analytics" && (
               <Analytics accountId={selectedAccountId} />

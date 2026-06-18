@@ -19,6 +19,12 @@ const navItems: Array<{
     icon: "⚡",
   },
   {
+    id: "strategies",
+    label: "Strategies",
+    description: "Manage strategies",
+    icon: "🎯",
+  },
+  {
     id: "analytics",
     label: "Analytics",
     description: "Performance reports",

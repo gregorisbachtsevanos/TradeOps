@@ -45,16 +45,17 @@ const Trades = ({ accountId }: ITtradesProps) => {
         <>
           <table>
             <thead>
-              <tr>
-                <th>Symbol</th>
-                <th>Direction</th>
-                <th>Entry Price</th>
-                <th>Entry Time</th>
-                <th>Exit Price</th>
-                <th>P&L</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
+                <tr>
+                  <th>Symbol</th>
+                  <th>Direction</th>
+                  <th>Strategy</th>
+                  <th>Entry Price</th>
+                  <th>Entry Time</th>
+                  <th>Exit Price</th>
+                  <th>P&L</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
             </thead>
             <tbody>
               {trades.map((trade) => (
@@ -66,6 +67,7 @@ const Trades = ({ accountId }: ITtradesProps) => {
                   <td className={`direction ${trade.direction.toLowerCase()}`}>
                     {trade.direction}
                   </td>
+                  <td>{trade.strategy?.name || "-"}</td>
                   <td>${trade.entryPrice.toFixed(2)}</td>
                   <td>{new Date(trade.entryTime).toLocaleString()}</td>
                   <td>
