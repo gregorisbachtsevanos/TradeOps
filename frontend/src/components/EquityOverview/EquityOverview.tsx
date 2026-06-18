@@ -1,4 +1,4 @@
-import { useAccountInfo } from "../../hooks/useApi.js";
+import { useAccountInfo } from "../../hooks/accounts/index.js";
 import "./EquityOverview.css";
 
 interface EquityOverviewProps {
@@ -6,17 +6,16 @@ interface EquityOverviewProps {
 }
 
 function EquityOverview({ accountId }: EquityOverviewProps) {
-  const { data: response, isLoading } = useAccountInfo(accountId);
+  const { data: info, isLoading } = useAccountInfo(accountId);
 
   if (isLoading) {
     return <div className="loading">Loading account info...</div>;
   }
 
-  if (!response?.data) {
+  if (!info) {
     return <div className="error">Failed to load account info</div>;
   }
 
-  const info = response.data;
   const returnPercent = ((info.equity - info.balance) / info.balance) * 100;
 
   return (

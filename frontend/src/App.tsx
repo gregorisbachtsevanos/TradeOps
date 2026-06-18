@@ -1,20 +1,10 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useStore } from "./hooks/useStore.js";
-import { useLogin, useRegister, useCurrentUser } from "./hooks/useApi.js";
+import { useLogin, useRegister, useCurrentUser } from "./hooks/auth/index.js";
 import Dashboard from "./pages/Dashboard.js";
 import "./App.css";
-import { QueryClient } from "react-query";
 
 type Theme = "dark" | "light";
-
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
 
 function App() {
   const [theme, setTheme] = useState<Theme>(() => {
@@ -22,17 +12,17 @@ function App() {
     return savedTheme === "light" ? "light" : "dark";
   });
   const { user, setUser } = useStore();
-  const { data: currentUserData, isLoading: isCheckingAuth } = useCurrentUser();
+  const { data: currentUser, isLoading: isCheckingAuth } = useCurrentUser();
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
   useEffect(() => {
-    if (currentUserData?.data) {
-      setUser(currentUserData.data);
+    if (currentUser) {
+      setUser(currentUser);
     }
-  }, [currentUserData, setUser]);
+  }, [currentUser, setUser]);
 
   if (isCheckingAuth) {
     return <div className="loading">Loading...</div>;
@@ -93,8 +83,9 @@ function LoginRegisterPage({ theme, onThemeToggle }: LoginRegisterPageProps) {
       } else {
         await register.mutateAsync({ email, password, name });
       }
-    } catch (err: any) {
-      setError(err.response?.data?.error || "An error occurred");
+    } catch (err: unknown) {
+      const errorObj = err as { response?: { data?: { error?: string } } };
+      setError(errorObj.response?.data?.error || "An error occurred");
     }
   };
 
@@ -136,7 +127,7 @@ function LoginRegisterPage({ theme, onThemeToggle }: LoginRegisterPageProps) {
           <button
             type="submit"
             className="btn-primary"
-            disabled={login.isLoading || register.isLoading}
+            disabled={login.isPending || register.isPending}
           >
             {isLogin ? "Login" : "Register"}
           </button>
@@ -154,7 +145,7 @@ function LoginRegisterPage({ theme, onThemeToggle }: LoginRegisterPageProps) {
           </button>
         </form>
         <button className="btn-theme" onClick={onThemeToggle}>
-          {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
+          {theme === "dark" ? "Light" : "Dark"}
         </button>
       </div>
     </div>
@@ -180,7 +171,7 @@ function Header({ user, theme, onThemeToggle, onLogout }: HeaderProps) {
         <h1>Trading Automation Platform</h1>
         <div className="header-user">
           <button className="btn-theme" onClick={onThemeToggle}>
-            {theme === "dark" ? "☀️ Light" : "🌙 Dark"}
+            {theme === "dark" ? "Light" : "Dark"}
           </button>
           <span>{user?.name}</span>
           <button onClick={handleLogout} className="btn-logout">

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useRecentTrades } from "../../hooks/useApi.js";
+import { useRecentTrades } from "../../hooks/analytics/index.js";
 import { normalizeSymbol, useLiveMarket } from "../../hooks/useLiveMarket.js";
 import { Trade } from "../../types/index.js";
 import TradingViewChart from "../TradingViewChart/TradingViewChart.js";
@@ -10,9 +10,8 @@ interface ChartWorkspaceProps {
 }
 
 function ChartWorkspace({ accountId, theme }: ChartWorkspaceProps) {
-  const { data: tradesResponse } = useRecentTrades(accountId, 20);
-  const trades = tradesResponse?.data?.trades || [];
-  const symbols = useMemo(() => deriveSymbols(trades), [trades]);
+  const { data: trades } = useRecentTrades(accountId, 20);
+  const symbols = useMemo(() => deriveSymbols(trades || []), [trades]);
   const [selectedSymbol, setSelectedSymbol] = useState(symbols[0]);
   const [orderSide, setOrderSide] = useState<"BUY" | "SELL">("BUY");
   const [volume, setVolume] = useState("0.10");
@@ -46,7 +45,7 @@ function ChartWorkspace({ accountId, theme }: ChartWorkspaceProps) {
     )}`,
     `Risk engine synced exposure for ${accountId.slice(-6)}`,
     `${transport} heartbeat ${connectionState}`,
-    trades[0]
+    trades?.[0]
       ? `${trades[0].direction} ${trades[0].symbol} position monitored`
       : "Awaiting first strategy signal",
   ];
@@ -147,9 +146,9 @@ function ChartWorkspace({ accountId, theme }: ChartWorkspaceProps) {
         <div className="workspace-card positions-mini">
           <div className="workspace-card-header">
             <span>Positions</span>
-            <small>{trades.length} recent</small>
+            <small>{(trades?.length || 0)} recent</small>
           </div>
-          {trades.slice(0, 4).map((trade) => (
+          {(trades || []).slice(0, 4).map((trade) => (
             <div className="position-row" key={trade.id}>
               <strong>{trade.symbol}</strong>
               <span

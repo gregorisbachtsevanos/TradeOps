@@ -1,4 +1,4 @@
-import { useAccountInfo } from "../../hooks/useApi.js";
+import { useAccountInfo } from "../../hooks/accounts/index.js";
 import "./RiskPanel.css";
 
 interface RiskPanelProps {
@@ -6,18 +6,17 @@ interface RiskPanelProps {
 }
 
 function RiskPanel({ accountId }: RiskPanelProps) {
-  const { data: response, isLoading } = useAccountInfo(accountId);
+  const { data: info, isLoading } = useAccountInfo(accountId);
 
   if (isLoading) {
     return <div className="loading">Loading risk data...</div>;
   }
 
-  if (!response?.data) {
+  if (!info) {
     return <div className="error">Failed to load risk data</div>;
   }
 
-  const info = response.data;
-  const maxExposure = info.balance * 0.5; // 50% max exposure
+  const maxExposure = info.balance * 0.5;
   const exposurePercent = (info.exposure / maxExposure) * 100;
   const riskColor =
     exposurePercent > 80

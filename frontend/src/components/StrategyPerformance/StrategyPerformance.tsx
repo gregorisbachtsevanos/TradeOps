@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAccountMetrics, useDailyPnL } from "../../hooks/useApi.js";
+import { useAccountMetrics, useDailyPnL } from "../../hooks/analytics/index.js";
 import { DailyPnL } from "../../types/index.js";
 import "./StrategyPerformance.css";
 
@@ -20,9 +20,9 @@ function StrategyPerformance({ accountId }: StrategyPerformanceProps) {
   const [selectedRange, setSelectedRange] = useState<(typeof pnlRanges)[number]>(
     pnlRanges[2],
   );
-  const { data: metricsResponse, isLoading: metricsLoading } =
+  const { data: metrics, isLoading: metricsLoading } =
     useAccountMetrics(accountId);
-  const { data: pnlResponse, isLoading: pnlLoading } = useDailyPnL(
+  const { data: dailyPnLData, isLoading: pnlLoading } = useDailyPnL(
     accountId,
     selectedRange.days,
   );
@@ -31,15 +31,11 @@ function StrategyPerformance({ accountId }: StrategyPerformanceProps) {
     return <div className="loading">Loading analytics...</div>;
   }
 
-  if (!metricsResponse?.data || !pnlResponse?.data) {
+  if (!metrics || !dailyPnLData) {
     return <div className="error">Failed to load analytics</div>;
   }
 
-  const metrics = metricsResponse.data;
-  const dailyPnL = buildPnlSeries(
-    pnlResponse.data.dailyPnL || [],
-    selectedRange.days,
-  );
+  const dailyPnL = buildPnlSeries(dailyPnLData, selectedRange.days);
   const totalDailyPnL = dailyPnL.reduce((sum, day) => sum + day.pnl, 0);
   const positiveDays = dailyPnL.filter((day) => day.pnl > 0).length;
   const negativeDays = dailyPnL.filter((day) => day.pnl < 0).length;

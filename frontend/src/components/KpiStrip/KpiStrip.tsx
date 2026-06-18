@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { useAccountInfo } from "../../hooks/useApi.js";
+import { useAccountInfo } from "../../hooks/accounts/index.js";
 
 interface KpiStripProps {
   accountId: string | null;
 }
 
 function KpiStrip({ accountId }: KpiStripProps) {
-  const { data: response, isLoading } = useAccountInfo(accountId || "");
-  const info = response?.data;
+  const { data: info, isLoading } = useAccountInfo(accountId || "");
   const [liveDelta, setLiveDelta] = useState(0);
   const [flashDirection, setFlashDirection] = useState<"up" | "down">("up");
 

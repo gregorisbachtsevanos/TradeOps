@@ -7,7 +7,7 @@ import LiveTradesTable from "../components/LiveTradesTable/LiveTradesTable.js";
 import RiskPanel from "../components/RiskPanel/RiskPanel.js";
 import Sidebar from "../components/Sidebar/Sidebar.js";
 import StrategyPerformance from "../components/StrategyPerformance/StrategyPerformance.js";
-import { useAccounts, useCreateAccount } from "../hooks/useApi.js";
+import { useAccounts, useCreateAccount } from "../hooks/accounts/index.js";
 import { useStore } from "../hooks/useStore.js";
 import "./Dashboard.css";
 
@@ -17,21 +17,16 @@ interface DashboardProps {
 
 function Dashboard({ theme }: DashboardProps) {
   const { selectedAccountId, setSelectedAccountId } = useStore();
-  const { data: accountsResponse, isLoading: accountsLoading } = useAccounts();
+  const { data: accounts, isLoading: accountsLoading } = useAccounts();
   const createAccount = useCreateAccount();
   const [activeTab, setActiveTab] = useState<
     "overview" | "trades" | "analytics"
   >("overview");
 
-  const accounts = accountsResponse?.data?.accounts;
   const accountIds = accounts?.map((account) => account.id).join("|") || "";
   const firstAccountId = accounts?.[0]?.id;
 
   useEffect(() => {
-    if (!accountsResponse?.data) {
-      return;
-    }
-
     if (!accounts || accounts.length === 0) {
       if (selectedAccountId !== null) {
         setSelectedAccountId(null);
@@ -49,7 +44,6 @@ function Dashboard({ theme }: DashboardProps) {
   }, [
     accountIds,
     accounts,
-    accountsResponse?.data,
     firstAccountId,
     selectedAccountId,
     setSelectedAccountId,
@@ -59,20 +53,20 @@ function Dashboard({ theme }: DashboardProps) {
     return <div className="loading">Loading accounts...</div>;
   }
 
-  if (!accountsResponse?.data) {
+  if (!accounts) {
     return <div className="error">Failed to load accounts</div>;
   }
 
   const handleCreateDemoAccount = async () => {
     const suffix = Math.floor(100 + Math.random() * 900);
-    const response = await createAccount.mutateAsync({
+    const newAccount = await createAccount.mutateAsync({
       externalId: `MT5-DEMO-${suffix}`,
       balance: 25000,
       equity: 25240,
     });
 
-    if (response.data?.id) {
-      setSelectedAccountId(response.data.id);
+    if (newAccount?.data?.id) {
+      setSelectedAccountId(newAccount.data.id);
     }
   };
 
@@ -87,11 +81,11 @@ function Dashboard({ theme }: DashboardProps) {
             <h2>Portfolio Command Center</h2>
           </div>
           <AccountSelector
-            accounts={accounts || []}
+            accounts={accounts}
             selectedId={selectedAccountId}
             onSelect={setSelectedAccountId}
             onCreateDemoAccount={handleCreateDemoAccount}
-            isCreating={createAccount.isLoading}
+            isCreating={createAccount.isPending}
           />
         </div>
 

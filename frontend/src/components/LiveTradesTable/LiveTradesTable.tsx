@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTrades, useCloseTrade } from "../../hooks/useApi.js";
+import { useTrades, useCloseTrade, type TradeFilters } from "../../hooks/trades/index.js";
 import "./LiveTradesTable.css";
 
 interface LiveTradesTableProps {
@@ -9,19 +9,19 @@ interface LiveTradesTableProps {
 function LiveTradesTable({ accountId }: LiveTradesTableProps) {
   const [page, setPage] = useState(1);
   const [status, setStatus] = useState<string | undefined>("OPEN");
-  const { data: response, isLoading } = useTrades(accountId, page, 20, status);
-  const { mutate: closeTrade, isLoading: isClosing } = useCloseTrade();
+  const filters: TradeFilters = { accountId, page, limit: 20, status };
+  const { data: tradesData, isLoading } = useTrades(filters);
+  const { mutate: closeTrade, isPending: isClosing } = useCloseTrade();
 
   if (isLoading) {
     return <div className="loading">Loading trades...</div>;
   }
 
-  if (!response?.data) {
+  if (!tradesData) {
     return <div className="error">Failed to load trades</div>;
   }
 
-  const trades = response.data.data || [];
-  const pagination = response.data.pagination || {};
+  const { items: trades, pagination } = tradesData;
 
   return (
     <div className="trades-table">
