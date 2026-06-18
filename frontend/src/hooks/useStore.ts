@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { queryClient } from "../lib/queryClient.js";
+import { queryClient } from "../app/lib/queryClient.js";
 
 interface User {
   id: string;

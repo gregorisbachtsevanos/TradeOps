@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { apiService } from "../services/api.js";
+import { apiService } from "../app/services/api.js";
 
 // Auth
 export const useLogin = () => {
