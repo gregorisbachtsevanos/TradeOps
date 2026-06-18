@@ -1,2 +1,3 @@
 export { default } from "./view/RiskPanel";
-export { IRiskPanelProps } from "./types/riskPanel.types";
+
+export { type IRiskPanelProps } from "./types/riskPanel.types";

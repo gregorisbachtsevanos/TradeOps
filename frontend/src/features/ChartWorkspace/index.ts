@@ -1,2 +1,7 @@
 export { default } from "./view/ChartWorkspace";
-export { IChartWorkspaceProps } from "./types/chartWorkspace.types";
+
+export {
+  type IChartWorkspaceProps,
+  type ITradingViewChartProps,
+  type ITrade,
+} from "./types/chartWorkspace.types";

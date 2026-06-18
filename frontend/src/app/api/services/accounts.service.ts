@@ -2,37 +2,37 @@ import {
   IAccount,
   IAccountInfo,
 } from "@/features/AccountSelector/types/accountSelector.types";
-import { apiClient } from "../api.client";
+import { apiService } from "../api";
 import { IApiResponse } from "@/app/types";
 
 export const accountsApi = {
   create: (data: { externalId: string; balance: number; equity: number }) =>
-    apiClient
+    apiService
       .post<IApiResponse<IAccount>>("/accounts", data)
       .then((res) => res.data),
 
   getAll: () =>
-    apiClient
+    apiService
       .get<IApiResponse<{ accounts: IAccount[] }>>("/accounts")
       .then((res) => res.data),
 
   get: (id: string) =>
-    apiClient
+    apiService
       .get<IApiResponse<IAccount>>(`/accounts/${id}`)
       .then((res) => res.data),
 
   info: (id: string) =>
-    apiClient
+    apiService
       .get<IApiResponse<IAccountInfo>>(`/accounts/${id}/info`)
       .then((res) => res.data),
 
   update: (id: string, data: Partial<IAccount>) =>
-    apiClient
+    apiService
       .patch<IApiResponse<IAccount>>(`/accounts/${id}`, data)
       .then((res) => res.data),
 
   remove: (id: string) =>
-    apiClient
+    apiService
       .delete<IApiResponse<null>>(`/accounts/${id}`)
       .then((res) => res.data),
 };

@@ -1,12 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { apiService } from "../app/api/api.js";
+import {
+  accountsApi,
+  analyticsApi,
+  authApi,
+  strategiesApi,
+  tradesApi,
+} from "../app/api";
 
 // Auth
 export const useLogin = () => {
   const queryClient = useQueryClient();
   return useMutation(
     ({ email, password }: { email: string; password: string }) =>
-      apiService.login(email, password),
+      authApi.login(email, password),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("user");
@@ -26,7 +32,7 @@ export const useRegister = () => {
       email: string;
       password: string;
       name: string;
-    }) => apiService.register(email, password, name),
+    }) => authApi.register(email, password, name),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("user");
@@ -37,7 +43,7 @@ export const useRegister = () => {
 
 export const useCurrentUser = () => {
   const hasToken = Boolean(localStorage.getItem("auth_token"));
-  return useQuery(["user"], () => apiService.getCurrentUser(), {
+  return useQuery(["user"], () => authApi.me(), {
     staleTime: 60000,
     retry: false,
     enabled: hasToken,
@@ -53,13 +59,13 @@ export const useTrades = (
 ) => {
   return useQuery(
     ["trades", accountId, page, limit, status],
-    () => apiService.getTrades(accountId, page, limit, status),
+    () => tradesApi.getTrades(accountId, page, limit, status),
     { enabled: Boolean(accountId), staleTime: 5000 },
   );
 };
 
 export const useTrade = (tradeId: string) => {
-  return useQuery(["trade", tradeId], () => apiService.getTrade(tradeId), {
+  return useQuery(["trade", tradeId], () => tradesApi.getTrade(tradeId), {
     staleTime: 10000,
   });
 };
@@ -67,7 +73,7 @@ export const useTrade = (tradeId: string) => {
 export const useTradeLivePrice = (tradeId: string) => {
   return useQuery(
     ["tradeLivePrice", tradeId],
-    () => apiService.getTradeLivePrice(tradeId),
+    () => tradesApi.realtimePrice(tradeId),
     {
       refetchInterval: 2000,
     },
@@ -76,7 +82,7 @@ export const useTradeLivePrice = (tradeId: string) => {
 
 export const useCloseTrade = () => {
   const queryClient = useQueryClient();
-  return useMutation((tradeId: string) => apiService.closeTrade(tradeId), {
+  return useMutation((tradeId: string) => tradesApi.closeTrade(tradeId), {
     onSuccess: () => {
       queryClient.invalidateQueries("trades");
     },
@@ -85,7 +91,7 @@ export const useCloseTrade = () => {
 
 // Strategies
 export const useStrategies = () => {
-  return useQuery(["strategies"], () => apiService.getStrategies(), {
+  return useQuery(["strategies"], () => strategiesApi.getAll(), {
     staleTime: 30000,
   });
 };
@@ -93,7 +99,7 @@ export const useStrategies = () => {
 export const useStrategy = (strategyId: string) => {
   return useQuery(
     ["strategy", strategyId],
-    () => apiService.getStrategy(strategyId),
+    () => strategiesApi.get(strategyId),
     {
       staleTime: 30000,
     },
@@ -104,7 +110,7 @@ export const useCreateStrategy = () => {
   const queryClient = useQueryClient();
   return useMutation(
     (data: { name: string; description?: string; riskPercent: number }) =>
-      apiService.createStrategy(data),
+      strategiesApi.create(data),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["strategies"]);
@@ -117,7 +123,7 @@ export const useUpdateStrategy = () => {
   const queryClient = useQueryClient();
   return useMutation(
     ({ strategyId, data }: { strategyId: string; data: any }) =>
-      apiService.updateStrategy(strategyId, data),
+      strategiesApi.update(strategyId, data),
     {
       onSuccess: (_, variables) => {
         queryClient.invalidateQueries(["strategy", variables.strategyId]);
@@ -129,37 +135,30 @@ export const useUpdateStrategy = () => {
 
 export const useDeleteStrategy = () => {
   const queryClient = useQueryClient();
-  return useMutation(
-    (strategyId: string) => apiService.deleteStrategy(strategyId),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries("strategies");
-      },
+  return useMutation((strategyId: string) => strategiesApi.remove(strategyId), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("strategies");
     },
-  );
+  });
 };
 
 // Accounts
 export const useAccounts = () => {
-  return useQuery(["accounts"], () => apiService.getAccounts(), {
+  return useQuery(["accounts"], () => accountsApi.getAll(), {
     staleTime: 30000,
   });
 };
 
 export const useAccount = (accountId: string) => {
-  return useQuery(
-    ["account", accountId],
-    () => apiService.getAccount(accountId),
-    {
-      staleTime: 30000,
-    },
-  );
+  return useQuery(["account", accountId], () => accountsApi.get(accountId), {
+    staleTime: 30000,
+  });
 };
 
 export const useAccountInfo = (accountId: string) => {
   return useQuery(
     ["accountInfo", accountId],
-    () => apiService.getAccountInfo(accountId),
+    () => accountsApi.info(accountId),
     {
       enabled: Boolean(accountId),
       refetchInterval: 5000,
@@ -171,7 +170,7 @@ export const useCreateAccount = () => {
   const queryClient = useQueryClient();
   return useMutation(
     (data: { externalId: string; balance: number; equity: number }) =>
-      apiService.createAccount(data),
+      accountsApi.create(data),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["accounts"]);
@@ -184,7 +183,7 @@ export const useUpdateAccount = () => {
   const queryClient = useQueryClient();
   return useMutation(
     ({ accountId, data }: { accountId: string; data: any }) =>
-      apiService.updateAccount(accountId, data),
+      accountsApi.update(accountId, data),
     {
       onSuccess: (_, variables) => {
         queryClient.invalidateQueries(["account", variables.accountId]);
@@ -198,7 +197,7 @@ export const useUpdateAccount = () => {
 export const useStrategyMetrics = (strategyId: string) => {
   return useQuery(
     ["strategyMetrics", strategyId],
-    () => apiService.getStrategyMetrics(strategyId),
+    () => analyticsApi.strategyMetrics(strategyId),
     {
       staleTime: 60000,
     },
@@ -208,7 +207,7 @@ export const useStrategyMetrics = (strategyId: string) => {
 export const useAccountMetrics = (accountId: string) => {
   return useQuery(
     ["accountMetrics", accountId],
-    () => apiService.getAccountMetrics(accountId),
+    () => analyticsApi.accountMetrics(accountId),
     {
       enabled: Boolean(accountId),
       staleTime: 60000,
@@ -219,7 +218,7 @@ export const useAccountMetrics = (accountId: string) => {
 export const useRecentTrades = (accountId: string, limit: number = 20) => {
   return useQuery(
     ["recentTrades", accountId, limit],
-    () => apiService.getRecentTrades(accountId, limit),
+    () => analyticsApi.recentTrades(accountId, limit),
     {
       enabled: Boolean(accountId),
       staleTime: 10000,
@@ -230,7 +229,7 @@ export const useRecentTrades = (accountId: string, limit: number = 20) => {
 export const useDailyPnL = (accountId: string, days: number = 30) => {
   return useQuery(
     ["dailyPnL", accountId, days],
-    () => apiService.getDailyPnL(accountId, days),
+    () => analyticsApi.dailyPnL(accountId, days),
     {
       enabled: Boolean(accountId),
       staleTime: 60000,

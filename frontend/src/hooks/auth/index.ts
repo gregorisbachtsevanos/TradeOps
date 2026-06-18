@@ -1,13 +1,13 @@
 import { useAppQuery } from "../../app/lib/reactQuery.js";
 import { queryKeys } from "../../app/lib/queryKeys.js";
-import { apiService } from "../../app/api/api.js";
+import { authApi } from "../../app/api/";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useLogin() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
-      apiService.login(email, password),
+      authApi.login(email, password),
     onSuccess: () => {
       // Token is now in HTTP-only cookie, just invalidate the query
       // to refetch the current user data
@@ -27,7 +27,7 @@ export function useRegister() {
       email: string;
       password: string;
       name: string;
-    }) => apiService.register(email, password, name),
+    }) => authApi.register(email, password, name),
     onSuccess: () => {
       // Token is now in HTTP-only cookie, just invalidate the query
       // to refetch the current user data
@@ -42,7 +42,7 @@ export function useCurrentUser() {
   // Enable the query on mount to check if user is logged in
   return useAppQuery({
     queryKey: queryKeys.auth.me,
-    queryFn: () => apiService.getCurrentUser(),
+    queryFn: () => authApi.me(),
     retry: false,
     staleTime: 60_000,
     select: (response) => response.data,
@@ -52,7 +52,7 @@ export function useCurrentUser() {
 export function useLogout() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: () => apiService.logout(),
+    mutationFn: () => authApi.logout(),
     onSuccess: () => {
       // Clear all cached data
       queryClient.clear();

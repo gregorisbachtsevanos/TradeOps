@@ -1,2 +1,3 @@
 export { default } from "./view/KpiStrip";
-export { IKpiStripProps } from "./types/kpiStrip.types";
+
+export { type IKpiStripProps } from "./types/kpiStrip.types";

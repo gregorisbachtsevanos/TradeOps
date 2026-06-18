@@ -1,2 +1,3 @@
 export { default } from "./view/Sidebar";
-export { ISidebarProps, TDashboardTab } from "./types/sidebar.types";
+
+export { type ISidebarProps, type TDashboardTab } from "./types/sidebar.types";

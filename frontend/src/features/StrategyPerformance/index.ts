@@ -1,2 +1,6 @@
 export { default } from "./view/StrategyPerformance";
-export { IStrategyPerformanceProps } from "./types/strategyPerformance.types";
+
+export {
+  type IStrategyPerformanceProps,
+  type IDailyPnL,
+} from "./types/strategyPerformance.types";

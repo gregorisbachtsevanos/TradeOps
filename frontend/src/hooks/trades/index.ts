@@ -1,6 +1,6 @@
 import { useAppQuery } from "../../app/lib/reactQuery.js";
 import { queryKeys } from "../../app/lib/queryKeys.js";
-import { apiService } from "../../app/api/api.js";
+import { tradesApi } from "../../app/api/";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ITrade } from "@/features/ChartWorkspace/types/chartWorkspace.types.js";
 
@@ -26,8 +26,7 @@ export function useTrades(filters: TradeFilters = {}) {
   const { accountId, page = 1, limit = 20, status, symbol } = filters;
   return useAppQuery({
     queryKey: queryKeys.trades.all({ accountId, page, limit, status, symbol }),
-    queryFn: () =>
-      apiService.getTrades(accountId!, page, limit, status, symbol),
+    queryFn: () => tradesApi.getTrades(accountId!, page, limit, status, symbol),
     enabled: Boolean(accountId),
     select: (response) => ({
       items: response.data!.data,
@@ -39,7 +38,7 @@ export function useTrades(filters: TradeFilters = {}) {
 export function useTrade(tradeId: string) {
   return useAppQuery({
     queryKey: queryKeys.trades.detail(tradeId),
-    queryFn: () => apiService.getTrade(tradeId),
+    queryFn: () => tradesApi.getTrade(tradeId),
     select: (response) => response.data,
   });
 }
@@ -47,7 +46,7 @@ export function useTrade(tradeId: string) {
 export function useTradeLivePrice(tradeId: string) {
   return useAppQuery({
     queryKey: queryKeys.trades.livePrice(tradeId),
-    queryFn: () => apiService.getTradeLivePrice(tradeId),
+    queryFn: () => tradesApi.realtimePrice(tradeId),
     enabled: Boolean(tradeId),
     refetchInterval: 2000,
     select: (response) => response.data,
@@ -57,7 +56,7 @@ export function useTradeLivePrice(tradeId: string) {
 export function useCloseTrade() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (tradeId: string) => apiService.closeTrade(tradeId),
+    mutationFn: (tradeId: string) => tradesApi.closeTrade(tradeId),
     onSuccess: (_, tradeId) => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.trades.detail(tradeId),

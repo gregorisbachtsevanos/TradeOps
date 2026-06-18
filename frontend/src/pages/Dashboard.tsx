@@ -11,11 +11,11 @@ import { useAccounts, useCreateAccount } from "../hooks/accounts/index.js";
 import { useStore } from "../hooks/useStore.js";
 import "./Dashboard.css";
 
-interface DashboardProps {
+interface IDashboardProps {
   theme: "dark" | "light";
 }
 
-function Dashboard({ theme }: DashboardProps) {
+const Dashboard = ({ theme }: IDashboardProps) => {
   const { selectedAccountId, setSelectedAccountId } = useStore();
   const { data: accounts, isLoading: accountsLoading } = useAccounts();
   const createAccount = useCreateAccount();
@@ -119,6 +119,6 @@ function Dashboard({ theme }: DashboardProps) {
       </main>
     </div>
   );
-}
+};
 
 export default Dashboard;

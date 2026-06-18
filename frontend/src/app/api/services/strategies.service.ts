@@ -1,27 +1,29 @@
 import { IApiResponse, IStrategy } from "@/app/types";
-import { apiClient } from "../api.client";
+import { apiService } from "../api";
 
 export const strategiesApi = {
   create: (data: { name: string; description?: string; riskPercent: number }) =>
-    apiClient
+    apiService
       .post<IApiResponse<IStrategy>>("/strategies", data)
       .then((res) => res.data),
 
   getAll: () =>
-    apiClient
+    apiService
       .get<IApiResponse<{ strategies: IStrategy[] }>>("/strategies")
       .then((res) => res.data),
 
   get: (id: string) =>
-    apiClient
+    apiService
       .get<IApiResponse<IStrategy>>(`/strategies/${id}`)
       .then((res) => res.data),
 
   update: (id: string, data: Partial<IStrategy>) =>
-    apiClient
+    apiService
       .patch<IApiResponse<IStrategy>>(`/strategies/${id}`, data)
       .then((res) => res.data),
 
   remove: (id: string) =>
-    apiClient.delete<IApiResponse>(`/strategies/${id}`).then((res) => res.data),
+    apiService
+      .delete<IApiResponse>(`/strategies/${id}`)
+      .then((res) => res.data),
 };

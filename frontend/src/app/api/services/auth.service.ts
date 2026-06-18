@@ -1,9 +1,9 @@
 import { IApiResponse } from "@/app/types";
-import { apiClient } from "../api.client";
+import { apiService } from "../api";
 
 export const authApi = {
   register: (email: string, password: string, name: string) =>
-    apiClient
+    apiService
       .post<IApiResponse<any>>("/auth/register", {
         email,
         password,
@@ -12,7 +12,7 @@ export const authApi = {
       .then((res) => res.data),
 
   login: (email: string, password: string) =>
-    apiClient
+    apiService
       .post<IApiResponse<any>>("/auth/login", {
         email,
         password,
@@ -20,8 +20,8 @@ export const authApi = {
       .then((res) => res.data),
 
   logout: () =>
-    apiClient.post<IApiResponse>("/auth/logout").then((res) => res.data),
+    apiService.post<IApiResponse>("/auth/logout").then((res) => res.data),
 
   me: () =>
-    apiClient.get<IApiResponse<any>>("/auth/me").then((res) => res.data),
+    apiService.get<IApiResponse<any>>("/auth/me").then((res) => res.data),
 };
