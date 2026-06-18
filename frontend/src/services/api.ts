@@ -14,7 +14,6 @@ const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 class ApiService {
   private client: AxiosInstance;
-  private token: string | null = null;
 
   constructor() {
     this.client = axios.create({
@@ -22,45 +21,21 @@ class ApiService {
       headers: {
         "Content-Type": "application/json",
       },
+      // Enable cookies to be sent with requests (HTTP-only cookies)
+      withCredentials: true,
     });
-
-    // Load token from localStorage
-    const storedToken = localStorage.getItem("auth_token");
-    if (storedToken) {
-      this.token = storedToken;
-      this.updateAuthHeader();
-    }
 
     // Interceptor to handle token expiration
     this.client.interceptors.response.use(
       (response) => response,
       (error) => {
         if (error.response?.status === 401) {
-          localStorage.removeItem("auth_token");
+          // Clear any stale data and redirect to login
           window.location.href = "/";
         }
         return Promise.reject(error);
       },
     );
-  }
-
-  private updateAuthHeader(): void {
-    if (this.token) {
-      this.client.defaults.headers.common["Authorization"] =
-        `Bearer ${this.token}`;
-    }
-  }
-
-  setToken(token: string): void {
-    this.token = token;
-    localStorage.setItem("auth_token", token);
-    this.updateAuthHeader();
-  }
-
-  clearToken(): void {
-    this.token = null;
-    localStorage.removeItem("auth_token");
-    delete this.client.defaults.headers.common["Authorization"];
   }
 
   // Auth endpoints
@@ -70,7 +45,6 @@ class ApiService {
     name: string,
   ): Promise<
     ApiResponse<{
-      token: string;
       user: { id: string; email: string; name: string };
     }>
   > {
@@ -79,9 +53,7 @@ class ApiService {
       password,
       name,
     });
-    if (response.data.data?.token) {
-      this.setToken(response.data.data.token);
-    }
+    // Token is now stored in HTTP-only cookie automatically
     return response.data;
   }
 
@@ -90,7 +62,6 @@ class ApiService {
     password: string,
   ): Promise<
     ApiResponse<{
-      token: string;
       user: { id: string; email: string; name: string };
     }>
   > {
@@ -98,9 +69,12 @@ class ApiService {
       email,
       password,
     });
-    if (response.data.data?.token) {
-      this.setToken(response.data.data.token);
-    }
+    // Token is now stored in HTTP-only cookie automatically
+    return response.data;
+  }
+
+  async logout(): Promise<ApiResponse> {
+    const response = await this.client.post("/auth/logout");
     return response.data;
   }
 

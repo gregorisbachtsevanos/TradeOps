@@ -8,12 +8,17 @@ export const config = {
   server: {
     port: parseInt(process.env.PORT || "3000", 10),
     nodeEnv: process.env.NODE_ENV || "development",
+    frontendUrl: process.env.FRONTEND_URL || "http://localhost:5173",
   },
   database: {
     url: process.env.DATABASE_URL,
   },
   auth: {
     jwtSecret: process.env.JWT_SECRET || "",
+    cookieSecret: process.env.COOKIE_SECRET || "",
+    cookieMaxAge: parseInt(process.env.COOKIE_MAX_AGE || "28800000", 10), // 8 hours in ms
+    cookieSecure: process.env.COOKIE_SECURE === "true",
+    cookieSameSite: (process.env.COOKIE_SAME_SITE || "lax") as "strict" | "lax" | "none",
   },
   trading: {
     webhookSecret: process.env.TRADING_VIEW_WEBHOOK_SECRET || "",
@@ -40,6 +45,9 @@ export const validateConfig = (): void => {
   }
   if (!config.auth.jwtSecret) {
     throw new Error("JWT_SECRET environment variable is not set");
+  }
+  if (!config.auth.cookieSecret) {
+    throw new Error("COOKIE_SECRET environment variable is not set");
   }
   if (!config.trading.webhookSecret) {
     throw new Error(

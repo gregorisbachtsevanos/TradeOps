@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { config, validateConfig } from "./config/index.js";
 import logger from "./config/logger.js";
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
@@ -19,7 +20,19 @@ const app = express();
 // Middleware
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
-app.use(cors());
+
+// Cookie parser middleware (must be before CORS)
+app.use(cookieParser(config.auth.cookieSecret));
+
+// CORS configuration with credentials support
+app.use(
+  cors({
+    origin: config.server.frontendUrl,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // Request logging
 app.use((req, _res, next) => {

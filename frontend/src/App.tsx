@@ -1,6 +1,11 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useStore } from "./hooks/useStore.js";
-import { useLogin, useRegister, useCurrentUser } from "./hooks/auth/index.js";
+import {
+  useLogin,
+  useRegister,
+  useCurrentUser,
+  useLogout,
+} from "./hooks/auth/index.js";
 import Dashboard from "./pages/Dashboard.js";
 import "./App.css";
 
@@ -11,8 +16,9 @@ function App() {
     const savedTheme = localStorage.getItem("theme");
     return savedTheme === "light" ? "light" : "dark";
   });
-  const { user, setUser } = useStore();
+  const { user, setUser, clearUser } = useStore();
   const { data: currentUser, isLoading: isCheckingAuth } = useCurrentUser();
+  const logout = useLogout();
 
   useEffect(() => {
     localStorage.setItem("theme", theme);
@@ -27,6 +33,11 @@ function App() {
   if (isCheckingAuth) {
     return <div className="loading">Loading...</div>;
   }
+
+  const handleLogout = async () => {
+    await logout.mutateAsync();
+    clearUser();
+  };
 
   return (
     <div className="app" data-theme={theme}>
@@ -49,7 +60,7 @@ function App() {
                 currentTheme === "dark" ? "light" : "dark",
               )
             }
-            onLogout={() => setUser(null)}
+            onLogout={handleLogout}
           />
           <Dashboard theme={theme} />
         </>

@@ -9,6 +9,8 @@ export function useLogin() {
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       apiService.login(email, password),
     onSuccess: () => {
+      // Token is now in HTTP-only cookie, just invalidate the query
+      // to refetch the current user data
       queryClient.invalidateQueries({ queryKey: queryKeys.auth.me });
     },
   });
@@ -27,19 +29,33 @@ export function useRegister() {
       name: string;
     }) => apiService.register(email, password, name),
     onSuccess: () => {
+      // Token is now in HTTP-only cookie, just invalidate the query
+      // to refetch the current user data
       queryClient.invalidateQueries({ queryKey: queryKeys.auth.me });
     },
   });
 }
 
 export function useCurrentUser() {
-  const hasToken = Boolean(localStorage.getItem("auth_token"));
+  // With HTTP-only cookies, we always check for the user
+  // The cookie will be automatically sent with requests
+  // Enable the query on mount to check if user is logged in
   return useAppQuery({
     queryKey: queryKeys.auth.me,
     queryFn: () => apiService.getCurrentUser(),
-    enabled: hasToken,
     retry: false,
     staleTime: 60_000,
     select: (response) => response.data,
+  });
+}
+
+export function useLogout() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => apiService.logout(),
+    onSuccess: () => {
+      // Clear all cached data
+      queryClient.clear();
+    },
   });
 }

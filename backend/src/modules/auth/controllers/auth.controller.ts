@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import { isMockMode } from "../../../config/index.js";
+import { isMockMode, config } from "../../../config/index.js";
 import { prisma } from "../../../config/db.js";
 import {
   createSuccessResponse,
@@ -10,6 +10,16 @@ import {
 import { signJwt, AuthenticatedRequest } from "../../../middleware/auth.js";
 import logger from "../../../config/logger.js";
 import { loginSchema, registerSchema } from "../dto/auth.dto.js";
+
+const setAuthCookie = (res: Response, token: string): void => {
+  res.cookie("auth_token", token, {
+    httpOnly: true,
+    secure: config.auth.cookieSecure,
+    sameSite: config.auth.cookieSameSite,
+    maxAge: config.auth.cookieMaxAge,
+    signed: true,
+  });
+};
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const { email, password, name } = registerSchema.parse(req.body);
@@ -42,11 +52,14 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 
   logger.info("New user registered", { userId: user.id, email: user.email });
 
+  // Set HTTP-only cookie
+  setAuthCookie(res, token);
+
   res
     .status(201)
     .json(
       createSuccessResponse(
-        { token, user: { id: user.id, email: user.email, name: user.name } },
+        { user: { id: user.id, email: user.email, name: user.name } },
         "Registration successful",
       ),
     );
@@ -79,14 +92,29 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 
   logger.info("User logged in", { userId: user.id, email: user.email });
 
+  // Set HTTP-only cookie
+  setAuthCookie(res, token);
+
   res
     .status(200)
     .json(
       createSuccessResponse(
-        { token, user: { id: user.id, email: user.email, name: user.name } },
+        { user: { id: user.id, email: user.email, name: user.name } },
         "Login successful",
       ),
     );
+});
+
+export const logout = asyncHandler(async (_req: Request, res: Response) => {
+  res.clearCookie("auth_token", {
+    httpOnly: true,
+    secure: config.auth.cookieSecure,
+    sameSite: config.auth.cookieSameSite,
+  });
+
+  res
+    .status(200)
+    .json(createSuccessResponse({}, "Logout successful"));
 });
 
 export const me = asyncHandler(

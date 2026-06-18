@@ -1,4 +1,4 @@
-export { register, login, me } from "./controllers/auth.controller.js";
+export { register, login, logout, me } from "./controllers/auth.controller.js";
 
 export { default as authRoutes } from "./routes/auth.routes.js";
 

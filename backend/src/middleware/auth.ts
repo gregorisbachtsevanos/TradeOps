@@ -25,13 +25,23 @@ export const authenticate = (
   next: NextFunction,
 ): void => {
   try {
-    const authHeader = req.headers.authorization;
+    let token: string | null = null;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      throw new AppError(401, "Authorization header is missing or invalid");
+    // First, try to get token from signed cookies (HTTP-only)
+    if ((req as any).signedCookies && (req as any).signedCookies.auth_token) {
+      token = (req as any).signedCookies.auth_token;
+    } else {
+      // Fallback to Authorization header for API compatibility
+      const authHeader = req.headers.authorization;
+      if (authHeader && authHeader.startsWith("Bearer ")) {
+        token = authHeader.replace("Bearer ", "");
+      }
     }
 
-    const token = authHeader.replace("Bearer ", "");
+    if (!token) {
+      throw new AppError(401, "Authorization token is missing");
+    }
+
     const decoded = jwt.verify(token, config.auth.jwtSecret) as JwtPayload;
 
     req.user = {
