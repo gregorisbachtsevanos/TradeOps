@@ -1,8 +1,8 @@
 import { useAppQuery } from "../../app/lib/reactQuery.js";
 import { queryKeys } from "../../app/lib/queryKeys.js";
-import { apiService } from "../../app/services/api.js";
+import { apiService } from "../../app/api/api.js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Strategy } from "../../types/index.js";
+import type { IStrategy } from "../../app/types/index.js";
 
 export function useStrategies() {
   return useAppQuery({
@@ -42,7 +42,7 @@ export function useUpdateStrategy() {
       data,
     }: {
       strategyId: string;
-      data: Partial<Strategy>;
+      data: Partial<IStrategy>;
     }) => apiService.updateStrategy(strategyId, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({

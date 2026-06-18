@@ -1,7 +1,8 @@
 import { useAppQuery } from "../../app/lib/reactQuery.js";
 import { queryKeys } from "../../app/lib/queryKeys.js";
-import { apiService } from "../../app/services/api.js";
+import { apiService } from "../../app/api/api.js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ITrade } from "@/features/ChartWorkspace/types/chartWorkspace.types.js";
 
 export interface TradeFilters {
   accountId?: string;
@@ -12,7 +13,7 @@ export interface TradeFilters {
 }
 
 export interface TradesResult {
-  items: import("../../types/index.js").Trade[];
+  items: ITrade[];
   pagination: {
     total: number;
     page: number;

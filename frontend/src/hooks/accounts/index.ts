@@ -1,8 +1,8 @@
 import { useAppQuery } from "../../app/lib/reactQuery.js";
 import { queryKeys } from "../../app/lib/queryKeys.js";
-import { apiService } from "../../app/services/api.js";
+import { apiService } from "../../app/api/api.js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { Account } from "../../types/index.js";
+import { IAccount } from "@/features/AccountSelector/types/accountSelector.types.js";
 
 export function useAccounts() {
   return useAppQuery({
@@ -53,7 +53,7 @@ export function useUpdateAccount() {
       data,
     }: {
       accountId: string;
-      data: Partial<Account>;
+      data: Partial<IAccount>;
     }) => apiService.updateAccount(accountId, data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({

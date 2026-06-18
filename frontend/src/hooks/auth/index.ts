@@ -1,6 +1,6 @@
 import { useAppQuery } from "../../app/lib/reactQuery.js";
 import { queryKeys } from "../../app/lib/queryKeys.js";
-import { apiService } from "../../app/services/api.js";
+import { apiService } from "../../app/api/api.js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useLogin() {

@@ -1,6 +1,6 @@
 import { useAppQuery } from "../../app/lib/reactQuery.js";
 import { queryKeys } from "../../app/lib/queryKeys.js";
-import { apiService } from "../../app/services/api.js";
+import { apiService } from "../../app/api/api.js";
 
 export function useStrategyMetrics(strategyId: string) {
   return useAppQuery({
