@@ -248,7 +248,7 @@ All components complete and production-ready:
 
 **To understand the system:**
 
-1. Start with [README.md](README.md) - Overview
+1. Start with [README.md](../README.md) - Overview
 2. Read [ARCHITECTURE.md](ARCHITECTURE.md) - System design
 3. Study [TRADE_FLOW.md](TRADE_FLOW.md) - Process flow
 4. Check [WEBHOOK_EXAMPLES.md](WEBHOOK_EXAMPLES.md) - Integration
