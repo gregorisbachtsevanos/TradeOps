@@ -2,7 +2,7 @@
   {
     "id": "signal_mock_1",
     "accountId": "account_mock_1",
-    "strategyId": "strategy_mock_1",
+    "strategyId": "strategy_mock_ict",
     "symbol": "EURUSD",
     "action": "BUY",
     "price": 1.0835,
@@ -17,5 +17,62 @@
     "isDuplicate": false,
     "processedAt": "2026-05-20T10:30:01.000Z",
     "createdAt": "2026-05-20T10:30:00.000Z"
+  },
+  {
+    "id": "signal_mock_2",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_trend",
+    "symbol": "NAS100",
+    "action": "BUY",
+    "price": 18250,
+    "timestamp": "2026-05-21T14:00:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-05-21T14:00:00.000Z",
+      "ticker": "NAS100",
+      "close": 18250,
+      "strategy_signal": "BUY"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-05-21T14:00:01.000Z",
+    "createdAt": "2026-05-21T14:00:00.000Z"
+  },
+  {
+    "id": "signal_mock_3",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_breakout",
+    "symbol": "GBPUSD",
+    "action": "SELL",
+    "price": 1.2680,
+    "timestamp": "2026-05-22T08:15:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-05-22T08:15:00.000Z",
+      "ticker": "GBPUSD",
+      "close": 1.2680,
+      "strategy_signal": "SELL"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-05-22T08:15:01.000Z",
+    "createdAt": "2026-05-22T08:15:00.000Z"
+  },
+  {
+    "id": "signal_mock_4",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_supply_demand",
+    "symbol": "US30",
+    "action": "BUY",
+    "price": 39500,
+    "timestamp": "2026-05-23T13:30:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-05-23T13:30:00.000Z",
+      "ticker": "US30",
+      "close": 39500,
+      "strategy_signal": "BUY"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-05-23T13:30:01.000Z",
+    "createdAt": "2026-05-23T13:30:00.000Z"
   }
 ]

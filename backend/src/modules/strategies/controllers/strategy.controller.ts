@@ -11,6 +11,10 @@ import { AuthenticatedRequest } from "../../../middleware/auth.js";
 import {
   createStrategySchema,
   updateStrategySchema,
+  validateRiskLimits,
+  validateTimeframes,
+  validateRiskReward,
+  validateChecklist,
 } from "../dto/strategy.dto.js";
 
 const requireCurrentUser = (req: AuthenticatedRequest): string => {
@@ -45,6 +49,17 @@ export const createStrategy = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const userId = requireCurrentUser(req);
     const validatedData = createStrategySchema.parse(req.body);
+
+    // Business validation
+    const errors: string[] = [];
+    errors.push(...validateRiskLimits(validatedData));
+    errors.push(...validateTimeframes(validatedData));
+    errors.push(...validateRiskReward(validatedData));
+    errors.push(...validateChecklist(validatedData));
+
+    if (errors.length > 0) {
+      throw new AppError(400, "Validation failed: " + errors.join("; "));
+    }
 
     const strategy = await prisma.strategy.create({
       data: {
@@ -126,18 +141,36 @@ export const updateStrategy = asyncHandler(
     const userId = requireCurrentUser(req);
     const { strategyId } = req.params;
 
-    await assertStrategyOwnership(strategyId, userId);
+    const existing = await assertStrategyOwnership(strategyId, userId);
 
     const validatedData = updateStrategySchema.parse(req.body);
 
+    // Business validation
+    const errors: string[] = [];
+    if (Object.keys(validatedData).length > 0) {
+      const fullData = { ...req.body, ...validatedData };
+      errors.push(...validateRiskLimits(fullData));
+      errors.push(...validateTimeframes(fullData));
+      errors.push(...validateRiskReward(fullData));
+      errors.push(...validateChecklist(fullData));
+    }
+
+    if (errors.length > 0) {
+      throw new AppError(400, "Validation failed: " + errors.join("; "));
+    }
+
     const updatedStrategy = await prisma.strategy.update({
       where: { id: strategyId },
-      data: validatedData,
+      data: {
+        ...validatedData,
+        version: { increment: 1 },
+      },
     });
 
     logger.info("Strategy updated", {
       strategyId,
       changes: Object.keys(validatedData),
+      version: updatedStrategy.version,
     });
 
     res

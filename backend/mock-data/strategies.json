@@ -1,11 +1,237 @@
 [
   {
-    "id": "strategy_mock_1",
+    "id": "strategy_mock_ict",
     "userId": "user_mock_1",
-    "name": "Mock Breakout Strategy",
-    "description": "Seed strategy for local mock-data development.",
+    "name": "ICT Silver Bullet",
+    "description": "ICT Silver Bullet strategy targeting liquidity sweeps and FVG entries during London/NY killzones with precise risk management.",
     "isActive": true,
-    "riskPercent": 2,
+    "markets": ["forex"],
+    "instruments": ["EURUSD", "GBPUSD", "USDJPY"],
+    "analysisTimeframe": "H1",
+    "entryTimeframe": "M5",
+    "conditions": ["trending_bullish", "trending_bearish"],
+    "sessions": ["london", "new_york", "london_new_york_overlap"],
+    "entryRules": [
+      { "type": "level", "name": "Liquidity Sweep", "description": "Wait for sweep of recent swing high/low", "required": true },
+      { "type": "pattern", "name": "Market Structure Shift", "description": "Break of structure in opposite direction after sweep", "required": true },
+      { "type": "level", "name": "FVG Entry", "description": "Enter on retrace to Fair Value Gap", "required": true }
+    ],
+    "confirmations": [
+      { "type": "time", "name": "Killzone Timing", "description": "Trade only during London (3-5AM EST) or NY (7-10AM EST) killzones", "required": true },
+      { "type": "price_action", "name": "M15 Displacement", "description": "Strong displacement candle on M15 confirming MSS", "required": false }
+    ],
+    "riskPercent": 1,
+    "maxDailyLoss": 3,
+    "maxDrawdown": 6,
+    "maxOpenTrades": 2,
+    "maxDailyTrades": 4,
+    "stopLoss": { "type": "structure", "structureLevel": "Beyond sweep swing point", "description": "Place SL beyond the liquidity sweep point" },
+    "tpTargets": [
+      { "type": "risk_reward", "riskReward": 2, "description": "TP1 at 2R - nearest liquidity pool" },
+      { "type": "risk_reward", "riskReward": 3, "partialPercent": 50, "description": "TP2 at 3R - move SL to breakeven, close 50%" }
+    ],
+    "tradeManagement": { "breakevenTrigger": 15, "trailingStop": false, "maxHoldTime": 4 },
+    "exitRules": [
+      { "type": "time_based", "name": "Killzone Exit", "description": "Close all positions by end of killzone" },
+      { "type": "condition_based", "name": "MSS Against Position", "description": "Exit on market structure shift against trade direction" }
+    ],
+    "newsRules": { "avoidHighImpact": true, "minutesBefore": 30, "minutesAfter": 30, "closeBeforeNews": true },
+    "checklist": [
+      { "name": "Liquidity sweep confirmed", "required": true },
+      { "name": "MSS with displacement", "required": true },
+      { "name": "FVG present on entry timeframe", "required": true },
+      { "name": "Within killzone hours", "required": true },
+      { "name": "No high-impact news within 1 hour", "required": true },
+      { "name": "Daily loss limit not breached", "required": true }
+    ],
+    "backtestingMetrics": {
+      "totalTrades": 156,
+      "winRate": 64.1,
+      "avgWin": 285,
+      "avgLoss": 150,
+      "profitFactor": 1.92,
+      "maxDrawdown": 8.4,
+      "sharpeRatio": 1.35,
+      "avgRR": 2.1
+    },
+    "notes": "Best results on EURUSD during London open. Avoid trading during NFP, CPI, and FOMC announcements. Focus on quality over quantity - max 2 setups per day.",
+    "version": 1,
+    "createdAt": "2026-05-01T09:20:00.000Z",
+    "updatedAt": "2026-05-20T12:00:00.000Z"
+  },
+  {
+    "id": "strategy_mock_trend",
+    "userId": "user_mock_1",
+    "name": "Trend Following Pullback",
+    "description": "Classic trend following strategy entering on pullbacks to EMA 50 in established trends with confluence from multiple timeframes.",
+    "isActive": true,
+    "markets": ["forex", "indices", "crypto"],
+    "instruments": ["EURUSD", "NAS100", "BTCUSD", "SPX500"],
+    "analysisTimeframe": "H4",
+    "entryTimeframe": "H1",
+    "conditions": ["trending_bullish", "trending_bearish"],
+    "sessions": ["london", "new_york"],
+    "entryRules": [
+      { "type": "indicator", "name": "EMA Trend Filter", "description": "Price above EMA 50 for longs, below for shorts on H4", "required": true },
+      { "type": "indicator", "name": "EMA 200 Alignment", "description": "EMA 50 above EMA 200 for longs (below for shorts)", "required": true },
+      { "type": "price_action", "name": "Pullback Entry", "description": "Wait for pullback to EMA 50 zone with rejection candle", "required": true }
+    ],
+    "confirmations": [
+      { "type": "indicator", "name": "RSI Confirmation", "description": "RSI (14) above 50 for longs, below 50 for shorts", "required": true },
+      { "type": "volume", "name": "Volume Spike", "description": "Above average volume on entry candle", "required": false }
+    ],
+    "riskPercent": 1.5,
+    "maxDailyLoss": 4.5,
+    "maxDrawdown": 10,
+    "maxOpenTrades": 3,
+    "maxDailyTrades": 3,
+    "stopLoss": { "type": "atr", "atrMultiplier": 1.5, "description": "1.5x ATR below pullback low (above for shorts)" },
+    "tpTargets": [
+      { "type": "risk_reward", "riskReward": 1.5, "partialPercent": 50, "description": "TP1 at 1.5R - close 50%, move to BE" },
+      { "type": "risk_reward", "riskReward": 3, "description": "TP2 at 3R - trail remaining" }
+    ],
+    "tradeManagement": { "breakevenTrigger": 20, "trailingStop": true, "trailingStopPips": 25, "trailingStopAt": 40, "maxHoldTime": 72 },
+    "exitRules": [
+      { "type": "indicator", "name": "EMA Cross Exit", "description": "Close on price closing beyond EMA 50 against trend" },
+      { "type": "time_based", "name": "Max Hold Time", "description": "Force close after 72 hours if targets not hit" }
+    ],
+    "newsRules": { "avoidHighImpact": true, "minutesBefore": 15, "minutesAfter": 15, "closeBeforeNews": false },
+    "checklist": [
+      { "name": "H4 trend clearly defined", "required": true },
+      { "name": "EMA 50/200 aligned with trend", "required": true },
+      { "name": "Pullback to EMA 50 zone", "required": true },
+      { "name": "Rejection candle on H1", "required": true },
+      { "name": "RSI confirms trend direction", "required": false }
+    ],
+    "backtestingMetrics": {
+      "totalTrades": 243,
+      "winRate": 55.1,
+      "avgWin": 320,
+      "avgLoss": 180,
+      "profitFactor": 1.65,
+      "maxDrawdown": 12.3,
+      "sharpeRatio": 1.12,
+      "avgRR": 1.8
+    },
+    "notes": "Works best in strong trending markets. Avoid during ranging/consolidation periods. NAS100 and BTCUSD tend to give the best risk-reward setups.",
+    "version": 1,
+    "createdAt": "2026-05-01T09:20:00.000Z",
+    "updatedAt": "2026-05-20T12:00:00.000Z"
+  },
+  {
+    "id": "strategy_mock_breakout",
+    "userId": "user_mock_1",
+    "name": "Asian Range Breakout",
+    "description": "Breakout strategy trading the breakout of Asian session range during London open, targeting the NY session with defined risk.",
+    "isActive": true,
+    "markets": ["forex"],
+    "instruments": ["EURUSD", "GBPUSD", "USDJPY", "AUDUSD"],
+    "analysisTimeframe": "H1",
+    "entryTimeframe": "M15",
+    "conditions": ["breakout", "ranging"],
+    "sessions": ["london", "london_new_york_overlap"],
+    "entryRules": [
+      { "type": "pattern", "name": "Asian Range", "description": "Identify high and low of Asian session (00:00-07:00 GMT)", "required": true },
+      { "type": "price_action", "name": "Breakout Candle", "description": "Strong M15 close beyond Asian range boundary", "required": true },
+      { "type": "price_action", "name": "Retest Entry", "description": "Enter on retest of broken level", "required": true }
+    ],
+    "confirmations": [
+      { "type": "volume", "name": "Volume Confirmation", "description": "Breakout candle has above-average volume", "required": true },
+      { "type": "time", "name": "London Open", "description": "Breakout occurs within first 2 hours of London open", "required": false }
+    ],
+    "riskPercent": 1,
+    "maxDailyLoss": 3,
+    "maxDrawdown": 6,
+    "maxOpenTrades": 2,
+    "maxDailyTrades": 2,
+    "stopLoss": { "type": "structure", "structureLevel": "Mid-point of Asian range", "description": "Place SL at mid-point of Asian range" },
+    "tpTargets": [
+      { "type": "risk_reward", "riskReward": 1, "partialPercent": 50, "description": "TP1 at 1R - close 50%" },
+      { "type": "risk_reward", "riskReward": 2, "description": "TP2 at 2R - full close" }
+    ],
+    "tradeManagement": { "breakevenTrigger": 10, "trailingStop": false, "maxHoldTime": 6 },
+    "exitRules": [
+      { "type": "time_based", "name": "NY Close Exit", "description": "Close all positions by 4PM NY time" }
+    ],
+    "newsRules": { "avoidHighImpact": true, "minutesBefore": 30, "minutesAfter": 60, "closeBeforeNews": true },
+    "checklist": [
+      { "name": "Asian range clearly defined", "required": true },
+      { "name": "Range width > 15 pips", "required": true },
+      { "name": "Breakout candle is strong", "required": true },
+      { "name": "Volume confirms breakout", "required": true },
+      { "name": "No pending high-impact news", "required": true }
+    ],
+    "backtestingMetrics": {
+      "totalTrades": 189,
+      "winRate": 48.7,
+      "avgWin": 240,
+      "avgLoss": 150,
+      "profitFactor": 1.52,
+      "maxDrawdown": 9.1,
+      "sharpeRatio": 0.98,
+      "avgRR": 1.6
+    },
+    "notes": "Lower win rate but positive expectancy due to favorable R:R. Best on EURUSD and GBPUSD. Skip days with major news during London session.",
+    "version": 1,
+    "createdAt": "2026-05-01T09:20:00.000Z",
+    "updatedAt": "2026-05-20T12:00:00.000Z"
+  },
+  {
+    "id": "strategy_mock_supply_demand",
+    "userId": "user_mock_1",
+    "name": "Supply & Demand Zones",
+    "description": "Trade from fresh supply and demand zones on higher timeframes, entering on price return with confirmation candles.",
+    "isActive": true,
+    "markets": ["forex", "indices"],
+    "instruments": ["EURUSD", "GBPUSD", "US30", "NAS100"],
+    "analysisTimeframe": "H4",
+    "entryTimeframe": "H1",
+    "conditions": ["trending_bullish", "trending_bearish"],
+    "sessions": ["london", "new_york"],
+    "entryRules": [
+      { "type": "pattern", "name": "Fresh Zone", "description": "Identify fresh supply/demand zone (untested by price)", "required": true },
+      { "type": "pattern", "name": "Strong Move Origin", "description": "Zone created by strong impulsive move (base -> rally/run)", "required": true },
+      { "type": "price_action", "name": "Confirmation Candle", "description": "Wait for rejection candle at zone boundary", "required": true }
+    ],
+    "confirmations": [
+      { "type": "price_action", "name": "MSS Confirmation", "description": "Market structure shift on lower timeframe", "required": false },
+      { "type": "level", "name": "Premium/Discount", "description": "Buy in discount (<50% of range), sell in premium (>50%)", "required": true }
+    ],
+    "riskPercent": 1.5,
+    "maxDailyLoss": 4.5,
+    "maxDrawdown": 8,
+    "maxOpenTrades": 2,
+    "maxDailyTrades": 3,
+    "stopLoss": { "type": "structure", "structureLevel": "Beyond supply/demand zone", "description": "Place SL beyond the zone with 5-10 pip buffer" },
+    "tpTargets": [
+      { "type": "structure", "structureLevel": "Next opposing zone", "description": "Target next opposing supply/demand zone" },
+      { "type": "risk_reward", "riskReward": 3, "description": "Minimum 3R target" }
+    ],
+    "tradeManagement": { "breakevenTrigger": 30, "trailingStop": false, "maxHoldTime": 96 },
+    "exitRules": [
+      { "type": "condition_based", "name": "Zone Breach", "description": "Exit if price closes beyond SL zone" },
+      { "type": "time_based", "name": "Weekly Review", "description": "Review all open positions on Sunday" }
+    ],
+    "newsRules": { "avoidHighImpact": true, "minutesBefore": 30, "minutesAfter": 30, "closeBeforeNews": false },
+    "checklist": [
+      { "name": "Zone is fresh (untested)", "required": true },
+      { "name": "Strong move originated from zone", "required": true },
+      { "name": "Price in premium/discount area", "required": true },
+      { "name": "Confirmation candle present", "required": true },
+      { "name": "No major news pending", "required": true }
+    ],
+    "backtestingMetrics": {
+      "totalTrades": 124,
+      "winRate": 58.1,
+      "avgWin": 380,
+      "avgLoss": 160,
+      "profitFactor": 2.15,
+      "maxDrawdown": 7.2,
+      "sharpeRatio": 1.48,
+      "avgRR": 2.4
+    },
+    "notes": "Quality over quantity - only 1-2 setups per week per instrument. Fresh zones give best results. US30 and NAS100 can be volatile - reduce position size by 25%.",
+    "version": 1,
     "createdAt": "2026-05-01T09:20:00.000Z",
     "updatedAt": "2026-05-20T12:00:00.000Z"
   }

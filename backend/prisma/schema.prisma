@@ -107,7 +107,60 @@ model Strategy {
     description String?
 
     isActive    Boolean @default(true)
-    riskPercent Float   @default(2) // Position sizing
+
+    // Market selection
+    markets     String[] @default([])
+    instruments String[] @default([])
+
+    // Timeframes
+    analysisTimeframe String?
+    entryTimeframe    String?
+
+    // Market conditions
+    conditions  String[] @default([])
+
+    // Trading sessions
+    sessions    String[] @default([])
+
+    // Entry rules
+    entryRules  Json?
+
+    // Confirmations
+    confirmations Json?
+
+    // Risk management
+    riskPercent     Float   @default(2)
+    maxDailyLoss    Float?
+    maxDrawdown     Float?
+    maxOpenTrades   Int?
+    maxDailyTrades  Int?
+
+    // Stop loss
+    stopLoss Json?
+
+    // Take profit
+    tpTargets Json?
+
+    // Trade management
+    tradeManagement Json?
+
+    // Exit rules
+    exitRules Json?
+
+    // News rules
+    newsRules Json?
+
+    // Pre-trade checklist
+    checklist Json?
+
+    // Backtesting metrics
+    backtestingMetrics Json?
+
+    // Notes
+    notes String?
+
+    // Version tracking
+    version Int @default(1)
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

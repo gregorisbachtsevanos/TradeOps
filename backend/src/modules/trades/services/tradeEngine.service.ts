@@ -34,6 +34,8 @@ export class TradeEngineService {
           id: string;
           isActive: boolean;
           riskPercent: number;
+          stopLoss: any;
+          tpTargets: any[];
         } | null>,
       ]);
 
@@ -81,7 +83,34 @@ export class TradeEngineService {
         return await this.closePosition(account, strategyId, symbol);
       }
 
-      const stopLoss = direction === "BUY" ? price * 0.98 : price * 1.02;
+      // Calculate stop loss based on strategy configuration
+      let stopLoss: number;
+      if (strategy.stopLoss) {
+        const sl = strategy.stopLoss;
+        if (sl.type === "atr" && sl.atrMultiplier) {
+          // Simplified ATR calculation (would need real ATR in production)
+          const atr = price * 0.005; // 0.5% as placeholder ATR
+          stopLoss = direction === "BUY"
+            ? price - (atr * sl.atrMultiplier)
+            : price + (atr * sl.atrMultiplier);
+        } else if (sl.type === "percentage" && sl.percentage) {
+          stopLoss = direction === "BUY"
+            ? price * (1 - sl.percentage / 100)
+            : price * (1 + sl.percentage / 100);
+        } else if (sl.type === "fixed_pips" && sl.fixedPips) {
+          const pipValue = price * 0.0001;
+          stopLoss = direction === "BUY"
+            ? price - (sl.fixedPips * pipValue)
+            : price + (sl.fixedPips * pipValue);
+        } else {
+          // Default fallback
+          stopLoss = direction === "BUY" ? price * 0.98 : price * 1.02;
+        }
+      } else {
+        // Legacy fallback
+        stopLoss = direction === "BUY" ? price * 0.98 : price * 1.02;
+      }
+
       const quantity =
         quantityOverride !== undefined && quantityOverride > 0
           ? quantityOverride

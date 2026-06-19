@@ -231,7 +231,27 @@ class MockPrismaDelegate {
     }
 
     if (this.modelName === "strategy") {
-      return { isActive: true, riskPercent: 2, createdAt: now, updatedAt: now };
+      return {
+        isActive: true,
+        markets: [],
+        instruments: [],
+        conditions: [],
+        sessions: [],
+        riskPercent: 2,
+        entryRules: null,
+        confirmations: null,
+        stopLoss: null,
+        tpTargets: null,
+        tradeManagement: null,
+        exitRules: null,
+        newsRules: null,
+        checklist: null,
+        backtestingMetrics: null,
+        notes: null,
+        version: 1,
+        createdAt: now,
+        updatedAt: now,
+      };
     }
 
     if (this.modelName === "signal") {
