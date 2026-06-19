@@ -1,8 +1,9 @@
-import { IApiResponse, IStrategy } from "@/app/types";
+import { IApiResponse } from "@/app/types";
 import { apiService } from "../api";
+import { IStrategy } from "@/features/strategies/types/strategies.types";
 
 export const strategiesApi = {
-  create: (data: { name: string; description?: string; riskPercent: number }) =>
+  create: (data: Partial<IStrategy>) =>
     apiService
       .post<IApiResponse<IStrategy>>("/strategies", data)
       .then((res) => res.data),

@@ -95,9 +95,7 @@ const Dashboard = ({ theme }: IDashboardProps) => {
 
             {activeTab === "trades" && <Trades accountId={selectedAccountId} />}
 
-            {activeTab === "strategies" && (
-              <Strategies selectedAccountId={selectedAccountId} />
-            )}
+            {activeTab === "strategies" && <Strategies />}
 
             {activeTab === "analytics" && (
               <Analytics accountId={selectedAccountId} />

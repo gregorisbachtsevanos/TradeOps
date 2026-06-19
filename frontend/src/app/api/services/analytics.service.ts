@@ -1,7 +1,10 @@
-import { IDailyPnL } from "@/features/analytics/types/analytics.types";
+import {
+  IAnalyticsMetrics,
+  IDailyPnL,
+} from "@/features/analytics/types/analytics.types";
 import { ITrade } from "@/features/overview/types/overview.types";
 import { apiService } from "../api";
-import { IAnalyticsMetrics, IApiResponse } from "@/app/types";
+import { IApiResponse } from "@/app/types";
 
 export const analyticsApi = {
   strategyMetrics: (strategyId: string) =>

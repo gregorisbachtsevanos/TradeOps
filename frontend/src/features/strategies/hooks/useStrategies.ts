@@ -2,7 +2,7 @@ import { useAppQuery } from "../../../app/lib/reactQuery.js";
 import { queryKeys } from "../../../app/lib/queryKeys.js";
 import { analyticsApi, strategiesApi } from "../../../app/api/index.js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { IStrategy } from "@/app/types/index.js";
+import { IStrategy } from "../types/strategies.types.js";
 
 export function useStrategyMetrics(strategyId: string) {
   return useAppQuery({
