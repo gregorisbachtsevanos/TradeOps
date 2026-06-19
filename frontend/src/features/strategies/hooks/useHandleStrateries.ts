@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IStrategy, TTabId } from "../types/strategies.types.js";
 import {
   useCreateStrategy,
@@ -8,21 +8,25 @@ import {
 } from "./useStrategies.js";
 
 const useHandleStrategies = () => {
-  const [selectedStrategyId, setSelectedStrategyId] = useState<string | null>(
-    null,
-  );
-  const [activeTab, setActiveTab] = useState<TTabId>("overview");
-  const [wizardOpen, setWizardOpen] = useState(false);
-  const [editingStrategy, setEditingStrategy] = useState<IStrategy | null>(
-    null,
-  );
+  const { data: strategies, isLoading } = useStrategies();
   const createStrategy = useCreateStrategy();
   const updateStrategy = useUpdateStrategy();
   const deleteStrategy = useDeleteStrategy();
-  const { isLoading } = useStrategies();
+  const [wizardOpen, setWizardOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<TTabId>("overview");
+  const [editStrategy, setEditStrategy] = useState<IStrategy | null>(null);
+  const [selectedStrategyId, setSelectedStrategyId] = useState<string | null>(
+    null,
+  );
+
+  useEffect(() => {
+    if (strategies?.length) {
+      setSelectedStrategyId(strategies[0].id);
+    }
+  }, [strategies]);
 
   const handleEdit = (strategy: IStrategy) => {
-    setEditingStrategy(strategy);
+    setEditStrategy(strategy);
     setWizardOpen(true);
   };
 
@@ -39,20 +43,20 @@ const useHandleStrategies = () => {
   };
 
   const handleWizardSubmit = async (data: Partial<IStrategy> | any) => {
-    if (editingStrategy) {
+    if (editStrategy) {
       await updateStrategy.mutateAsync({
-        strategyId: editingStrategy.id,
+        strategyId: editStrategy.id,
         data,
       });
     } else {
       await createStrategy.mutateAsync(data);
     }
     setWizardOpen(false);
-    setEditingStrategy(null);
+    setEditStrategy(null);
   };
 
   const handleCreateNewStrategy = (isWizardOpen: boolean) => {
-    setEditingStrategy(null);
+    setEditStrategy(null);
     setWizardOpen(isWizardOpen);
   };
 
@@ -63,7 +67,7 @@ const useHandleStrategies = () => {
     activeTab,
     wizardOpen,
     selectedStrategyId,
-    editingStrategy,
+    editStrategy,
     handleEdit,
     handleDelete,
     handleSelectStrategy,

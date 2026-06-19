@@ -10,7 +10,7 @@ const Strategies = () => {
     activeTab,
     wizardOpen,
     selectedStrategyId,
-    editingStrategy,
+    editStrategy,
     handleEdit,
     handleDelete,
     handleSelectStrategy,
@@ -53,7 +53,7 @@ const Strategies = () => {
 
       {wizardOpen && (
         <StrategyWizard
-          strategy={editingStrategy}
+          strategy={editStrategy}
           onSubmit={handleWizardSubmit}
           onClose={() => handleCreateNewStrategy(false)}
         />
