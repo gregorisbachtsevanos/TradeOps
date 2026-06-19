@@ -1,36 +1,5 @@
-import { ISidebarProps, TDashboardTab } from "../types/dashboard.types";
-
-const navItems: Array<{
-  id: TDashboardTab;
-  label: string;
-  description: string;
-  icon: string;
-}> = [
-  {
-    id: "overview",
-    label: "Markets",
-    description: "Chart & risk overview",
-    icon: "📈",
-  },
-  {
-    id: "trades",
-    label: "Trades",
-    description: "Open positions",
-    icon: "⚡",
-  },
-  {
-    id: "strategies",
-    label: "Strategies",
-    description: "Manage strategies",
-    icon: "🎯",
-  },
-  {
-    id: "analytics",
-    label: "Analytics",
-    description: "Performance reports",
-    icon: "📊",
-  },
-];
+import { NAV_ITEMS } from "../helpers/constants";
+import { ISidebarProps } from "../types/dashboard.types";
 
 const Sidebar = ({ activeTab, onTabChange }: ISidebarProps) => {
   return (
@@ -44,7 +13,7 @@ const Sidebar = ({ activeTab, onTabChange }: ISidebarProps) => {
       </div>
 
       <nav className="sidebar-nav" aria-label="Trading workspace">
-        {navItems.map((item) => (
+        {NAV_ITEMS.map((item) => (
           <button
             key={item.id}
             className={`sidebar-link ${activeTab === item.id ? "active" : ""}`}

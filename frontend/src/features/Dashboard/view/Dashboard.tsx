@@ -8,16 +8,14 @@ import Trades from "../../trades/index.js";
 import Strategies from "../../strategies/index.js";
 
 import { AccountSelector, KpiStrip, Sidebar } from "../";
-import { IDashboardProps } from "../types/dashboard.types.js";
+import { IDashboardProps, TAllTabs } from "../types/dashboard.types.js";
 import "./Dashboard.css";
 
 const Dashboard = ({ theme }: IDashboardProps) => {
   const { selectedAccountId, setSelectedAccountId } = useStore();
   const { data: accounts, isLoading: accountsLoading } = useAccounts();
   const createAccount = useCreateAccount();
-  const [activeTab, setActiveTab] = useState<
-    "overview" | "trades" | "strategies" | "analytics"
-  >("overview");
+  const [activeTab, setActiveTab] = useState<TAllTabs>("overview");
 
   const accountIds = accounts?.map((account) => account.id).join("|") || "";
   const firstAccountId = accounts?.[0]?.id;
