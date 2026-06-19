@@ -1,7 +1,7 @@
+import { NavLink } from "react-router-dom";
 import { NAV_ITEMS } from "../helpers/constants";
-import { ISidebarProps } from "../types/dashboard.types";
 
-const Sidebar = ({ activeTab, onTabChange }: ISidebarProps) => {
+const Sidebar = () => {
   return (
     <aside className="sidebar">
       <div className="sidebar-brand">
@@ -14,17 +14,17 @@ const Sidebar = ({ activeTab, onTabChange }: ISidebarProps) => {
 
       <nav className="sidebar-nav" aria-label="Trading workspace">
         {NAV_ITEMS.map((item) => (
-          <button
+          <NavLink
             key={item.id}
-            className={`sidebar-link ${activeTab === item.id ? "active" : ""}`}
-            onClick={() => onTabChange(item.id)}
+            to={item.path}
+            className={({ isActive }) => `sidebar-link ${isActive ? "active" : ""}`}
           >
             <span className="sidebar-icon">{item.icon}</span>
             <span>
               <strong>{item.label}</strong>
               <small>{item.description}</small>
             </span>
-          </button>
+          </NavLink>
         ))}
       </nav>
 

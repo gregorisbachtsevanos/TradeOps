@@ -1,5 +1,6 @@
 import Overview from "@/features/overview/view/Overview.js";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { useAccounts, useCreateAccount } from "../hooks/useAccount.js";
 
 import { useStore } from "../../../app/hooks/useStore.js";
@@ -8,14 +9,15 @@ import Trades from "../../trades/index.js";
 import Strategies from "../../strategies/index.js";
 
 import { AccountSelector, KpiStrip, Sidebar } from "../";
-import { IDashboardProps, TAllTabs } from "../types/dashboard.types.js";
+import { ROUTE_PATHS } from "../helpers/constants.js";
+import { IDashboardProps } from "../types/dashboard.types.js";
 import "./Dashboard.css";
 
 const Dashboard = ({ theme }: IDashboardProps) => {
   const { selectedAccountId, setSelectedAccountId } = useStore();
   const { data: accounts, isLoading: accountsLoading } = useAccounts();
   const createAccount = useCreateAccount();
-  const [activeTab, setActiveTab] = useState<TAllTabs>("overview");
+  const location = useLocation();
 
   const accountIds = accounts?.map((account) => account.id).join("|") || "";
   const firstAccountId = accounts?.[0]?.id;
@@ -66,7 +68,7 @@ const Dashboard = ({ theme }: IDashboardProps) => {
 
   return (
     <div className="dashboard-shell">
-      <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
+      <Sidebar />
 
       <main className="dashboard">
         <div className="dashboard-header">
@@ -87,17 +89,25 @@ const Dashboard = ({ theme }: IDashboardProps) => {
 
         {selectedAccountId ? (
           <div className="dashboard-content">
-            {activeTab === "overview" && (
-              <Overview theme={theme} selectedAccountId={selectedAccountId} />
-            )}
-
-            {activeTab === "trades" && <Trades accountId={selectedAccountId} />}
-
-            {activeTab === "strategies" && <Strategies />}
-
-            {activeTab === "analytics" && (
-              <Analytics accountId={selectedAccountId} />
-            )}
+            <Routes location={location}>
+              <Route
+                path={ROUTE_PATHS.overview}
+                element={<Overview theme={theme} selectedAccountId={selectedAccountId} />}
+              />
+              <Route
+                path={ROUTE_PATHS.trades}
+                element={<Trades accountId={selectedAccountId} />}
+              />
+              <Route
+                path={ROUTE_PATHS.strategies}
+                element={<Strategies />}
+              />
+              <Route
+                path={ROUTE_PATHS.analytics}
+                element={<Analytics accountId={selectedAccountId} />}
+              />
+              <Route path="*" element={<Navigate to={ROUTE_PATHS.overview} replace />} />
+            </Routes>
           </div>
         ) : (
           <div className="placeholder">

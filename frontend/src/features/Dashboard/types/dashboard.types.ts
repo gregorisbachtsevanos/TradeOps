@@ -31,11 +31,6 @@ export interface IAccountInfo {
 
 export type TAllTabs = "overview" | "trades" | "strategies" | "analytics";
 
-export interface ISidebarProps {
-  activeTab: TAllTabs;
-  onTabChange: (tab: TAllTabs) => void;
-}
-
 export interface IKpiStripProps {
   accountId: string | null;
 }
