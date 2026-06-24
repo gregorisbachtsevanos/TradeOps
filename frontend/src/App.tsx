@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./App.css";
+import styles from "./App.module.css";
 import AuthPage from "./features/auth/view/Auth.js";
 import { useStore } from "./app/hooks/useStore.js";
 import AppLayout from "./layout/AppLayout.js";
@@ -26,14 +26,14 @@ function App() {
   }, [currentUser, setUser]);
 
   if (isCheckingAuth) {
-    return <div className="loading">Loading...</div>;
+    return <div className={styles.loading}>Loading...</div>;
   }
 
   const onThemeToggle = () =>
     setTheme((currentTheme) => (currentTheme === "dark" ? "light" : "dark"));
 
   return (
-    <div className="app" data-theme={theme}>
+    <div className={styles.app} data-theme={theme}>
       {!user ? (
         <AuthPage theme={theme} onThemeToggle={onThemeToggle} />
       ) : (

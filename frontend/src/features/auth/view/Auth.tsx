@@ -1,6 +1,7 @@
 import { Theme } from "@/App";
 import { FormEvent, useState } from "react";
 import { useLogin, useRegister } from "../hooks/useAuth";
+import styles from "../../App.module.css";
 
 interface AuthPageProps {
   theme: Theme;
@@ -34,12 +35,12 @@ const AuthPage = ({ theme, onThemeToggle }: AuthPageProps) => {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
+    <div className={styles["login-container"]}>
+      <div className={styles["login-card"]}>
         <h1>Trading Automation Platform</h1>
         <form onSubmit={handleSubmit}>
           {!isLogin && (
-            <div className="form-group">
+            <div className={styles["form-group"]}>
               <label>Name</label>
               <input
                 type="text"
@@ -49,7 +50,7 @@ const AuthPage = ({ theme, onThemeToggle }: AuthPageProps) => {
               />
             </div>
           )}
-          <div className="form-group">
+          <div className={styles["form-group"]}>
             <label>Email</label>
             <input
               type="email"
@@ -58,7 +59,7 @@ const AuthPage = ({ theme, onThemeToggle }: AuthPageProps) => {
               required
             />
           </div>
-          <div className="form-group">
+          <div className={styles["form-group"]}>
             <label>Password</label>
             <input
               type="password"
@@ -67,17 +68,17 @@ const AuthPage = ({ theme, onThemeToggle }: AuthPageProps) => {
               required
             />
           </div>
-          {error && <div className="error-message">{error}</div>}
+          {error && <div className={styles["error-message"]}>{error}</div>}
           <button
             type="submit"
-            className="btn-primary"
+            className={styles["btn-primary"]}
             disabled={login.isPending || register.isPending}
           >
             {isLogin ? "Login" : "Register"}
           </button>
           <button
             type="button"
-            className="btn-secondary"
+            className={styles["btn-secondary"]}
             onClick={() => {
               setIsLogin(!isLogin);
               setError("");
@@ -88,7 +89,7 @@ const AuthPage = ({ theme, onThemeToggle }: AuthPageProps) => {
               : "Already have an account? Login"}
           </button>
         </form>
-        <button className="btn-theme" onClick={onThemeToggle}>
+        <button className={styles["btn-theme"]} onClick={onThemeToggle}>
           {theme === "dark" ? "Light" : "Dark"}
         </button>
       </div>

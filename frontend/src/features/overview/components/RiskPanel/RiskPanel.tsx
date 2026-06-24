@@ -1,16 +1,16 @@
 import { useAccountInfo } from "../../../Dashboard/hooks/useAccount.js";
 import { IRiskPanelProps } from "../../types/overview.types.js";
-import "./RiskPanel.css";
+import styles from "./RiskPanel.module.css";
 
 const RiskPanel = ({ accountId }: IRiskPanelProps) => {
   const { data: info, isLoading } = useAccountInfo(accountId);
 
   if (isLoading) {
-    return <div className="loading">Loading risk data...</div>;
+    return <div className={styles.loading}>Loading risk data...</div>;
   }
 
   if (!info) {
-    return <div className="error">Failed to load risk data</div>;
+    return <div className={styles.error}>Failed to load risk data</div>;
   }
 
   const maxExposure = info.balance * 0.5;
@@ -23,34 +23,34 @@ const RiskPanel = ({ accountId }: IRiskPanelProps) => {
         : "#2ed573";
 
   return (
-    <div className="risk-panel">
+    <div className={styles["risk-panel"]}>
       <h3>Risk Status</h3>
-      <div className="risk-metrics">
-        <div className="metric">
-          <span className="label">Open Trades</span>
-          <span className="value">{info.openTrades}</span>
+      <div className={styles["risk-metrics"]}>
+        <div className={styles.metric}>
+          <span className={styles.label}>Open Trades</span>
+          <span className={styles.value}>{info.openTrades}</span>
         </div>
-        <div className="metric">
-          <span className="label">Exposure</span>
-          <span className="value">${info.exposure.toFixed(2)}</span>
+        <div className={styles.metric}>
+          <span className={styles.label}>Exposure</span>
+          <span className={styles.value}>${info.exposure.toFixed(2)}</span>
         </div>
-        <div className="metric">
-          <span className="label">Exposure %</span>
-          <span className="value" style={{ color: riskColor }}>
+        <div className={styles.metric}>
+          <span className={styles.label}>Exposure %</span>
+          <span className={styles.value} style={{ color: riskColor }}>
             {exposurePercent.toFixed(1)}%
           </span>
         </div>
       </div>
-      <div className="risk-bar">
+      <div className={styles["risk-bar"]}>
         <div
-          className="risk-fill"
+          className={styles["risk-fill"]}
           style={{
             width: `${Math.min(exposurePercent, 100)}%`,
             backgroundColor: riskColor,
           }}
         />
       </div>
-      <p className="risk-note">Max Exposure: ${maxExposure.toFixed(2)}</p>
+      <p className={styles["risk-note"]}>Max Exposure: ${maxExposure.toFixed(2)}</p>
     </div>
   );
 };

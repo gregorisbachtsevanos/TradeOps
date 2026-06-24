@@ -1,5 +1,5 @@
 import { IAccountSelectorProps } from "../../types/dashboard.types";
-import "./AccountSelector.css";
+import styles from "./AccountSelector.module.css";
 
 const AccountSelector = ({
   accounts,
@@ -10,17 +10,17 @@ const AccountSelector = ({
 }: IAccountSelectorProps) => {
   if (accounts.length === 0) {
     return (
-      <div className="account-selector empty-state">
+      <div className={`${styles["account-selector"]} ${styles["empty-state"]}`}>
         <div>
-          <p className="empty-title">No trading accounts connected</p>
-          <p className="no-accounts">
+          <p className={styles["empty-title"]}>No trading accounts connected</p>
+          <p className={styles["no-accounts"]}>
             Spin up a demo MT5 account to explore the dashboard with realistic
             mock data.
           </p>
         </div>
         {onCreateDemoAccount && (
           <button
-            className="btn-create-account"
+            className={styles["btn-create-account"]}
             onClick={onCreateDemoAccount}
             disabled={isCreating}
           >
@@ -32,7 +32,7 @@ const AccountSelector = ({
   }
 
   return (
-    <div className="account-selector">
+    <div className={styles["account-selector"]}>
       <label>Trading Account</label>
       <select
         value={selectedId || ""}
@@ -45,7 +45,7 @@ const AccountSelector = ({
           </option>
         ))}
       </select>
-      <div className="account-status">
+      <div className={styles["account-status"]}>
         {accounts.length} account{accounts.length === 1 ? "" : "s"} synced
       </div>
     </div>

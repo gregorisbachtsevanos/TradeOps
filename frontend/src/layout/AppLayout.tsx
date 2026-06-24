@@ -2,6 +2,7 @@ import { Theme } from "@/App";
 import { useLogout } from "@/features/auth/hooks/useAuth";
 import Dashboard from "@/features/Dashboard";
 import { useStore } from "@/app/hooks/useStore";
+import styles from "@/App.module.css";
 
 interface AppLayoutProps {
   theme: Theme;
@@ -18,15 +19,15 @@ const AppLayout = ({ theme, onThemeToggle }: AppLayoutProps) => {
   };
   return (
     <>
-      <header className="header">
-        <div className="header-content">
+      <header className={styles.header}>
+        <div className={styles["header-content"]}>
           <h1>Trading Automation Platform</h1>
-          <div className="header-user">
-            <button className="btn-theme" onClick={onThemeToggle}>
+          <div className={styles["header-user"]}>
+            <button className={styles["btn-theme"]} onClick={onThemeToggle}>
               {theme === "dark" ? "Light" : "Dark"}
             </button>
             <span>{user?.name}</span>
-            <button onClick={handleLogout} className="btn-logout">
+            <button onClick={handleLogout} className={styles["btn-logout"]}>
               Logout
             </button>
           </div>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAccountInfo } from "../hooks/useAccount.js";
 import { IKpiStripProps } from "../types/dashboard.types.js";
+import styles from "../view/Dashboard.module.css";
 
 const KpiStrip = ({ accountId }: IKpiStripProps) => {
   const { data: info, isLoading } = useAccountInfo(accountId || "");
@@ -34,26 +35,26 @@ const KpiStrip = ({ accountId }: IKpiStripProps) => {
 
   return (
     <section
-      className="kpi-strip"
+      className={styles["kpi-strip"]}
       aria-label="Account key performance indicators"
     >
-      <div className="kpi-card">
+      <div className={styles["kpi-card"]}>
         <span>Balance</span>
         <strong>{formatMoney(info?.balance)}</strong>
       </div>
-      <div className={`kpi-card live-flash ${flashDirection}`}>
+      <div className={`${styles["kpi-card"]} ${styles["live-flash"]} ${styles[flashDirection]}`}>
         <span>Equity</span>
         <strong>{formatMoney(liveEquity)}</strong>
       </div>
-      <div className={`kpi-card live-flash ${flashDirection}`}>
+      <div className={`${styles["kpi-card"]} ${styles["live-flash"]} ${styles[flashDirection]}`}>
         <span>Daily P&L</span>
-        <strong className={pnl >= 0 ? "positive" : "negative"}>
+        <strong className={pnl >= 0 ? styles.positive : styles.negative}>
           {formatMoney(pnl)}
         </strong>
       </div>
-      <div className={`kpi-card live-flash ${flashDirection}`}>
+      <div className={`${styles["kpi-card"]} ${styles["live-flash"]} ${styles[flashDirection]}`}>
         <span>Return</span>
-        <strong className={returnPercent >= 0 ? "positive" : "negative"}>
+        <strong className={returnPercent >= 0 ? styles.positive : styles.negative}>
           {isLoading ? "Loading..." : `${returnPercent.toFixed(2)}%`}
         </strong>
       </div>

@@ -2,7 +2,7 @@ import DetailPanel from "../components/DetailPanel/DetailPanel.js";
 import StrategyItems from "../components/StrategyItems/StrategyItems.js";
 import StrategyWizard from "../components/StrategyWizard/StrategyWizard.js";
 import useHandleStrategies from "../hooks/useHandleStrateries.js";
-import "./Strategies.css";
+import styles from "./Strategies.module.css";
 
 const Strategies = () => {
   const {
@@ -20,17 +20,17 @@ const Strategies = () => {
   } = useHandleStrategies();
 
   if (isLoading) {
-    return <div className="loading">Loading strategies...</div>;
+    return <div className={styles.loading}>Loading strategies...</div>;
   }
 
   return (
-    <div className="strategies-page">
-      <div className="strategies-layout">
-        <div className="strategies-list-panel">
-          <div className="panel-header">
+    <div className={styles["strategies-page"]}>
+      <div className={styles["strategies-layout"]}>
+        <div className={styles["strategies-list-panel"]}>
+          <div className={styles["panel-header"]}>
             <h3>Strategies</h3>
             <button
-              className="btn-create"
+              className={styles["btn-create"]}
               onClick={() => handleCreateNewStrategy(true)}
             >
               + New Strategy

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./StrategyWizard.css";
+import styles from "./StrategyWizard.module.css";
 import {
   CONDITION_OPTIONS,
   CONFIRMATION_TYPES,
@@ -186,32 +186,32 @@ const StrategyWizard = ({
   };
 
   return (
-    <div className="wizard-overlay" onClick={onClose}>
-      <div className="wizard-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="wizard-header">
+    <div className={styles["wizard-overlay"]} onClick={onClose}>
+      <div className={styles["wizard-modal"]} onClick={(e) => e.stopPropagation()}>
+        <div className={styles["wizard-header"]}>
           <h3>{strategy ? "Edit Strategy" : "Create Strategy"}</h3>
-          <button className="btn-close" onClick={onClose}>
+          <button className={styles["btn-close"]} onClick={onClose}>
             ✕
           </button>
         </div>
 
-        <div className="wizard-steps">
+        <div className={styles["wizard-steps"]}>
           {STEPS.map((step, i) => (
             <div
               key={step.id}
-              className={`wizard-step ${i <= stepIndex ? "completed" : ""} ${step.id === currentStep ? "active" : ""}`}
+              className={`${styles["wizard-step"]} ${i <= stepIndex ? styles.completed : ""} ${step.id === currentStep ? styles.active : ""}`}
               onClick={() => setCurrentStep(step.id)}
             >
-              <span className="step-number">{i + 1}</span>
-              <span className="step-label">{step.label}</span>
+              <span className={styles["step-number"]}>{i + 1}</span>
+              <span className={styles["step-label"]}>{step.label}</span>
             </div>
           ))}
         </div>
 
-        <div className="wizard-body">
+        <div className={styles["wizard-body"]}>
           {currentStep === "basic" && (
-            <div className="form-section">
-              <div className="form-group">
+            <div className={styles["form-section"]}>
+              <div className={styles["form-group"]}>
                 <label>Strategy Name *</label>
                 <input
                   type="text"
@@ -221,7 +221,7 @@ const StrategyWizard = ({
                   required
                 />
               </div>
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>Description</label>
                 <textarea
                   value={formData.description || ""}
@@ -230,7 +230,7 @@ const StrategyWizard = ({
                   rows={3}
                 />
               </div>
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>Notes</label>
                 <textarea
                   value={formData.notes || ""}
@@ -243,15 +243,15 @@ const StrategyWizard = ({
           )}
 
           {currentStep === "markets" && (
-            <div className="form-section">
-              <div className="form-group">
+            <div className={styles["form-section"]}>
+              <div className={styles["form-group"]}>
                 <label>Markets *</label>
-                <div className="chip-group">
+                <div className={styles["chip-group"]}>
                   {MARKET_OPTIONS.map((m) => (
                     <button
                       key={m}
                       type="button"
-                      className={`chip ${(formData.markets || []).includes(m) ? "active" : ""}`}
+                      className={`${styles.chip} ${(formData.markets || []).includes(m) ? styles.active : ""}`}
                       onClick={() => toggleArrayItem("markets", m)}
                     >
                       {m}
@@ -259,14 +259,14 @@ const StrategyWizard = ({
                   ))}
                 </div>
               </div>
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>Instruments</label>
-                <div className="chip-group">
+                <div className={styles["chip-group"]}>
                   {INSTRUMENT_OPTIONS.map((inst) => (
                     <button
                       key={inst}
                       type="button"
-                      className={`chip ${(formData.instruments || []).includes(inst) ? "active" : ""}`}
+                      className={`${styles.chip} ${(formData.instruments || []).includes(inst) ? styles.active : ""}`}
                       onClick={() => toggleArrayItem("instruments", inst)}
                     >
                       {inst}
@@ -274,8 +274,8 @@ const StrategyWizard = ({
                   ))}
                 </div>
               </div>
-              <div className="form-row">
-                <div className="form-group">
+              <div className={styles["form-row"]}>
+                <div className={styles["form-group"]}>
                   <label>Analysis Timeframe</label>
                   <select
                     value={formData.analysisTimeframe || ""}
@@ -294,7 +294,7 @@ const StrategyWizard = ({
                     ))}
                   </select>
                 </div>
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>Entry Timeframe</label>
                   <select
                     value={formData.entryTimeframe || ""}
@@ -311,14 +311,14 @@ const StrategyWizard = ({
                   </select>
                 </div>
               </div>
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>Market Conditions</label>
-                <div className="chip-group">
+                <div className={styles["chip-group"]}>
                   {CONDITION_OPTIONS.map((c) => (
                     <button
                       key={c}
                       type="button"
-                      className={`chip ${(formData.conditions || []).includes(c) ? "active" : ""}`}
+                      className={`${styles.chip} ${(formData.conditions || []).includes(c) ? styles.active : ""}`}
                       onClick={() => toggleArrayItem("conditions", c)}
                     >
                       {c.replace(/_/g, " ")}
@@ -326,14 +326,14 @@ const StrategyWizard = ({
                   ))}
                 </div>
               </div>
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>Trading Sessions</label>
-                <div className="chip-group">
+                <div className={styles["chip-group"]}>
                   {SESSION_OPTIONS.map((s) => (
                     <button
                       key={s}
                       type="button"
-                      className={`chip ${(formData.sessions || []).includes(s) ? "active" : ""}`}
+                      className={`${styles.chip} ${(formData.sessions || []).includes(s) ? styles.active : ""}`}
                       onClick={() => toggleArrayItem("sessions", s)}
                     >
                       {s.replace(/_/g, " ")}
@@ -345,21 +345,21 @@ const StrategyWizard = ({
           )}
 
           {currentStep === "entry" && (
-            <div className="form-section">
-              <div className="section-header">
+            <div className={styles["form-section"]}>
+              <div className={styles["section-header"]}>
                 <h4>Entry Rules</h4>
                 <button
                   type="button"
-                  className="btn-add"
+                  className={styles["btn-add"]}
                   onClick={addEntryRule}
                 >
                   + Add Rule
                 </button>
               </div>
               {(formData.entryRules || []).map((rule, i) => (
-                <div key={i} className="rule-editor">
-                  <div className="form-row">
-                    <div className="form-group">
+                <div key={i} className={styles["rule-editor"]}>
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>Type</label>
                       <select
                         value={rule.type}
@@ -374,7 +374,7 @@ const StrategyWizard = ({
                         ))}
                       </select>
                     </div>
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>Name</label>
                       <input
                         type="text"
@@ -386,7 +386,7 @@ const StrategyWizard = ({
                       />
                     </div>
                   </div>
-                  <div className="form-group">
+                  <div className={styles["form-group"]}>
                     <label>Description</label>
                     <input
                       type="text"
@@ -397,8 +397,8 @@ const StrategyWizard = ({
                       placeholder="Describe the entry condition..."
                     />
                   </div>
-                  <div className="form-row">
-                    <label className="checkbox-label">
+                  <div className={styles["form-row"]}>
+                    <label className={styles["checkbox-label"]}>
                       <input
                         type="checkbox"
                         checked={rule.required || false}
@@ -410,7 +410,7 @@ const StrategyWizard = ({
                     </label>
                     <button
                       type="button"
-                      className="btn-remove"
+                      className={styles["btn-remove"]}
                       onClick={() => removeEntryRule(i)}
                     >
                       Remove
@@ -419,20 +419,20 @@ const StrategyWizard = ({
                 </div>
               ))}
 
-              <div className="section-header">
+              <div className={styles["section-header"]}>
                 <h4>Confirmations</h4>
                 <button
                   type="button"
-                  className="btn-add"
+                  className={styles["btn-add"]}
                   onClick={addConfirmation}
                 >
                   + Add Confirmation
                 </button>
               </div>
               {(formData.confirmations || []).map((conf, i) => (
-                <div key={i} className="rule-editor">
-                  <div className="form-row">
-                    <div className="form-group">
+                <div key={i} className={styles["rule-editor"]}>
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>Type</label>
                       <select
                         value={conf.type}
@@ -447,7 +447,7 @@ const StrategyWizard = ({
                         ))}
                       </select>
                     </div>
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>Name</label>
                       <input
                         type="text"
@@ -459,7 +459,7 @@ const StrategyWizard = ({
                       />
                     </div>
                   </div>
-                  <div className="form-group">
+                  <div className={styles["form-group"]}>
                     <label>Description</label>
                     <input
                       type="text"
@@ -470,8 +470,8 @@ const StrategyWizard = ({
                       placeholder="Describe the confirmation..."
                     />
                   </div>
-                  <div className="form-row">
-                    <label className="checkbox-label">
+                  <div className={styles["form-row"]}>
+                    <label className={styles["checkbox-label"]}>
                       <input
                         type="checkbox"
                         checked={conf.required || false}
@@ -483,7 +483,7 @@ const StrategyWizard = ({
                     </label>
                     <button
                       type="button"
-                      className="btn-remove"
+                      className={styles["btn-remove"]}
                       onClick={() => removeConfirmation(i)}
                     >
                       Remove
@@ -495,9 +495,9 @@ const StrategyWizard = ({
           )}
 
           {currentStep === "risk" && (
-            <div className="form-section">
-              <div className="form-row">
-                <div className="form-group">
+            <div className={styles["form-section"]}>
+              <div className={styles["form-row"]}>
+                <div className={styles["form-group"]}>
                   <label>Risk % per Trade</label>
                   <input
                     type="number"
@@ -513,7 +513,7 @@ const StrategyWizard = ({
                     step={0.1}
                   />
                 </div>
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>Max Daily Loss %</label>
                   <input
                     type="number"
@@ -531,8 +531,8 @@ const StrategyWizard = ({
                   />
                 </div>
               </div>
-              <div className="form-row">
-                <div className="form-group">
+              <div className={styles["form-row"]}>
+                <div className={styles["form-group"]}>
                   <label>Max Drawdown %</label>
                   <input
                     type="number"
@@ -549,7 +549,7 @@ const StrategyWizard = ({
                     placeholder="Optional"
                   />
                 </div>
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>Max Open Trades</label>
                   <input
                     type="number"
@@ -565,7 +565,7 @@ const StrategyWizard = ({
                   />
                 </div>
               </div>
-              <div className="form-group">
+              <div className={styles["form-group"]}>
                 <label>Max Daily Trades</label>
                 <input
                   type="number"
@@ -581,12 +581,12 @@ const StrategyWizard = ({
                 />
               </div>
 
-              <div className="section-header">
+              <div className={styles["section-header"]}>
                 <h4>Stop Loss</h4>
               </div>
-              <div className="rule-editor">
-                <div className="form-row">
-                  <div className="form-group">
+              <div className={styles["rule-editor"]}>
+                <div className={styles["form-row"]}>
+                  <div className={styles["form-group"]}>
                     <label>Type</label>
                     <select
                       value={formData.stopLoss?.type || "atr"}
@@ -608,7 +608,7 @@ const StrategyWizard = ({
                     </select>
                   </div>
                   {formData.stopLoss?.type === "atr" && (
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>ATR Multiplier</label>
                       <input
                         type="number"
@@ -627,7 +627,7 @@ const StrategyWizard = ({
                     </div>
                   )}
                   {formData.stopLoss?.type === "percentage" && (
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>Percentage %</label>
                       <input
                         type="number"
@@ -645,7 +645,7 @@ const StrategyWizard = ({
                     </div>
                   )}
                   {formData.stopLoss?.type === "fixed_pips" && (
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>Fixed Pips</label>
                       <input
                         type="number"
@@ -662,7 +662,7 @@ const StrategyWizard = ({
                     </div>
                   )}
                 </div>
-                <div className="form-group">
+                <div className={styles["form-group"]}>
                   <label>Description</label>
                   <input
                     type="text"
@@ -678,16 +678,16 @@ const StrategyWizard = ({
                 </div>
               </div>
 
-              <div className="section-header">
+              <div className={styles["section-header"]}>
                 <h4>Take Profit Targets</h4>
-                <button type="button" className="btn-add" onClick={addTpTarget}>
+                <button type="button" className={styles["btn-add"]} onClick={addTpTarget}>
                   + Add Target
                 </button>
               </div>
               {(formData.tpTargets || []).map((tp, i) => (
-                <div key={i} className="rule-editor">
-                  <div className="form-row">
-                    <div className="form-group">
+                <div key={i} className={styles["rule-editor"]}>
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>Type</label>
                       <select
                         value={tp.type}
@@ -703,7 +703,7 @@ const StrategyWizard = ({
                       </select>
                     </div>
                     {tp.type === "risk_reward" && (
-                      <div className="form-group">
+                      <div className={styles["form-group"]}>
                         <label>R:R Ratio</label>
                         <input
                           type="number"
@@ -721,7 +721,7 @@ const StrategyWizard = ({
                       </div>
                     )}
                     {tp.type === "fixed_pips" && (
-                      <div className="form-group">
+                      <div className={styles["form-group"]}>
                         <label>Fixed Pips</label>
                         <input
                           type="number"
@@ -737,7 +737,7 @@ const StrategyWizard = ({
                         />
                       </div>
                     )}
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>Partial %</label>
                       <input
                         type="number"
@@ -757,7 +757,7 @@ const StrategyWizard = ({
                       />
                     </div>
                   </div>
-                  <div className="form-group">
+                  <div className={styles["form-group"]}>
                     <label>Description</label>
                     <input
                       type="text"
@@ -770,7 +770,7 @@ const StrategyWizard = ({
                   </div>
                   <button
                     type="button"
-                    className="btn-remove"
+                    className={styles["btn-remove"]}
                     onClick={() => removeTpTarget(i)}
                   >
                     Remove Target
@@ -778,12 +778,12 @@ const StrategyWizard = ({
                 </div>
               ))}
 
-              <div className="section-header">
+              <div className={styles["section-header"]}>
                 <h4>Trade Management</h4>
               </div>
-              <div className="rule-editor">
-                <div className="form-row">
-                  <div className="form-group">
+              <div className={styles["rule-editor"]}>
+                <div className={styles["form-row"]}>
+                  <div className={styles["form-group"]}>
                     <label>Breakeven Trigger (pips)</label>
                     <input
                       type="number"
@@ -803,7 +803,7 @@ const StrategyWizard = ({
                       placeholder="Optional"
                     />
                   </div>
-                  <div className="form-group">
+                  <div className={styles["form-group"]}>
                     <label>Max Hold Time (hours)</label>
                     <input
                       type="number"
@@ -824,7 +824,7 @@ const StrategyWizard = ({
                     />
                   </div>
                 </div>
-                <label className="checkbox-label">
+                <label className={styles["checkbox-label"]}>
                   <input
                     type="checkbox"
                     checked={formData.tradeManagement?.trailingStop || false}
@@ -841,8 +841,8 @@ const StrategyWizard = ({
                   Enable Trailing Stop
                 </label>
                 {formData.tradeManagement?.trailingStop && (
-                  <div className="form-row">
-                    <div className="form-group">
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>Trailing Stop Pips</label>
                       <input
                         type="number"
@@ -857,7 +857,7 @@ const StrategyWizard = ({
                         min={1}
                       />
                     </div>
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>Activate After Pips</label>
                       <input
                         type="number"
@@ -876,11 +876,11 @@ const StrategyWizard = ({
                 )}
               </div>
 
-              <div className="section-header">
+              <div className={styles["section-header"]}>
                 <h4>News Rules</h4>
               </div>
-              <div className="rule-editor">
-                <label className="checkbox-label">
+              <div className={styles["rule-editor"]}>
+                <label className={styles["checkbox-label"]}>
                   <input
                     type="checkbox"
                     checked={formData.newsRules?.avoidHighImpact ?? true}
@@ -896,8 +896,8 @@ const StrategyWizard = ({
                   />
                   Avoid High-Impact News
                 </label>
-                <div className="form-row">
-                  <div className="form-group">
+                <div className={styles["form-row"]}>
+                  <div className={styles["form-group"]}>
                     <label>No Trades Before News (min)</label>
                     <input
                       type="number"
@@ -916,7 +916,7 @@ const StrategyWizard = ({
                       min={0}
                     />
                   </div>
-                  <div className="form-group">
+                  <div className={styles["form-group"]}>
                     <label>No Trades After News (min)</label>
                     <input
                       type="number"
@@ -934,7 +934,7 @@ const StrategyWizard = ({
                     />
                   </div>
                 </div>
-                <label className="checkbox-label">
+                <label className={styles["checkbox-label"]}>
                   <input
                     type="checkbox"
                     checked={formData.newsRules?.closeBeforeNews || false}
@@ -955,17 +955,17 @@ const StrategyWizard = ({
           )}
 
           {currentStep === "exit" && (
-            <div className="form-section">
-              <div className="section-header">
+            <div className={styles["form-section"]}>
+              <div className={styles["section-header"]}>
                 <h4>Exit Rules</h4>
-                <button type="button" className="btn-add" onClick={addExitRule}>
+                <button type="button" className={styles["btn-add"]} onClick={addExitRule}>
                   + Add Rule
                 </button>
               </div>
               {(formData.exitRules || []).map((rule, i) => (
-                <div key={i} className="rule-editor">
-                  <div className="form-row">
-                    <div className="form-group">
+                <div key={i} className={styles["rule-editor"]}>
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>Type</label>
                       <select
                         value={rule.type}
@@ -986,7 +986,7 @@ const StrategyWizard = ({
                         ))}
                       </select>
                     </div>
-                    <div className="form-group">
+                    <div className={styles["form-group"]}>
                       <label>Name</label>
                       <input
                         type="text"
@@ -998,7 +998,7 @@ const StrategyWizard = ({
                       />
                     </div>
                   </div>
-                  <div className="form-group">
+                  <div className={styles["form-group"]}>
                     <label>Description</label>
                     <input
                       type="text"
@@ -1011,7 +1011,7 @@ const StrategyWizard = ({
                   </div>
                   <button
                     type="button"
-                    className="btn-remove"
+                    className={styles["btn-remove"]}
                     onClick={() => removeExitRule(i)}
                   >
                     Remove
@@ -1022,21 +1022,21 @@ const StrategyWizard = ({
           )}
 
           {currentStep === "checklist" && (
-            <div className="form-section">
-              <div className="section-header">
+            <div className={styles["form-section"]}>
+              <div className={styles["section-header"]}>
                 <h4>Pre-Trade Checklist</h4>
                 <button
                   type="button"
-                  className="btn-add"
+                  className={styles["btn-add"]}
                   onClick={addChecklistItem}
                 >
                   + Add Item
                 </button>
               </div>
               {(formData.checklist || []).map((item, i) => (
-                <div key={i} className="rule-editor">
-                  <div className="form-row">
-                    <div className="form-group">
+                <div key={i} className={styles["rule-editor"]}>
+                  <div className={styles["form-row"]}>
+                    <div className={styles["form-group"]}>
                       <label>Item Name</label>
                       <input
                         type="text"
@@ -1047,7 +1047,7 @@ const StrategyWizard = ({
                         placeholder="Checklist item"
                       />
                     </div>
-                    <label className="checkbox-label">
+                    <label className={styles["checkbox-label"]}>
                       <input
                         type="checkbox"
                         checked={item.required || false}
@@ -1058,7 +1058,7 @@ const StrategyWizard = ({
                       Required
                     </label>
                   </div>
-                  <div className="form-group">
+                  <div className={styles["form-group"]}>
                     <label>Description</label>
                     <input
                       type="text"
@@ -1071,7 +1071,7 @@ const StrategyWizard = ({
                   </div>
                   <button
                     type="button"
-                    className="btn-remove"
+                    className={styles["btn-remove"]}
                     onClick={() => removeChecklistItem(i)}
                   >
                     Remove
@@ -1082,22 +1082,22 @@ const StrategyWizard = ({
           )}
         </div>
 
-        <div className="wizard-footer">
-          <button className="btn-secondary" onClick={onClose}>
+        <div className={styles["wizard-footer"]}>
+          <button className={styles["btn-secondary"]} onClick={onClose}>
             Cancel
           </button>
           {!isFirstStep && (
-            <button className="btn-secondary" onClick={prevStep}>
+            <button className={styles["btn-secondary"]} onClick={prevStep}>
               Previous
             </button>
           )}
           {!isLastStep && (
-            <button className="btn-primary" onClick={nextStep}>
+            <button className={styles["btn-primary"]} onClick={nextStep}>
               Next
             </button>
           )}
           {isLastStep && (
-            <button className="btn-primary" onClick={handleSubmit}>
+            <button className={styles["btn-primary"]} onClick={handleSubmit}>
               {strategy ? "Update Strategy" : "Create Strategy"}
             </button>
           )}

@@ -4,7 +4,7 @@ import {
   useCloseTrade,
   type TradeFilters,
 } from "../hooks/useTrades.js";
-import "./Trades.css";
+import styles from "./Trades.module.css";
 import { ITtradesProps } from "../types/trades.types.js";
 
 const Trades = ({ accountId }: ITtradesProps) => {
@@ -15,18 +15,18 @@ const Trades = ({ accountId }: ITtradesProps) => {
   const { mutate: closeTrade, isPending: isClosing } = useCloseTrade();
 
   if (isLoading) {
-    return <div className="loading">Loading trades...</div>;
+    return <div className={styles.loading}>Loading trades...</div>;
   }
 
   if (!tradesData) {
-    return <div className="error">Failed to load trades</div>;
+    return <div className={styles.error}>Failed to load trades</div>;
   }
 
   const { items: trades, pagination } = tradesData;
 
   return (
-    <div className="trades-table">
-      <div className="trades-header">
+    <div className={styles["trades-table"]}>
+      <div className={styles["trades-header"]}>
         <h3>Trading Activity</h3>
         <select
           value={status || ""}
@@ -40,7 +40,7 @@ const Trades = ({ accountId }: ITtradesProps) => {
       </div>
 
       {trades.length === 0 ? (
-        <p className="empty-state">No trades found</p>
+        <p className={styles["empty-state"]}>No trades found</p>
       ) : (
         <>
           <table>
@@ -63,8 +63,8 @@ const Trades = ({ accountId }: ITtradesProps) => {
                   key={trade.id}
                   className={`status-${trade.status.toLowerCase()}`}
                 >
-                  <td className="symbol">{trade.symbol}</td>
-                  <td className={`direction ${trade.direction.toLowerCase()}`}>
+                  <td className={styles.symbol}>{trade.symbol}</td>
+                  <td className={`${styles.direction} ${styles[trade.direction.toLowerCase()]}`}>
                     {trade.direction}
                   </td>
                   <td>{trade.strategy?.name || "-"}</td>
@@ -74,13 +74,13 @@ const Trades = ({ accountId }: ITtradesProps) => {
                     {trade.exitPrice ? `$${trade.exitPrice.toFixed(2)}` : "-"}
                   </td>
                   <td
-                    className={`pnl ${(trade.pnl ?? 0) >= 0 ? "positive" : "negative"}`}
+                    className={`${styles.pnl} ${(trade.pnl ?? 0) >= 0 ? styles.positive : styles.negative}`}
                   >
                     {trade.pnl ? `$${trade.pnl.toFixed(2)}` : "-"}
                   </td>
                   <td>
                     <span
-                      className={`badge badge-${trade.status.toLowerCase()}`}
+                      className={`${styles.badge} ${styles[`badge-${trade.status.toLowerCase()}` as keyof typeof styles]}`}
                     >
                       {trade.status}
                     </span>
@@ -88,7 +88,7 @@ const Trades = ({ accountId }: ITtradesProps) => {
                   <td>
                     {trade.status === "OPEN" && (
                       <button
-                        className="btn-close"
+                        className={styles["btn-close"]}
                         onClick={() => closeTrade(trade.id)}
                         disabled={isClosing}
                       >
@@ -101,7 +101,7 @@ const Trades = ({ accountId }: ITtradesProps) => {
             </tbody>
           </table>
 
-          <div className="pagination">
+          <div className={styles.pagination}>
             <button disabled={page === 1} onClick={() => setPage(page - 1)}>
               Previous
             </button>

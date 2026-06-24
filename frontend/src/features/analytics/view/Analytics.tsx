@@ -1,16 +1,16 @@
 import { useState } from "react";
+import { pnlRanges } from "../helpers/contants.js";
+import {
+  buildPnlSeries,
+  formatMoney,
+  formatPercent,
+  formatProfitFactor,
+  getRangeDescription,
+  shouldShowDateLabel,
+} from "../helpers/utils.js";
 import { useAccountMetrics, useDailyPnL } from "../hooks/useAnalytics.js";
-import { IDailyPnL, IAnalyticsProps } from "../types/analytics.types.js";
-import "./analytics.css";
-
-const pnlRanges = [
-  { label: "Daily", days: 1 },
-  { label: "Week", days: 7 },
-  { label: "Month", days: 30 },
-  { label: "3M", days: 90 },
-  { label: "6M", days: 180 },
-  { label: "1Y", days: 365 },
-] as const;
+import { IAnalyticsProps } from "../types/analytics.types.js";
+import styles from "./Analytics.module.css";
 
 const Analytics = ({ accountId }: IAnalyticsProps) => {
   const [selectedRange, setSelectedRange] = useState<
@@ -24,11 +24,11 @@ const Analytics = ({ accountId }: IAnalyticsProps) => {
   );
 
   if (metricsLoading || pnlLoading) {
-    return <div className="loading">Loading analytics...</div>;
+    return <div className={styles.loading}>Loading analytics...</div>;
   }
 
   if (!metrics || !dailyPnLData) {
-    return <div className="error">Failed to load analytics</div>;
+    return <div className={styles.error}>Failed to load analytics</div>;
   }
 
   const dailyPnL = buildPnlSeries(dailyPnLData, selectedRange.days);
@@ -44,80 +44,79 @@ const Analytics = ({ accountId }: IAnalyticsProps) => {
     dailyPnL[0],
   );
   const maxPnL = Math.max(...dailyPnL.map((day) => Math.abs(day.pnl)), 1);
-  const formatMoney = (value: number | null | undefined) =>
-    `$${(value ?? 0).toFixed(2)}`;
-  const formatPercent = (value: number | null | undefined) =>
-    `${(value ?? 0).toFixed(2)}%`;
-  const formatProfitFactor = (value: number | null | undefined) =>
-    typeof value === "number" && Number.isFinite(value)
-      ? value.toFixed(2)
-      : "N/A";
 
   return (
-    <div className="strategy-performance">
-      <div className="metrics-grid">
-        <div className="metric-card">
-          <span className="label">Total Trades</span>
-          <span className="value">{metrics.totalTrades}</span>
+    <div className={styles["strategy-performance"]}>
+      <div className={styles["metrics-grid"]}>
+        <div className={styles["metric-card"]}>
+          <span className={styles.label}>Total Trades</span>
+          <span className={styles.value}>{metrics.totalTrades}</span>
         </div>
-        <div className="metric-card">
-          <span className="label">Win Rate</span>
-          <span className="value">{(metrics.winRate ?? 0).toFixed(1)}%</span>
+        <div className={styles["metric-card"]}>
+          <span className={styles.label}>Win Rate</span>
+          <span className={styles.value}>
+            {(metrics.winRate ?? 0).toFixed(1)}%
+          </span>
         </div>
-        <div className="metric-card">
-          <span className="label">Wins/Losses</span>
-          <span className="value">
+        <div className={styles["metric-card"]}>
+          <span className={styles.label}>Wins/Losses</span>
+          <span className={styles.value}>
             {metrics.totalWinningTrades}/{metrics.totalLosingTrades}
           </span>
         </div>
-        <div className="metric-card">
-          <span className="label">Total Profit</span>
-          <span className="value positive">
+        <div className={styles["metric-card"]}>
+          <span className={styles.label}>Total Profit</span>
+          <span className={`${styles.value} ${styles.positive}`}>
             {formatMoney(metrics.totalProfit)}
           </span>
         </div>
-        <div className="metric-card">
-          <span className="label">Total Loss</span>
-          <span className="value negative">
+        <div className={styles["metric-card"]}>
+          <span className={styles.label}>Total Loss</span>
+          <span className={`${styles.value} ${styles.negative}`}>
             {formatMoney(metrics.totalLoss)}
           </span>
         </div>
-        <div className="metric-card">
-          <span className="label">Profit Factor</span>
-          <span className="value">
+        <div className={styles["metric-card"]}>
+          <span className={styles.label}>Profit Factor</span>
+          <span className={styles.value}>
             {formatProfitFactor(metrics.profitFactor)}
           </span>
         </div>
-        <div className="metric-card">
-          <span className="label">Max Drawdown</span>
-          <span className="value negative">
+        <div className={styles["metric-card"]}>
+          <span className={styles.label}>Max Drawdown</span>
+          <span className={`${styles.value} ${styles.negative}`}>
             {formatPercent(metrics.maxDrawdown)}
           </span>
         </div>
-        <div className="metric-card">
-          <span className="label">Avg Win/Loss</span>
-          <span className="value">
+        <div className={styles["metric-card"]}>
+          <span className={styles.label}>Avg Win/Loss</span>
+          <span className={styles.value}>
             {formatMoney(metrics.averageWin)} /{" "}
             {formatMoney(metrics.averageLoss)}
           </span>
         </div>
       </div>
 
-      <div className="pnl-history">
-        <div className="pnl-header">
+      <div className={styles["pnl-history"]}>
+        <div className={styles["pnl-header"]}>
           <div>
-            <span className="section-kicker">Portfolio performance</span>
+            <span className={styles["section-kicker"]}>
+              Portfolio performance
+            </span>
             <h3>Daily P&L</h3>
             <p>
               {getRangeDescription(selectedRange.days)} of account performance
             </p>
           </div>
-          <div className="pnl-range-switcher" aria-label="Daily P&L range">
+          <div
+            className={styles["pnl-range-switcher"]}
+            aria-label="Daily P&L range"
+          >
             {pnlRanges.map((range) => (
               <button
                 key={range.label}
                 className={
-                  selectedRange.days === range.days ? "active" : undefined
+                  selectedRange.days === range.days ? styles.active : undefined
                 }
                 onClick={() => setSelectedRange(range)}
               >
@@ -126,8 +125,8 @@ const Analytics = ({ accountId }: IAnalyticsProps) => {
             ))}
           </div>
           <div
-            className={`pnl-total-card ${
-              totalDailyPnL >= 0 ? "positive" : "negative"
+            className={`${styles["pnl-total-card"]} ${
+              totalDailyPnL >= 0 ? styles.positive : styles.negative
             }`}
           >
             <span>Total P&L</span>
@@ -135,32 +134,36 @@ const Analytics = ({ accountId }: IAnalyticsProps) => {
           </div>
         </div>
 
-        <div className="pnl-summary-row">
+        <div className={styles["pnl-summary-row"]}>
           <div>
             <span>Profitable days</span>
-            <strong className="positive">{positiveDays}</strong>
+            <strong className={styles.positive}>{positiveDays}</strong>
           </div>
           <div>
             <span>Losing days</span>
-            <strong className="negative">{negativeDays}</strong>
+            <strong className={styles.negative}>{negativeDays}</strong>
           </div>
           <div>
             <span>Best day</span>
-            <strong className="positive">{formatMoney(bestDay?.pnl)}</strong>
+            <strong className={styles.positive}>
+              {formatMoney(bestDay?.pnl)}
+            </strong>
           </div>
           <div>
             <span>Worst day</span>
-            <strong className="negative">{formatMoney(worstDay?.pnl)}</strong>
+            <strong className={styles.negative}>
+              {formatMoney(worstDay?.pnl)}
+            </strong>
           </div>
         </div>
 
-        <div className="pnl-chart etoro-style">
+        <div className={`${styles["pnl-chart"]} ${styles["etoro-style"]}`}>
           {dailyPnL.length === 0 ? (
-            <p className="empty">No P&L data available</p>
+            <p className={styles.empty}>No P&L data available</p>
           ) : (
             <>
-              <div className="zero-line" />
-              <div className="chart-bars">
+              <div className={styles["zero-line"]} />
+              <div className={styles["chart-bars"]}>
                 {dailyPnL.map((day, index) => {
                   const height =
                     day.pnl === 0
@@ -175,11 +178,11 @@ const Analytics = ({ accountId }: IAnalyticsProps) => {
                   );
 
                   return (
-                    <div className="pnl-day" key={day.date}>
-                      <div className="bar-track">
+                    <div className={styles["pnl-day"]} key={day.date}>
+                      <div className={styles["bar-track"]}>
                         <div
-                          className={`bar ${
-                            day.pnl >= 0 ? "positive" : "negative"
+                          className={`${styles.bar} ${
+                            day.pnl >= 0 ? styles.positive : styles.negative
                           }`}
                           title={`${dateLabel}: ${formatMoney(day.pnl)}`}
                           style={{
@@ -201,40 +204,6 @@ const Analytics = ({ accountId }: IAnalyticsProps) => {
       </div>
     </div>
   );
-};
-
-const buildPnlSeries = (days: IDailyPnL[], rangeDays: number) => {
-  const pnlByDate = new Map(days.map((day) => [day.date, day.pnl]));
-  const today = new Date();
-
-  return Array.from({ length: rangeDays }, (_, index) => {
-    const date = new Date(today);
-    date.setDate(today.getDate() - (rangeDays - 1 - index));
-    const key = date.toISOString().split("T")[0];
-
-    return {
-      date: key,
-      pnl: pnlByDate.get(key) ?? 0,
-      trades: days.find((day) => day.date === key)?.trades ?? 0,
-    };
-  });
-};
-
-const getRangeDescription = (days: number) => {
-  if (days === 1) return "Today";
-  if (days === 7) return "Last 7 days";
-  if (days === 30) return "Last 30 days";
-  if (days === 90) return "Last 3 months";
-  if (days === 180) return "Last 6 months";
-  return "Last 1 year";
-};
-
-const shouldShowDateLabel = (index: number, total: number) => {
-  if (total <= 7) return true;
-  if (total <= 30) return index % 6 === 0;
-  if (total <= 90) return index % 15 === 0;
-  if (total <= 180) return index % 30 === 0;
-  return index % 60 === 0;
 };
 
 export default Analytics;

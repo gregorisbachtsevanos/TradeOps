@@ -1,5 +1,6 @@
 import { useStrategies, useUpdateStrategy } from "../../hooks/useStrategies";
 import { IStrategy, StrategyItemsProps } from "../../types/strategies.types";
+import styles from "../view/Strategies.module.css";
 
 const StrategyItems = ({
   selectedStrategyId,
@@ -18,26 +19,26 @@ const StrategyItems = ({
   };
 
   return (
-    <div className="strategy-items">
+    <div className={styles["strategy-items"]}>
       {strategies?.length === 0 ? (
-        <p className="empty-state">
+        <p className={styles["empty-state"]}>
           No strategies yet. Create one to get started.
         </p>
       ) : (
         strategies?.map((strategy) => (
           <div
             key={strategy.id}
-            className={`strategy-item ${selectedStrategyId === strategy.id ? "selected" : ""}`}
+            className={`${styles["strategy-item"]} ${selectedStrategyId === strategy.id ? styles.selected : ""}`}
             onClick={() => handleSelectStrategy(strategy.id)}
           >
-            <div className="strategy-info">
-              <div className="strategy-name">
+            <div className={styles["strategy-info"]}>
+              <div className={styles["strategy-name"]}>
                 <span
-                  className={`status-dot ${strategy.isActive ? "active" : "inactive"}`}
+                  className={`${styles["status-dot"]} ${strategy.isActive ? styles.active : styles.inactive}`}
                 />
                 {strategy.name}
               </div>
-              <div className="strategy-meta">
+              <div className={styles["strategy-meta"]}>
                 <span>Risk: {strategy.riskPercent ?? 2}%</span>
                 <span>Trades: {strategy._count?.trades ?? 0}</span>
                 {strategy.markets?.length ? (
@@ -45,9 +46,9 @@ const StrategyItems = ({
                 ) : null}
               </div>
             </div>
-            <div className="strategy-actions">
+            <div className={styles["strategy-actions"]}>
               <button
-                className="btn-icon"
+                className={styles["btn-icon"]}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleToggleActive(strategy);
@@ -57,7 +58,7 @@ const StrategyItems = ({
                 {strategy.isActive ? "⏸" : "▶"}
               </button>
               <button
-                className="btn-icon"
+                className={styles["btn-icon"]}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleEdit(strategy);
@@ -67,7 +68,7 @@ const StrategyItems = ({
                 ✏
               </button>
               <button
-                className="btn-icon btn-delete"
+                className={`${styles["btn-icon"]} ${styles["btn-delete"]}`}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleDelete(strategy.id);

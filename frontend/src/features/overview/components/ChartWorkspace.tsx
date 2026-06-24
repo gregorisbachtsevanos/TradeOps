@@ -3,6 +3,7 @@ import { useRecentTrades } from "../../analytics/hooks/useAnalytics.js";
 import { normalizeSymbol, useLiveMarket } from "../hooks/useLiveMarket.js";
 import TradingViewChart from "./TradingViewChart.js";
 import { IChartWorkspaceProps, ITrade } from "../types/overview.types.js";
+import styles from "../../Dashboard/view/Dashboard.module.css";
 
 const ChartWorkspace = ({ accountId, theme }: IChartWorkspaceProps) => {
   const { data: trades } = useRecentTrades(accountId, 20);
@@ -46,16 +47,16 @@ const ChartWorkspace = ({ accountId, theme }: IChartWorkspaceProps) => {
   ];
 
   return (
-    <section className="chart-workspace">
-      <div className="workspace-main">
-        <div className="panel-header">
+    <section className={styles["chart-workspace"]}>
+      <div className={styles["workspace-main"]}>
+        <div className={styles["panel-header"]}>
           <div>
-            <p className="eyebrow">Professional chart workspace</p>
+            <p className={styles.eyebrow}>Professional chart workspace</p>
             <h3>{selectedSymbol}</h3>
           </div>
-          <div className="chart-actions">
-            <span className={`live-pill ${connectionState}`}>
-              <span className="status-dot" />
+          <div className={styles["chart-actions"]}>
+            <span className={`${styles["live-pill"]} ${styles[connectionState]}`}>
+              <span className={styles["status-dot"]} />
               {connectionState}
             </span>
             <select
@@ -68,28 +69,30 @@ const ChartWorkspace = ({ accountId, theme }: IChartWorkspaceProps) => {
                 </option>
               ))}
             </select>
-            <span className="chart-badge">TradingView</span>
+            <span className={styles["chart-badge"]}>TradingView</span>
           </div>
         </div>
         <TradingViewChart params={params} />
       </div>
 
-      <aside className="workspace-side">
-        <div className="workspace-card watchlist">
-          <div className="workspace-card-header">
+      <aside className={styles["workspace-side"]}>
+        <div className={`${styles["workspace-card"]} ${styles.watchlist}`}>
+          <div className={styles["workspace-card-header"]}>
             <span>Watchlist</span>
             <small>Live ticks</small>
           </div>
           {ticks.map((tick) => (
             <button
               key={tick.symbol}
-              className={`watchlist-row ${tick.symbol === selectedSymbol ? "active" : ""}`}
+              className={`${styles["watchlist-row"]} ${tick.symbol === selectedSymbol ? styles.active : ""}`}
               onClick={() => setSelectedSymbol(tick.symbol)}
             >
               <strong>{tick.symbol}</strong>
               <span
                 className={
-                  tick.direction === "up" ? "positive flash" : "negative flash"
+                  tick.direction === "up"
+                    ? `${styles.positive} ${styles.flash}`
+                    : `${styles.negative} ${styles.flash}`
                 }
               >
                 {formatPrice(tick.bid)}
@@ -99,20 +102,20 @@ const ChartWorkspace = ({ accountId, theme }: IChartWorkspaceProps) => {
           ))}
         </div>
 
-        <div className="workspace-card order-ticket">
-          <div className="workspace-card-header">
+        <div className={`${styles["workspace-card"]} ${styles["order-ticket"]}`}>
+          <div className={styles["workspace-card-header"]}>
             <span>Order Ticket</span>
             <small>Simulation</small>
           </div>
-          <div className="order-toggle">
+          <div className={styles["order-toggle"]}>
             <button
-              className={orderSide === "BUY" ? "active buy" : ""}
+              className={orderSide === "BUY" ? `${styles.active} ${styles.buy}` : ""}
               onClick={() => setOrderSide("BUY")}
             >
               Buy
             </button>
             <button
-              className={orderSide === "SELL" ? "active sell" : ""}
+              className={orderSide === "SELL" ? `${styles.active} ${styles.sell}` : ""}
               onClick={() => setOrderSide("SELL")}
             >
               Sell
@@ -125,29 +128,29 @@ const ChartWorkspace = ({ accountId, theme }: IChartWorkspaceProps) => {
               onChange={(event) => setVolume(event.target.value)}
             />
           </label>
-          <div className="quote-grid">
+          <div className={styles["quote-grid"]}>
             <span>Bid</span>
             <strong>{formatPrice(selectedTick?.bid)}</strong>
             <span>Ask</span>
             <strong>{formatPrice(selectedTick?.ask)}</strong>
           </div>
-          <button className={`place-order ${orderSide.toLowerCase()}`}>
+          <button className={`${styles["place-order"]} ${styles[orderSide.toLowerCase()]}`}>
             Place {orderSide} Demo Order
           </button>
         </div>
       </aside>
 
-      <div className="workspace-bottom">
-        <div className="workspace-card positions-mini">
-          <div className="workspace-card-header">
+      <div className={styles["workspace-bottom"]}>
+        <div className={`${styles["workspace-card"]} ${styles["positions-mini"]}`}>
+          <div className={styles["workspace-card-header"]}>
             <span>Positions</span>
             <small>{trades?.length || 0} recent</small>
           </div>
           {(trades || []).slice(0, 4).map((trade) => (
-            <div className="position-row" key={trade.id}>
+            <div className={styles["position-row"]} key={trade.id}>
               <strong>{trade.symbol}</strong>
               <span
-                className={trade.direction === "BUY" ? "positive" : "negative"}
+                className={trade.direction === "BUY" ? styles.positive : styles.negative}
               >
                 {trade.direction}
               </span>
@@ -156,14 +159,14 @@ const ChartWorkspace = ({ accountId, theme }: IChartWorkspaceProps) => {
           ))}
         </div>
 
-        <div className="workspace-card activity-feed">
-          <div className="workspace-card-header">
+        <div className={`${styles["workspace-card"]} ${styles["activity-feed"]}`}>
+          <div className={styles["workspace-card-header"]}>
             <span>Activity Feed</span>
             <small>Realtime ready</small>
           </div>
           {activityFeed.map((item, index) => (
-            <div className="feed-row" key={`${item}-${index}`}>
-              <span className="feed-dot" />
+            <div className={styles["feed-row"]} key={`${item}-${index}`}>
+              <span className={styles["feed-dot"]} />
               <p>{item}</p>
             </div>
           ))}

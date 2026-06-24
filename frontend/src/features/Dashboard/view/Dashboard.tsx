@@ -11,7 +11,7 @@ import Strategies from "../../strategies/index.js";
 import { AccountSelector, KpiStrip, Sidebar } from "../";
 import { ROUTE_PATHS } from "../helpers/constants.js";
 import { IDashboardProps } from "../types/dashboard.types.js";
-import "./Dashboard.css";
+import styles from "./Dashboard.module.css";
 
 const Dashboard = ({ theme }: IDashboardProps) => {
   const { selectedAccountId, setSelectedAccountId } = useStore();
@@ -46,11 +46,11 @@ const Dashboard = ({ theme }: IDashboardProps) => {
   ]);
 
   if (accountsLoading) {
-    return <div className="loading">Loading accounts...</div>;
+    return <div className={styles.loading}>Loading accounts...</div>;
   }
 
   if (!accounts) {
-    return <div className="error">Failed to load accounts</div>;
+    return <div className={styles.error}>Failed to load accounts</div>;
   }
 
   const handleCreateDemoAccount = async () => {
@@ -67,13 +67,13 @@ const Dashboard = ({ theme }: IDashboardProps) => {
   };
 
   return (
-    <div className="dashboard-shell">
+    <div className={styles["dashboard-shell"]}>
       <Sidebar />
 
-      <main className="dashboard">
-        <div className="dashboard-header">
+      <main className={styles.dashboard}>
+        <div className={styles["dashboard-header"]}>
           <div>
-            <p className="eyebrow">Trading workspace</p>
+            <p className={styles.eyebrow}>Trading workspace</p>
             <h2>Portfolio Command Center</h2>
           </div>
           <AccountSelector
@@ -88,7 +88,7 @@ const Dashboard = ({ theme }: IDashboardProps) => {
         <KpiStrip accountId={selectedAccountId} />
 
         {selectedAccountId ? (
-          <div className="dashboard-content">
+          <div className={styles["dashboard-content"]}>
             <Routes location={location}>
               <Route
                 path={ROUTE_PATHS.overview}
@@ -110,7 +110,7 @@ const Dashboard = ({ theme }: IDashboardProps) => {
             </Routes>
           </div>
         ) : (
-          <div className="placeholder">
+          <div className={styles.placeholder}>
             <p>Create or select an account to view data</p>
           </div>
         )}
