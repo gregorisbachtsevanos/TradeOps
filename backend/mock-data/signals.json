@@ -43,13 +43,13 @@
     "strategyId": "strategy_mock_breakout",
     "symbol": "GBPUSD",
     "action": "SELL",
-    "price": 1.2680,
+    "price": 1.268,
     "timestamp": "2026-05-22T08:15:00.000Z",
     "rawPayload": {
       "passphrase": "mock-secret-key",
       "time": "2026-05-22T08:15:00.000Z",
       "ticker": "GBPUSD",
-      "close": 1.2680,
+      "close": 1.268,
       "strategy_signal": "SELL"
     },
     "isDuplicate": false,
@@ -74,5 +74,271 @@
     "isDuplicate": false,
     "processedAt": "2026-05-23T13:30:01.000Z",
     "createdAt": "2026-05-23T13:30:00.000Z"
+  },
+  {
+    "id": "signal_mock_5",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_ict",
+    "symbol": "EURUSD",
+    "action": "SELL",
+    "price": 1.085,
+    "timestamp": "2026-05-17T14:45:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-05-17T14:45:00.000Z",
+      "ticker": "EURUSD",
+      "close": 1.085,
+      "strategy_signal": "SELL"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-05-17T14:45:01.000Z",
+    "createdAt": "2026-05-17T14:45:00.000Z"
+  },
+  {
+    "id": "signal_mock_6",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_trend",
+    "symbol": "BTCUSD",
+    "action": "BUY",
+    "price": 68250,
+    "timestamp": "2026-05-22T09:05:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-05-22T09:05:00.000Z",
+      "ticker": "BTCUSD",
+      "close": 68250,
+      "strategy_signal": "BUY"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-05-22T09:05:01.000Z",
+    "createdAt": "2026-05-22T09:05:00.000Z"
+  },
+  {
+    "id": "signal_mock_7",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_breakout",
+    "symbol": "EURUSD",
+    "action": "BUY",
+    "price": 1.082,
+    "timestamp": "2026-05-16T06:30:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-05-16T06:30:00.000Z",
+      "ticker": "EURUSD",
+      "close": 1.082,
+      "strategy_signal": "BUY"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-05-16T06:30:01.000Z",
+    "createdAt": "2026-05-16T06:30:00.000Z"
+  },
+  {
+    "id": "signal_mock_8",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_supply_demand",
+    "symbol": "GBPUSD",
+    "action": "SELL",
+    "price": 1.271,
+    "timestamp": "2026-05-15T13:00:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-05-15T13:00:00.000Z",
+      "ticker": "GBPUSD",
+      "close": 1.271,
+      "strategy_signal": "SELL"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-05-15T13:00:01.000Z",
+    "createdAt": "2026-05-15T13:00:00.000Z"
+  },
+  {
+    "id": "signal_mock_9",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_ict",
+    "symbol": "EURUSD",
+    "action": "BUY",
+    "price": 1.0885,
+    "timestamp": "2026-06-02T08:15:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-06-02T08:15:00.000Z",
+      "ticker": "EURUSD",
+      "close": 1.0885,
+      "strategy_signal": "BUY"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-06-02T08:15:01.000Z",
+    "createdAt": "2026-06-02T08:15:00.000Z"
+  },
+  {
+    "id": "signal_mock_10",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_breakout",
+    "symbol": "XAUUSD",
+    "action": "BUY",
+    "price": 2338.5,
+    "timestamp": "2026-06-05T09:22:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-06-05T09:22:00.000Z",
+      "ticker": "XAUUSD",
+      "close": 2338.5,
+      "strategy_signal": "BUY"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-06-05T09:22:01.000Z",
+    "createdAt": "2026-06-05T09:22:00.000Z"
+  },
+  {
+    "id": "signal_mock_11",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_trend",
+    "symbol": "NAS100",
+    "action": "SELL",
+    "price": 18620,
+    "timestamp": "2026-06-06T10:00:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-06-06T10:00:00.000Z",
+      "ticker": "NAS100",
+      "close": 18620,
+      "strategy_signal": "SELL"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-06-06T10:00:01.000Z",
+    "createdAt": "2026-06-06T10:00:00.000Z"
+  },
+  {
+    "id": "signal_mock_12",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_supply_demand",
+    "symbol": "GBPUSD",
+    "action": "BUY",
+    "price": 1.2745,
+    "timestamp": "2026-06-08T07:45:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-06-08T07:45:00.000Z",
+      "ticker": "GBPUSD",
+      "close": 1.2745,
+      "strategy_signal": "BUY"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-06-08T07:45:01.000Z",
+    "createdAt": "2026-06-08T07:45:00.000Z"
+  },
+  {
+    "id": "signal_mock_13",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_ict",
+    "symbol": "USDJPY",
+    "action": "SELL",
+    "price": 157.85,
+    "timestamp": "2026-06-10T11:12:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-06-10T11:12:00.000Z",
+      "ticker": "USDJPY",
+      "close": 157.85,
+      "strategy_signal": "SELL"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-06-10T11:12:01.000Z",
+    "createdAt": "2026-06-10T11:12:00.000Z"
+  },
+  {
+    "id": "signal_mock_14",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_breakout",
+    "symbol": "BTCUSD",
+    "action": "BUY",
+    "price": 70100,
+    "timestamp": "2026-06-12T05:55:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-06-12T05:55:00.000Z",
+      "ticker": "BTCUSD",
+      "close": 70100,
+      "strategy_signal": "BUY"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-06-12T05:55:01.000Z",
+    "createdAt": "2026-06-12T05:55:00.000Z"
+  },
+  {
+    "id": "signal_mock_15",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_trend",
+    "symbol": "US30",
+    "action": "SELL",
+    "price": 40120,
+    "timestamp": "2026-06-15T13:05:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-06-15T13:05:00.000Z",
+      "ticker": "US30",
+      "close": 40120,
+      "strategy_signal": "SELL"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-06-15T13:05:01.000Z",
+    "createdAt": "2026-06-15T13:05:00.000Z"
+  },
+  {
+    "id": "signal_mock_16",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_supply_demand",
+    "symbol": "EURUSD",
+    "action": "SELL",
+    "price": 1.0942,
+    "timestamp": "2026-06-18T09:40:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-06-18T09:40:00.000Z",
+      "ticker": "EURUSD",
+      "close": 1.0942,
+      "strategy_signal": "SELL"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-06-18T09:40:01.000Z",
+    "createdAt": "2026-06-18T09:40:00.000Z"
+  },
+  {
+    "id": "signal_mock_17",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_ict",
+    "symbol": "XAUUSD",
+    "action": "SELL",
+    "price": 2365.2,
+    "timestamp": "2026-06-20T08:00:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-06-20T08:00:00.000Z",
+      "ticker": "XAUUSD",
+      "close": 2365.2,
+      "strategy_signal": "SELL"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-06-20T08:00:01.000Z",
+    "createdAt": "2026-06-20T08:00:00.000Z"
+  },
+  {
+    "id": "signal_mock_18",
+    "accountId": "account_mock_1",
+    "strategyId": "strategy_mock_breakout",
+    "symbol": "ETHUSD",
+    "action": "BUY",
+    "price": 3650,
+    "timestamp": "2026-06-22T16:20:00.000Z",
+    "rawPayload": {
+      "passphrase": "mock-secret-key",
+      "time": "2026-06-22T16:20:00.000Z",
+      "ticker": "ETHUSD",
+      "close": 3650,
+      "strategy_signal": "BUY"
+    },
+    "isDuplicate": false,
+    "processedAt": "2026-06-22T16:20:01.000Z",
+    "createdAt": "2026-06-22T16:20:00.000Z"
   }
 ]
