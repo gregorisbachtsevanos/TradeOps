@@ -1,6 +1,6 @@
 import { useAccountInfo } from "../../../Dashboard/hooks/useAccount.js";
 import { IRiskPanelProps } from "../../types/overview.types.js";
-import styles from "./RiskPanel.module.css";
+import styles from "./RiskPanel.module.scss";
 
 const RiskPanel = ({ accountId }: IRiskPanelProps) => {
   const { data: info, isLoading } = useAccountInfo(accountId);

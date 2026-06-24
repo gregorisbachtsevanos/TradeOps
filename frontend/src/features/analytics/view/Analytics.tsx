@@ -10,7 +10,7 @@ import {
 } from "../helpers/utils.js";
 import { useAccountMetrics, useDailyPnL } from "../hooks/useAnalytics.js";
 import { IAnalyticsProps } from "../types/analytics.types.js";
-import styles from "./Analytics.module.css";
+import styles from "./Analytics.module.scss";
 
 const Analytics = ({ accountId }: IAnalyticsProps) => {
   const [selectedRange, setSelectedRange] = useState<

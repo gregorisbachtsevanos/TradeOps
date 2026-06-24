@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import styles from "./App.module.css";
+import styles from "./App.module.scss";
 import AuthPage from "./features/auth/view/Auth.js";
 import { useStore } from "./app/hooks/useStore.js";
 import AppLayout from "./layout/AppLayout.js";

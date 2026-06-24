@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { NAV_ITEMS } from "../helpers/constants";
-import styles from "../view/Dashboard.module.css";
+import styles from "../view/Dashboard.module.scss";
 
 const Sidebar = () => {
   return (

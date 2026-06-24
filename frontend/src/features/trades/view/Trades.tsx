@@ -4,7 +4,7 @@ import {
   useCloseTrade,
   type TradeFilters,
 } from "../hooks/useTrades.js";
-import styles from "./Trades.module.css";
+import styles from "./Trades.module.scss";
 import { ITtradesProps } from "../types/trades.types.js";
 
 const Trades = ({ accountId }: ITtradesProps) => {

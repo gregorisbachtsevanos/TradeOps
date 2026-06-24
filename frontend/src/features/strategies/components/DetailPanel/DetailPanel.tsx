@@ -1,7 +1,7 @@
 import { TABS } from "../../helpers/constants";
 import { useStrategies, useStrategyMetrics } from "../../hooks/useStrategies";
 import { IDetailPanelProps } from "../../types/strategies.types";
-import styles from "../view/Strategies.module.css";
+import styles from "../../view/Strategies.module.scss";
 
 const DetailPanel = ({
   selectedStrategyId,
@@ -83,7 +83,9 @@ const DetailPanel = ({
                   ) : null}
                   {selectedStrategy.analysisTimeframe ? (
                     <div className={styles["info-block"]}>
-                      <span className={styles["info-label"]}>Analysis Timeframe</span>
+                      <span className={styles["info-label"]}>
+                        Analysis Timeframe
+                      </span>
                       <span className={styles["info-value"]}>
                         {selectedStrategy.analysisTimeframe}
                       </span>
@@ -91,7 +93,9 @@ const DetailPanel = ({
                   ) : null}
                   {selectedStrategy.entryTimeframe ? (
                     <div className={styles["info-block"]}>
-                      <span className={styles["info-label"]}>Entry Timeframe</span>
+                      <span className={styles["info-label"]}>
+                        Entry Timeframe
+                      </span>
                       <span className={styles["info-value"]}>
                         {selectedStrategy.entryTimeframe}
                       </span>
@@ -121,7 +125,9 @@ const DetailPanel = ({
                 {selectedStrategy.notes && (
                   <div className={styles["notes-block"]}>
                     <span className={styles["info-label"]}>Notes</span>
-                    <p className={styles["notes-text"]}>{selectedStrategy.notes}</p>
+                    <p className={styles["notes-text"]}>
+                      {selectedStrategy.notes}
+                    </p>
                   </div>
                 )}
               </div>
@@ -135,16 +141,24 @@ const DetailPanel = ({
                     {selectedStrategy.entryRules.map((rule, i) => (
                       <div key={i} className={styles["rule-card"]}>
                         <div className={styles["rule-header"]}>
-                          <span className={`${styles["rule-type-badge"]} ${styles[rule.type]}`}>
+                          <span
+                            className={`${styles["rule-type-badge"]} ${styles[rule.type]}`}
+                          >
                             {rule.type}
                           </span>
-                          <span className={styles["rule-name"]}>{rule.name}</span>
+                          <span className={styles["rule-name"]}>
+                            {rule.name}
+                          </span>
                           {rule.required && (
-                            <span className={styles["required-badge"]}>Required</span>
+                            <span className={styles["required-badge"]}>
+                              Required
+                            </span>
                           )}
                         </div>
                         {rule.description && (
-                          <p className={styles["rule-desc"]}>{rule.description}</p>
+                          <p className={styles["rule-desc"]}>
+                            {rule.description}
+                          </p>
                         )}
                       </div>
                     ))}
@@ -157,7 +171,9 @@ const DetailPanel = ({
                     {selectedStrategy.confirmations.map((c, i) => (
                       <div key={i} className={styles["rule-card"]}>
                         <div className={styles["rule-header"]}>
-                          <span className={`${styles["rule-type-badge"]} ${styles[c.type]}`}>
+                          <span
+                            className={`${styles["rule-type-badge"]} ${styles[c.type]}`}
+                          >
                             {c.type}
                           </span>
                           <span className={styles["rule-name"]}>{c.name}</span>
@@ -176,13 +192,19 @@ const DetailPanel = ({
                     {selectedStrategy.exitRules.map((rule, i) => (
                       <div key={i} className={styles["rule-card"]}>
                         <div className={styles["rule-header"]}>
-                          <span className={`${styles["rule-type-badge"]} ${styles[rule.type]}`}>
+                          <span
+                            className={`${styles["rule-type-badge"]} ${styles[rule.type]}`}
+                          >
                             {rule.type}
                           </span>
-                          <span className={styles["rule-name"]}>{rule.name}</span>
+                          <span className={styles["rule-name"]}>
+                            {rule.name}
+                          </span>
                         </div>
                         {rule.description && (
-                          <p className={styles["rule-desc"]}>{rule.description}</p>
+                          <p className={styles["rule-desc"]}>
+                            {rule.description}
+                          </p>
                         )}
                       </div>
                     ))}
@@ -200,9 +222,13 @@ const DetailPanel = ({
                           {item.required ? "●" : "○"}
                         </span>
                         <div>
-                          <span className={styles["check-name"]}>{item.name}</span>
+                          <span className={styles["check-name"]}>
+                            {item.name}
+                          </span>
                           {item.description && (
-                            <p className={styles["check-desc"]}>{item.description}</p>
+                            <p className={styles["check-desc"]}>
+                              {item.description}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -214,7 +240,9 @@ const DetailPanel = ({
                   !selectedStrategy.confirmations?.length &&
                   !selectedStrategy.exitRules?.length &&
                   !selectedStrategy.checklist?.length && (
-                    <p className={styles["empty-state"]}>No rules defined yet.</p>
+                    <p className={styles["empty-state"]}>
+                      No rules defined yet.
+                    </p>
                   )}
               </div>
             )}
@@ -230,7 +258,9 @@ const DetailPanel = ({
                   </div>
                   {selectedStrategy.maxDailyLoss ? (
                     <div className={styles["info-block"]}>
-                      <span className={styles["info-label"]}>Max Daily Loss</span>
+                      <span className={styles["info-label"]}>
+                        Max Daily Loss
+                      </span>
                       <span className={styles["info-value"]}>
                         {selectedStrategy.maxDailyLoss}%
                       </span>
@@ -246,7 +276,9 @@ const DetailPanel = ({
                   ) : null}
                   {selectedStrategy.maxOpenTrades ? (
                     <div className={styles["info-block"]}>
-                      <span className={styles["info-label"]}>Max Open Trades</span>
+                      <span className={styles["info-label"]}>
+                        Max Open Trades
+                      </span>
                       <span className={styles["info-value"]}>
                         {selectedStrategy.maxOpenTrades}
                       </span>
@@ -254,7 +286,9 @@ const DetailPanel = ({
                   ) : null}
                   {selectedStrategy.maxDailyTrades ? (
                     <div className={styles["info-block"]}>
-                      <span className={styles["info-label"]}>Max Daily Trades</span>
+                      <span className={styles["info-label"]}>
+                        Max Daily Trades
+                      </span>
                       <span className={styles["info-value"]}>
                         {selectedStrategy.maxDailyTrades}
                       </span>
@@ -305,11 +339,15 @@ const DetailPanel = ({
                       <div key={i} className={styles["rule-card"]}>
                         <div className={styles["rule-header"]}>
                           <span className={styles["tp-label"]}>TP {i + 1}</span>
-                          <span className={`${styles["rule-type-badge"]} ${styles[tp.type]}`}>
+                          <span
+                            className={`${styles["rule-type-badge"]} ${styles[tp.type]}`}
+                          >
                             {tp.type}
                           </span>
                           {tp.riskReward && (
-                            <span className={styles["rr-badge"]}>1:{tp.riskReward}</span>
+                            <span className={styles["rr-badge"]}>
+                              1:{tp.riskReward}
+                            </span>
                           )}
                           {tp.partialPercent && (
                             <span className={styles["partial-badge"]}>
@@ -318,7 +356,9 @@ const DetailPanel = ({
                           )}
                         </div>
                         {tp.description && (
-                          <p className={styles["rule-desc"]}>{tp.description}</p>
+                          <p className={styles["rule-desc"]}>
+                            {tp.description}
+                          </p>
                         )}
                       </div>
                     ))}
@@ -361,7 +401,9 @@ const DetailPanel = ({
                     <h4>News Rules</h4>
                     <div className={styles["rule-card"]}>
                       {selectedStrategy.newsRules.avoidHighImpact && (
-                        <p className={styles["rule-param"]}>Avoid high-impact news</p>
+                        <p className={styles["rule-param"]}>
+                          Avoid high-impact news
+                        </p>
                       )}
                       {selectedStrategy.newsRules.minutesBefore && (
                         <p className={styles["rule-param"]}>
@@ -392,7 +434,9 @@ const DetailPanel = ({
                   <div className={styles["metrics-grid"]}>
                     <div className={styles["metric-card"]}>
                       <span className={styles.label}>Total Trades</span>
-                      <span className={styles.value}>{metrics.totalTrades}</span>
+                      <span className={styles.value}>
+                        {metrics.totalTrades}
+                      </span>
                     </div>
                     <div className={styles["metric-card"]}>
                       <span className={styles.label}>Win Rate</span>
@@ -488,7 +532,9 @@ const DetailPanel = ({
                         null && (
                         <div className={styles["metric-card"]}>
                           <span className={styles.label}>Max Drawdown</span>
-                          <span className={`${styles.value} ${styles.negative}`}>
+                          <span
+                            className={`${styles.value} ${styles.negative}`}
+                          >
                             {selectedStrategy.backtestingMetrics.maxDrawdown.toFixed(
                               2,
                             )}

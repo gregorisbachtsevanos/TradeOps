@@ -1,5 +1,5 @@
 import { IAccountSelectorProps } from "../../types/dashboard.types";
-import styles from "./AccountSelector.module.css";
+import styles from "./AccountSelector.module.scss";
 
 const AccountSelector = ({
   accounts,

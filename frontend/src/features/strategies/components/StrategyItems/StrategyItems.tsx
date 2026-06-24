@@ -1,6 +1,6 @@
 import { useStrategies, useUpdateStrategy } from "../../hooks/useStrategies";
 import { IStrategy, StrategyItemsProps } from "../../types/strategies.types";
-import styles from "../view/Strategies.module.css";
+import styles from "../../view/Strategies.module.scss";
 
 const StrategyItems = ({
   selectedStrategyId,

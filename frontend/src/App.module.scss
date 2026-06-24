@@ -1,0 +1,287 @@
+/* ============================================
+   APP MODULE
+   ============================================ */
+
+.app {
+  --bg: #0b0f19;
+  --bg-soft: #111827;
+  --panel: rgba(17, 24, 39, 0.92);
+  --panel-solid: #111827;
+  --panel-muted: #0f172a;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-strong: #2a3441;
+  --text: #f9fafb;
+  --text-muted: #9ca3af;
+  --text-soft: #d1d5db;
+  --accent: #3b82f6;
+  --accent-soft: rgba(59, 130, 246, 0.14);
+  --positive: #22c55e;
+  --negative: #ef4444;
+  --shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.08), transparent 25%),
+    radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.08), transparent 25%),
+    var(--bg);
+  color: var(--text);
+
+  &[data-theme="light"] {
+    --bg: #eef2f7;
+    --bg-soft: #f8fafc;
+    --panel: rgba(255, 255, 255, 0.92);
+    --panel-solid: #ffffff;
+    --panel-muted: #f1f5f9;
+    --border: rgba(15, 23, 42, 0.1);
+    --border-strong: #cbd5e1;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --text-soft: #334155;
+    --accent: #2563eb;
+    --accent-soft: rgba(37, 99, 235, 0.1);
+    --positive: #16a34a;
+    --negative: #dc2626;
+    --shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+    background:
+      radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 25%),
+      radial-gradient(circle at bottom right, rgba(22, 163, 74, 0.1), transparent 25%),
+      var(--bg);
+
+    .account-selector,
+    .equity-overview,
+    .risk-panel,
+    .trades-table,
+    .strategy-performance {
+      background: var(--panel);
+      border-color: var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .equity-overview h3,
+    .risk-panel h3,
+    .trades-header h3,
+    .pnl-history h3,
+    .empty-title,
+    .symbol,
+    .metric-card .value,
+    .metric .value,
+    .equity-item .value {
+      color: var(--text);
+    }
+
+    .account-selector label,
+    .metric-card .label,
+    .metric .label,
+    .equity-item .label,
+    .no-accounts,
+    th,
+    .pagination span,
+    .risk-note,
+    .empty-state,
+    .empty {
+      color: var(--text-muted);
+    }
+
+    .account-selector select,
+    .trades-header select,
+    .pagination button {
+      background: var(--panel-muted);
+      border-color: var(--border-strong);
+      color: var(--text);
+    }
+
+    .equity-item,
+    .metric,
+    .metric-card,
+    th {
+      background: rgba(15, 23, 42, 0.025);
+      border-color: var(--border);
+    }
+
+    td {
+      color: var(--text-soft);
+      border-bottom-color: var(--border);
+    }
+  }
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 42px;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow);
+
+  h1 {
+    text-align: center;
+    margin-bottom: 34px;
+    color: var(--text);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+}
+
+.form-group {
+  margin-bottom: 18px;
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--panel-solid);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    color: var(--text);
+    font-size: 14px;
+    transition: all 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+    }
+  }
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45);
+  }
+}
+
+.demo-hint {
+  margin-top: 18px;
+  color: var(--text-muted);
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.error-message {
+  color: var(--negative);
+  font-size: 13px;
+  margin: 10px 0;
+  padding: 10px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.btn-secondary {
+  width: 100%;
+  padding: 14px;
+  margin-top: 10px;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+}
+
+.btn-theme {
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: color-mix(in srgb, var(--panel-solid) 82%, transparent);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(14px);
+  padding: 16px 28px;
+}
+
+.header-content {
+  max-width: 1800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h1 {
+  margin: 0;
+  color: var(--text);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: var(--text-soft);
+}
+
+.btn-logout,
+.btn-theme {
+  padding: 10px 16px;
+  background: var(--panel-muted);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--accent-soft);
+    border-color: color-mix(in srgb, var(--accent) 34%, transparent);
+  }
+}

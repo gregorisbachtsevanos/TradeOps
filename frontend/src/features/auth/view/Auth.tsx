@@ -1,7 +1,7 @@
 import { Theme } from "@/App";
 import { FormEvent, useState } from "react";
 import { useLogin, useRegister } from "../hooks/useAuth";
-import styles from "../../App.module.css";
+import styles from "../../../App.module.scss";
 
 interface AuthPageProps {
   theme: Theme;

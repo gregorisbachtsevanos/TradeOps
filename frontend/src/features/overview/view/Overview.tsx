@@ -2,7 +2,7 @@ import ChartWorkspace from "../components/ChartWorkspace";
 import Equity from "../components/Equity/Equity";
 import RiskPanel from "../components/RiskPanel/RiskPanel";
 import { IOverviewProps } from "../types/overview.types";
-import styles from "../../Dashboard/view/Dashboard.module.css";
+import styles from "../../Dashboard/view/Dashboard.module.scss";
 
 const Overview = ({ theme, selectedAccountId }: IOverviewProps) => {
   return (

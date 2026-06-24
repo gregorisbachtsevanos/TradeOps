@@ -3,7 +3,7 @@ import { useRecentTrades } from "../../analytics/hooks/useAnalytics.js";
 import { normalizeSymbol, useLiveMarket } from "../hooks/useLiveMarket.js";
 import TradingViewChart from "./TradingViewChart.js";
 import { IChartWorkspaceProps, ITrade } from "../types/overview.types.js";
-import styles from "../../Dashboard/view/Dashboard.module.css";
+import styles from "../../Dashboard/view/Dashboard.module.scss";
 
 const ChartWorkspace = ({ accountId, theme }: IChartWorkspaceProps) => {
   const { data: trades } = useRecentTrades(accountId, 20);

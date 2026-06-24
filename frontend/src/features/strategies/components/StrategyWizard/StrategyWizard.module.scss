@@ -1,3 +1,7 @@
+/* ============================================
+   STRATEGY WIZARD MODULE
+   ============================================ */
+
 .wizard-overlay {
   position: fixed;
   inset: 0;
@@ -28,13 +32,13 @@
   align-items: center;
   padding: 24px 28px;
   border-bottom: 1px solid var(--border);
-}
 
-.wizard-header h3 {
-  margin: 0;
-  color: var(--text);
-  font-size: 22px;
-  font-weight: 800;
+  h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 22px;
+    font-weight: 800;
+  }
 }
 
 .btn-close {
@@ -49,10 +53,10 @@
   font-size: 16px;
   color: var(--text);
   transition: all 0.2s ease;
-}
 
-.btn-close:hover {
-  background: var(--border);
+  &:hover {
+    background: var(--border);
+  }
 }
 
 .wizard-steps {
@@ -73,20 +77,30 @@
   transition: all 0.2s ease;
   white-space: nowrap;
   flex-shrink: 0;
-}
 
-.wizard-step:hover {
-  background: var(--accent-soft);
-}
+  &:hover {
+    background: var(--accent-soft);
+  }
 
-.wizard-step.active {
-  background: var(--accent-soft);
-  border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
-}
+  &.active {
+    background: var(--accent-soft);
+    border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
 
-.wizard-step.completed .step-number {
-  background: var(--positive);
-  color: white;
+    .step-number {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .step-label {
+      color: var(--text);
+    }
+  }
+
+  &.completed .step-number {
+    background: var(--positive);
+    color: white;
+  }
 }
 
 .step-number {
@@ -103,20 +117,10 @@
   flex-shrink: 0;
 }
 
-.wizard-step.active .step-number {
-  background: var(--accent);
-  color: white;
-  border-color: var(--accent);
-}
-
 .step-label {
   font-size: 13px;
   font-weight: 600;
   color: var(--text-muted);
-}
-
-.wizard-step.active .step-label {
-  color: var(--text);
 }
 
 .wizard-body {
@@ -143,13 +147,13 @@
   align-items: center;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
-}
 
-.section-header h4 {
-  margin: 0;
-  color: var(--text);
-  font-size: 16px;
-  font-weight: 700;
+  h4 {
+    margin: 0;
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 700;
+  }
 }
 
 .btn-add {
@@ -162,10 +166,10 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-}
 
-.btn-add:hover {
-  background: color-mix(in srgb, var(--accent) 20%, transparent);
+  &:hover {
+    background: color-mix(in srgb, var(--accent) 20%, transparent);
+  }
 }
 
 .rule-editor {
@@ -194,17 +198,17 @@
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.2s ease;
-}
 
-.chip:hover {
-  border-color: var(--accent);
-  color: var(--text);
-}
+  &:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
 
-.chip.active {
-  background: var(--accent-soft);
-  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
-  color: var(--accent);
+  &.active {
+    background: var(--accent-soft);
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    color: var(--accent);
+  }
 }
 
 .checkbox-label {
@@ -228,10 +232,10 @@
   cursor: pointer;
   transition: all 0.2s ease;
   align-self: flex-end;
-}
 
-.btn-remove:hover {
-  background: rgba(239, 68, 68, 0.2);
+  &:hover {
+    background: rgba(239, 68, 68, 0.2);
+  }
 }
 
 .wizard-footer {
@@ -240,12 +244,12 @@
   gap: 12px;
   padding: 20px 28px;
   border-top: 1px solid var(--border);
-}
 
-.wizard-footer .btn-primary {
-  padding: 12px 24px;
-}
+  .btn-primary {
+    padding: 12px 24px;
+  }
 
-.wizard-footer .btn-secondary {
-  padding: 12px 20px;
+  .btn-secondary {
+    padding: 12px 20px;
+  }
 }

@@ -11,7 +11,7 @@ import Strategies from "../../strategies/index.js";
 import { AccountSelector, KpiStrip, Sidebar } from "../";
 import { ROUTE_PATHS } from "../helpers/constants.js";
 import { IDashboardProps } from "../types/dashboard.types.js";
-import styles from "./Dashboard.module.css";
+import styles from "./Dashboard.module.scss";
 
 const Dashboard = ({ theme }: IDashboardProps) => {
   const { selectedAccountId, setSelectedAccountId } = useStore();

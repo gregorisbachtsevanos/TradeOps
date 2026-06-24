@@ -1,6 +1,6 @@
 import { useAccountInfo } from "@/features/Dashboard/hooks/useAccount";
 import { IEquityProps } from "../../types/overview.types";
-import styles from "./Equity.module.css";
+import styles from "./Equity.module.scss";
 
 function Equity({ accountId }: IEquityProps) {
   const { data: info, isLoading } = useAccountInfo(accountId);

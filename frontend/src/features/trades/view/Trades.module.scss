@@ -1,16 +1,19 @@
+/* ============================================
+   TRADES MODULE
+   ============================================ */
+
 .trades-table {
   background: rgba(17, 24, 39, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 22px;
   overflow: hidden;
   backdrop-filter: blur(14px);
-  box-shadow:
-    0 6px 24px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
 }
 
 /* =========================
-HEADER
-========================= */
+   HEADER
+   ========================= */
 
 .trades-header {
   display: flex;
@@ -18,36 +21,35 @@ HEADER
   align-items: center;
   padding: 22px 24px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
 
-.trades-header h3 {
-  margin: 0;
-  color: #f9fafb;
-  font-size: 18px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
+  h3 {
+    margin: 0;
+    color: #f9fafb;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
 
-.trades-header select {
-  padding: 10px 14px;
-  background: #0f172a;
-  border: 1px solid #2a3441;
-  border-radius: 12px;
-  color: #f3f4f6;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
+  select {
+    padding: 10px 14px;
+    background: #0f172a;
+    border: 1px solid #2a3441;
+    border-radius: 12px;
+    color: #f3f4f6;
+    font-size: 14px;
+    transition: all 0.2s ease;
 
-.trades-header select:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow:
-    0 0 0 4px rgba(59, 130, 246, 0.12);
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+    }
+  }
 }
 
 /* =========================
-TABLE
-========================= */
+   TABLE
+   ========================= */
 
 table {
   width: 100%;
@@ -55,8 +57,8 @@ table {
 }
 
 /* =========================
-HEADER CELLS
-========================= */
+   HEADER CELLS
+   ========================= */
 
 th {
   padding: 16px 18px;
@@ -71,8 +73,8 @@ th {
 }
 
 /* =========================
-BODY CELLS
-========================= */
+   BODY CELLS
+   ========================= */
 
 td {
   padding: 16px 18px;
@@ -82,20 +84,22 @@ td {
 }
 
 /* =========================
-ROW HOVER
-========================= */
+   ROW HOVER
+   ========================= */
 
-tbody tr {
-  transition: all 0.18s ease;
-}
+tbody {
+  tr {
+    transition: all 0.18s ease;
 
-tbody tr:hover {
-  background: rgba(255, 255, 255, 0.025);
+    &:hover {
+      background: rgba(255, 255, 255, 0.025);
+    }
+  }
 }
 
 /* =========================
-SYMBOL
-========================= */
+   SYMBOL
+   ========================= */
 
 .symbol {
   font-weight: 700;
@@ -104,49 +108,45 @@ SYMBOL
 }
 
 /* =========================
-BUY / SELL
-========================= */
+   BUY / SELL
+   ========================= */
 
 .direction {
   font-weight: 700;
   letter-spacing: 0.04em;
-}
 
-.direction.buy {
-  color: #22c55e;
-  text-shadow:
-    0 0 10px rgba(34, 197, 94, 0.22);
-}
+  &.buy {
+    color: #22c55e;
+    text-shadow: 0 0 10px rgba(34, 197, 94, 0.22);
+  }
 
-.direction.sell {
-  color: #ef4444;
-  text-shadow:
-    0 0 10px rgba(239, 68, 68, 0.22);
+  &.sell {
+    color: #ef4444;
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.22);
+  }
 }
 
 /* =========================
-PNL
-========================= */
+   PNL
+   ========================= */
 
 .pnl {
   font-weight: 700;
-}
 
-.pnl.positive {
-  color: #22c55e;
-  text-shadow:
-    0 0 10px rgba(34, 197, 94, 0.2);
-}
+  &.positive {
+    color: #22c55e;
+    text-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+  }
 
-.pnl.negative {
-  color: #ef4444;
-  text-shadow:
-    0 0 10px rgba(239, 68, 68, 0.2);
+  &.negative {
+    color: #ef4444;
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+  }
 }
 
 /* =========================
-BADGES
-========================= */
+   BADGES
+   ========================= */
 
 .badge {
   display: inline-flex;
@@ -185,8 +185,8 @@ BADGES
 }
 
 /* =========================
-CLOSE BUTTON
-========================= */
+   CLOSE BUTTON
+   ========================= */
 
 .btn-close {
   padding: 8px 14px;
@@ -201,24 +201,22 @@ CLOSE BUTTON
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow:
-    0 4px 12px rgba(239, 68, 68, 0.25);
-}
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
 
-.btn-close:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow:
-    0 8px 20px rgba(239, 68, 68, 0.35);
-}
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35);
+  }
 
-.btn-close:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 /* =========================
-PAGINATION
-========================= */
+   PAGINATION
+   ========================= */
 
 .pagination {
   display: flex;
@@ -227,35 +225,35 @@ PAGINATION
   gap: 14px;
   padding: 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
-}
 
-.pagination span {
-  color: #9ca3af;
-  font-size: 14px;
-}
+  span {
+    color: #9ca3af;
+    font-size: 14px;
+  }
 
-.pagination button {
-  padding: 10px 14px;
-  background: #111827;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 10px;
-  color: #f3f4f6;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
+  button {
+    padding: 10px 14px;
+    background: #111827;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    color: #f3f4f6;
+    cursor: pointer;
+    transition: all 0.2s ease;
 
-.pagination button:hover:not(:disabled) {
-  background: #1f2937;
-}
+    &:hover:not(:disabled) {
+      background: #1f2937;
+    }
 
-.pagination button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
 }
 
 /* =========================
-EMPTY STATE
-========================= */
+   EMPTY STATE
+   ========================= */
 
 .empty-state {
   text-align: center;
@@ -265,8 +263,8 @@ EMPTY STATE
 }
 
 /* =========================
-RESPONSIVE
-========================= */
+   RESPONSIVE
+   ========================= */
 
 @media (max-width: 1100px) {
   .trades-table {

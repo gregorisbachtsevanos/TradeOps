@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAccountInfo } from "../hooks/useAccount.js";
 import { IKpiStripProps } from "../types/dashboard.types.js";
-import styles from "../view/Dashboard.module.css";
+import styles from "../view/Dashboard.module.scss";
 
 const KpiStrip = ({ accountId }: IKpiStripProps) => {
   const { data: info, isLoading } = useAccountInfo(accountId || "");

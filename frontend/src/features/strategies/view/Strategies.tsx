@@ -2,7 +2,7 @@ import DetailPanel from "../components/DetailPanel/DetailPanel.js";
 import StrategyItems from "../components/StrategyItems/StrategyItems.js";
 import StrategyWizard from "../components/StrategyWizard/StrategyWizard.js";
 import useHandleStrategies from "../hooks/useHandleStrateries.js";
-import styles from "./Strategies.module.css";
+import styles from "./Strategies.module.scss";
 
 const Strategies = () => {
   const {

@@ -2,7 +2,7 @@ import { Theme } from "@/App";
 import { useLogout } from "@/features/auth/hooks/useAuth";
 import Dashboard from "@/features/Dashboard";
 import { useStore } from "@/app/hooks/useStore";
-import styles from "@/App.module.css";
+import styles from "@/App.module.scss";
 
 interface AppLayoutProps {
   theme: Theme;

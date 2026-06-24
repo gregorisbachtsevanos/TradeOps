@@ -1,5 +1,5 @@
 import { ITradingViewChartProps } from "../types/overview.types";
-import styles from "../../Dashboard/view/Dashboard.module.css";
+import styles from "../../Dashboard/view/Dashboard.module.scss";
 
 const TradingViewChart = ({ params }: ITradingViewChartProps) => {
   return (

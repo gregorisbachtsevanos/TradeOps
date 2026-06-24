@@ -1,3 +1,7 @@
+/* ============================================
+   STRATEGIES MODULE
+   ============================================ */
+
 .strategies-page {
   height: 100%;
 }
@@ -10,8 +14,8 @@
 }
 
 /* =========================
-LIST PANEL
-========================= */
+   LIST PANEL
+   ========================= */
 
 .strategies-list-panel {
   background: var(--panel);
@@ -29,13 +33,13 @@ LIST PANEL
   align-items: center;
   padding: 22px 24px;
   border-bottom: 1px solid var(--border);
-}
 
-.panel-header h3 {
-  margin: 0;
-  color: var(--text);
-  font-size: 20px;
-  font-weight: 700;
+  h3 {
+    margin: 0;
+    color: var(--text);
+    font-size: 20px;
+    font-weight: 700;
+  }
 }
 
 .btn-create {
@@ -48,16 +52,16 @@ LIST PANEL
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-}
 
-.btn-create:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+  }
 }
 
 /* =========================
-FORM
-========================= */
+   FORM
+   ========================= */
 
 .strategy-form {
   padding: 20px 24px;
@@ -71,37 +75,36 @@ FORM
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
 
-.form-group label {
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
+  label {
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
 
-.form-group input,
-.form-group textarea {
-  padding: 12px;
-  background: var(--panel-muted);
-  border: 1px solid var(--border-strong);
-  border-radius: 12px;
-  color: var(--text);
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
+  input,
+  textarea {
+    padding: 12px;
+    background: var(--panel-muted);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    color: var(--text);
+    font-size: 14px;
+    transition: all 0.2s ease;
 
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
-}
+    &:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+    }
+  }
 
-.form-group textarea {
-  resize: vertical;
-  min-height: 60px;
+  textarea {
+    resize: vertical;
+    min-height: 60px;
+  }
 }
 
 .form-actions {
@@ -120,11 +123,11 @@ FORM
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-}
 
-.btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+  }
 }
 
 .btn-secondary {
@@ -137,15 +140,15 @@ FORM
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-}
 
-.btn-secondary:hover {
-  background: var(--border);
+  &:hover {
+    background: var(--border);
+  }
 }
 
 /* =========================
-STRATEGY ITEMS
-========================= */
+   STRATEGY ITEMS
+   ========================= */
 
 .strategy-items {
   flex: 1;
@@ -163,16 +166,20 @@ STRATEGY ITEMS
   transition: all 0.2s ease;
   border: 1px solid transparent;
   margin-bottom: 6px;
-}
 
-.strategy-item:hover {
-  background: var(--accent-soft);
-  border-color: color-mix(in srgb, var(--accent) 22%, transparent);
-}
+  &:hover {
+    background: var(--accent-soft);
+    border-color: color-mix(in srgb, var(--accent) 22%, transparent);
 
-.strategy-item.selected {
-  background: var(--accent-soft);
-  border-color: color-mix(in srgb, var(--accent) 26%, transparent);
+    .strategy-actions {
+      opacity: 1;
+    }
+  }
+
+  &.selected {
+    background: var(--accent-soft);
+    border-color: color-mix(in srgb, var(--accent) 26%, transparent);
+  }
 }
 
 .strategy-info {
@@ -194,15 +201,15 @@ STRATEGY ITEMS
   width: 8px;
   height: 8px;
   border-radius: 999px;
-}
 
-.status-dot.active {
-  background: var(--positive);
-  box-shadow: 0 0 8px color-mix(in srgb, var(--positive) 80%, transparent);
-}
+  &.active {
+    background: var(--positive);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--positive) 80%, transparent);
+  }
 
-.status-dot.inactive {
-  background: var(--text-muted);
+  &.inactive {
+    background: var(--text-muted);
+  }
 }
 
 .strategy-meta {
@@ -220,10 +227,6 @@ STRATEGY ITEMS
   transition: opacity 0.2s ease;
 }
 
-.strategy-item:hover .strategy-actions {
-  opacity: 1;
-}
-
 .btn-icon {
   width: 32px;
   height: 32px;
@@ -235,20 +238,20 @@ STRATEGY ITEMS
   cursor: pointer;
   font-size: 14px;
   transition: all 0.2s ease;
-}
 
-.btn-icon:hover {
-  background: var(--border);
-}
+  &:hover {
+    background: var(--border);
+  }
 
-.btn-icon.btn-delete:hover {
-  background: rgba(239, 68, 68, 0.15);
-  border-color: rgba(239, 68, 68, 0.3);
+  &.btn-delete:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.3);
+  }
 }
 
 /* =========================
-DETAIL PANEL
-========================= */
+   DETAIL PANEL
+   ========================= */
 
 .strategy-detail-panel {
   background: var(--panel);
@@ -262,13 +265,13 @@ DETAIL PANEL
   margin-bottom: 24px;
   padding-bottom: 20px;
   border-bottom: 1px solid var(--border);
-}
 
-.detail-header h3 {
-  margin: 0 0 6px;
-  color: var(--text);
-  font-size: 24px;
-  font-weight: 800;
+  h3 {
+    margin: 0 0 6px;
+    color: var(--text);
+    font-size: 24px;
+    font-weight: 800;
+  }
 }
 
 .detail-description {
@@ -281,12 +284,12 @@ DETAIL PANEL
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
-}
 
-.detail-meta span {
-  color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 600;
+  span {
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+  }
 }
 
 .status-badge {
@@ -296,18 +299,18 @@ DETAIL PANEL
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-}
 
-.status-badge.active {
-  background: rgba(34, 197, 94, 0.14);
-  color: var(--positive);
-  border: 1px solid rgba(34, 197, 94, 0.2);
-}
+  &.active {
+    background: rgba(34, 197, 94, 0.14);
+    color: var(--positive);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+  }
 
-.status-badge.inactive {
-  background: rgba(107, 114, 128, 0.14);
-  color: var(--text-muted);
-  border: 1px solid rgba(107, 114, 128, 0.2);
+  &.inactive {
+    background: rgba(107, 114, 128, 0.14);
+    color: var(--text-muted);
+    border: 1px solid rgba(107, 114, 128, 0.2);
+  }
 }
 
 .placeholder-detail {
@@ -320,8 +323,8 @@ DETAIL PANEL
 }
 
 /* =========================
-METRICS
-========================= */
+   METRICS
+   ========================= */
 
 .metrics-grid {
   display: grid;
@@ -337,40 +340,40 @@ METRICS
   display: flex;
   flex-direction: column;
   transition: all 0.2s ease;
-}
 
-.metric-card:hover {
-  transform: translateY(-2px);
-  border-color: rgba(59, 130, 246, 0.2);
-}
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(59, 130, 246, 0.2);
+  }
 
-.metric-card .label {
-  font-size: 12px;
-  color: var(--text-muted);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin-bottom: 10px;
-}
+  .label {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
 
-.metric-card .value {
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--text);
-  letter-spacing: -0.03em;
-}
+  .value {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.03em;
 
-.metric-card .value.positive {
-  color: var(--positive);
-}
+    &.positive {
+      color: var(--positive);
+    }
 
-.metric-card .value.negative {
-  color: var(--negative);
+    &.negative {
+      color: var(--negative);
+    }
+  }
 }
 
 /* =========================
-TABS
-========================= */
+   TABS
+   ========================= */
 
 .detail-tabs {
   display: flex;
@@ -389,15 +392,15 @@ TABS
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-}
 
-.tab-btn:hover {
-  color: var(--text);
-}
+  &:hover {
+    color: var(--text);
+  }
 
-.tab-btn.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
+  &.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
 }
 
 .tab-content {
@@ -405,8 +408,8 @@ TABS
 }
 
 /* =========================
-INFO GRID
-========================= */
+   INFO GRID
+   ========================= */
 
 .info-grid {
   display: grid;
@@ -454,8 +457,8 @@ INFO GRID
 }
 
 /* =========================
-RULES SECTION
-========================= */
+   RULES SECTION
+   ========================= */
 
 .rules-section {
   display: flex;
@@ -467,15 +470,15 @@ RULES SECTION
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
 
-.rule-group h4 {
-  margin: 0;
-  color: var(--text);
-  font-size: 16px;
-  font-weight: 700;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border);
+  h4 {
+    margin: 0;
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 700;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
 }
 
 .rule-card {
@@ -532,8 +535,8 @@ RULES SECTION
 }
 
 /* =========================
-CHECKLIST
-========================= */
+   CHECKLIST
+   ========================= */
 
 .checklist-item {
   display: flex;
@@ -554,14 +557,14 @@ CHECKLIST
   font-size: 12px;
   flex-shrink: 0;
   margin-top: 2px;
-}
 
-.check-icon.required {
-  color: var(--accent);
-}
+  &.required {
+    color: var(--accent);
+  }
 
-.check-icon:not(.required) {
-  color: var(--text-muted);
+  &:not(.required) {
+    color: var(--text-muted);
+  }
 }
 
 .check-name {
@@ -577,8 +580,8 @@ CHECKLIST
 }
 
 /* =========================
-RISK SECTION
-========================= */
+   RISK SECTION
+   ========================= */
 
 .risk-section {
   display: flex;
@@ -614,25 +617,25 @@ RISK SECTION
 }
 
 /* =========================
-BACKTESTING
-========================= */
+   BACKTESTING
+   ========================= */
 
 .backtesting-section {
   margin-top: 24px;
   padding-top: 24px;
   border-top: 1px solid var(--border);
-}
 
-.backtesting-section h4 {
-  margin: 0 0 16px;
-  color: var(--text);
-  font-size: 16px;
-  font-weight: 700;
+  h4 {
+    margin: 0 0 16px;
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 700;
+  }
 }
 
 /* =========================
-EMPTY STATE
-========================= */
+   EMPTY STATE
+   ========================= */
 
 .empty-state {
   text-align: center;
@@ -642,8 +645,8 @@ EMPTY STATE
 }
 
 /* =========================
-RESPONSIVE
-========================= */
+   RESPONSIVE
+   ========================= */
 
 @media (max-width: 1180px) {
   .strategies-layout {
