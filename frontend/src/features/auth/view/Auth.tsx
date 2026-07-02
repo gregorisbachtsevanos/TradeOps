@@ -2,6 +2,7 @@ import { Theme } from "@/App";
 import { FormEvent, useState } from "react";
 import { useLogin, useRegister } from "../hooks/useAuth";
 import styles from "../../../App.module.scss";
+import authStyles from "./Auth.module.scss";
 
 interface AuthPageProps {
   theme: Theme;
@@ -35,8 +36,8 @@ const AuthPage = ({ theme, onThemeToggle }: AuthPageProps) => {
   };
 
   return (
-    <div className={styles["login-container"]}>
-      <div className={styles["login-card"]}>
+    <div className={authStyles["login-container"]}>
+      <div className={authStyles["login-card"]}>
         <h1>Trading Automation Platform</h1>
         <form onSubmit={handleSubmit}>
           {!isLogin && (
@@ -68,7 +69,7 @@ const AuthPage = ({ theme, onThemeToggle }: AuthPageProps) => {
               required
             />
           </div>
-          {error && <div className={styles["error-message"]}>{error}</div>}
+          {error && <div className={authStyles["error-message"]}>{error}</div>}
           <button
             type="submit"
             className={styles["btn-primary"]}
