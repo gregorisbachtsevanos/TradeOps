@@ -1,17 +1,14 @@
 import { useAccountInfo } from "@/features/Dashboard/hooks/useAccount";
+import { ErrorGuard, LoaderGuard } from "@/features/Guard/Guard";
 import { IEquityProps } from "../../types/overview.types";
 import styles from "./Equity.module.scss";
 
 function Equity({ accountId }: IEquityProps) {
   const { data: info, isLoading } = useAccountInfo(accountId);
 
-  if (isLoading) {
-    return <div className={styles.loading}>Loading account info...</div>;
-  }
+  if (isLoading) return <LoaderGuard />;
 
-  if (!info) {
-    return <div className={styles.error}>Failed to load account info</div>;
-  }
+  if (!info) return <ErrorGuard text="Failed to load account info" />;
 
   const returnPercent = ((info.equity - info.balance) / info.balance) * 100;
 

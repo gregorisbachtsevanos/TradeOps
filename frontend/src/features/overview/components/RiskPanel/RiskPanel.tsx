@@ -1,3 +1,4 @@
+import { ErrorGuard, LoaderGuard } from "@/features/Guard/Guard.js";
 import { useAccountInfo } from "../../../Dashboard/hooks/useAccount.js";
 import { IRiskPanelProps } from "../../types/overview.types.js";
 import styles from "./RiskPanel.module.scss";
@@ -5,13 +6,9 @@ import styles from "./RiskPanel.module.scss";
 const RiskPanel = ({ accountId }: IRiskPanelProps) => {
   const { data: info, isLoading } = useAccountInfo(accountId);
 
-  if (isLoading) {
-    return <div className={styles.loading}>Loading risk data...</div>;
-  }
+  if (isLoading) return <LoaderGuard />;
 
-  if (!info) {
-    return <div className={styles.error}>Failed to load risk data</div>;
-  }
+  if (!info) return <ErrorGuard text="Failed to load risk data" />;
 
   const maxExposure = info.balance * 0.5;
   const exposurePercent = (info.exposure / maxExposure) * 100;
@@ -50,7 +47,9 @@ const RiskPanel = ({ accountId }: IRiskPanelProps) => {
           }}
         />
       </div>
-      <p className={styles["risk-note"]}>Max Exposure: ${maxExposure.toFixed(2)}</p>
+      <p className={styles["risk-note"]}>
+        Max Exposure: ${maxExposure.toFixed(2)}
+      </p>
     </div>
   );
 };

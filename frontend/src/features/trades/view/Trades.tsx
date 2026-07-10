@@ -1,11 +1,12 @@
+import { ErrorGuard, LoaderGuard } from "@/features/Guard/Guard.js";
 import { useState } from "react";
 import {
-  useTrades,
   useCloseTrade,
+  useTrades,
   type TradeFilters,
 } from "../hooks/useTrades.js";
-import styles from "./Trades.module.scss";
 import { ITtradesProps } from "../types/trades.types.js";
+import styles from "./Trades.module.scss";
 
 const Trades = ({ accountId }: ITtradesProps) => {
   const [page, setPage] = useState(1);
@@ -14,13 +15,9 @@ const Trades = ({ accountId }: ITtradesProps) => {
   const { data: tradesData, isLoading } = useTrades(filters);
   const { mutate: closeTrade, isPending: isClosing } = useCloseTrade();
 
-  if (isLoading) {
-    return <div className={styles.loading}>Loading trades...</div>;
-  }
+  if (isLoading) return <LoaderGuard />;
 
-  if (!tradesData) {
-    return <div className={styles.error}>Failed to load trades</div>;
-  }
+  if (!tradesData) return <ErrorGuard text="Failed to load trades" />;
 
   const { items: trades, pagination } = tradesData;
 
@@ -45,17 +42,17 @@ const Trades = ({ accountId }: ITtradesProps) => {
         <>
           <table>
             <thead>
-                <tr>
-                  <th>Symbol</th>
-                  <th>Direction</th>
-                  <th>Strategy</th>
-                  <th>Entry Price</th>
-                  <th>Entry Time</th>
-                  <th>Exit Price</th>
-                  <th>P&L</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
+              <tr>
+                <th>Symbol</th>
+                <th>Direction</th>
+                <th>Strategy</th>
+                <th>Entry Price</th>
+                <th>Entry Time</th>
+                <th>Exit Price</th>
+                <th>P&L</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
             </thead>
             <tbody>
               {trades.map((trade) => (
@@ -64,7 +61,9 @@ const Trades = ({ accountId }: ITtradesProps) => {
                   className={`status-${trade.status.toLowerCase()}`}
                 >
                   <td className={styles.symbol}>{trade.symbol}</td>
-                  <td className={`${styles.direction} ${styles[trade.direction.toLowerCase()]}`}>
+                  <td
+                    className={`${styles.direction} ${styles[trade.direction.toLowerCase()]}`}
+                  >
                     {trade.direction}
                   </td>
                   <td>{trade.strategy?.name || "-"}</td>

@@ -1,3 +1,4 @@
+import { ErrorGuard, LoaderGuard } from "@/features/Guard/Guard.js";
 import { useMemo, useState } from "react";
 import Metrics from "../components/Metrics/Metrics.js";
 import PnlChart from "../components/PnlChart/PnlChart.js";
@@ -8,7 +9,6 @@ import { buildPnlSeries } from "../helpers/utils.js";
 import { useAccountMetrics, useDailyPnL } from "../hooks/useAnalytics.js";
 import { IAnalyticsProps } from "../types/analytics.types.js";
 import styles from "./Analytics.module.scss";
-import Error from "@/components/Error/Error.js";
 
 const Analytics = ({ accountId }: IAnalyticsProps) => {
   const [selectedRange, setSelectedRange] = useState<
@@ -61,12 +61,11 @@ const Analytics = ({ accountId }: IAnalyticsProps) => {
     [dailyPnL],
   );
 
-  if (metricsLoading || pnlLoading)
-    return <div className={styles.loading}>Loading analytics...</div>;
+  if (metricsLoading || pnlLoading) return <LoaderGuard />;
 
   if (!metrics || !dailyPnLData)
     return (
-      <Error text="Failed to load analytics data. Please try again later." />
+      <ErrorGuard text="Failed to load analytics data. Please try again later." />
     );
 
   return (

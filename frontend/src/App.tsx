@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import styles from "./App.module.scss";
-import AuthPage from "./features/auth/view/Auth.js";
 import { useStore } from "./app/hooks/useStore.js";
-import AppLayout from "./layout/AppLayout.js";
 import { useCurrentUser } from "./features/auth/hooks/useAuth.js";
+import AuthPage from "./features/auth/view/Auth.js";
+import { LoaderGuard } from "./features/Guard/Guard.js";
+import AppLayout from "./layout/AppLayout.js";
 
 export type Theme = "dark" | "light";
 
@@ -26,7 +27,7 @@ function App() {
   }, [currentUser, setUser]);
 
   if (isCheckingAuth) {
-    return <div className={styles.loading}>Loading...</div>;
+    return <LoaderGuard />;
   }
 
   const onThemeToggle = () =>

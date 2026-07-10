@@ -1,3 +1,4 @@
+import { LoaderGuard } from "@/features/Guard/Guard.js";
 import DetailPanel from "../components/DetailPanel/DetailPanel.js";
 import StrategyItems from "../components/StrategyItems/StrategyItems.js";
 import StrategyWizard from "../components/StrategyWizard/StrategyWizard.js";
@@ -20,7 +21,7 @@ const Strategies = () => {
   } = useHandleStrategies();
 
   if (isLoading) {
-    return <div className={styles.loading}>Loading strategies...</div>;
+    return <LoaderGuard />;
   }
 
   return (

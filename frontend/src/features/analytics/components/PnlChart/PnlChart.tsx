@@ -1,4 +1,4 @@
-import Error from "@/components/Error/Error.js";
+import { EmptyGuard } from "@/features/Guard/Guard";
 import { formatMoney, shouldShowDateLabel } from "../../helpers/utils";
 import { IPnlChart } from "../../types/analytics.types";
 import styles from "./PnlChart.module.scss";
@@ -6,9 +6,8 @@ import styles from "./PnlChart.module.scss";
 const PnlChart = ({ chartData, pnlStats }: IPnlChart) => {
   return (
     <div className={styles["pnl-chart"]}>
-      {/* chartData.length === 0 */}
-      {true ? (
-        <Error text="No P&L data available" errorClass={"empty"} />
+      {chartData.length === 0 ? (
+        <EmptyGuard text="No P&L data available" />
       ) : (
         <>
           <div className={styles["zero-line"]} />
