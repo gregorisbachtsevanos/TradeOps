@@ -6,22 +6,38 @@
   padding: 24px;
 
   .container {
-    &__sm {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 16px;
-    }
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 20px;
 
-    &__md {
+    &__grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
       margin-bottom: 20px;
+
+      &_repeat {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 16px;
+      }
+    }
+  }
+
+  .card {
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+
+    &__md {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
     }
 
     &__lg {
       @include skeleton;
-
       height: 280px;
       border-radius: 20px;
       background: rgba(255, 255, 255, 0.025);
@@ -34,25 +50,6 @@
       padding: 22px;
       border-radius: 22px;
       background: rgba(255, 255, 255, 0.02);
-    }
-  }
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    gap: 18px;
-    margin-bottom: 20px;
-  }
-
-  .card {
-    padding: 14px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.03);
-
-    &__md {
-      padding: 18px;
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.03);
     }
   }
 

@@ -4,8 +4,8 @@ const Skeleton = () => {
   return (
     <div className={styles.analytics}>
       {/* Metrics */}
-      <div className={styles.container__sm}>
-        {Array.from({ length: 6 }).map((_, i) => (
+      <div className={styles.container__grid_repeat}>
+        {Array.from({ length: 8 }).map((_, i) => (
           <div key={i} className={styles.card__md}>
             <div className={styles.title} />
             <div className={styles.text} />
@@ -13,9 +13,9 @@ const Skeleton = () => {
         ))}
       </div>
 
-      <div className={styles.container__xl}>
+      <div className={styles.card__xl}>
         {/* Header */}
-        <div className={styles.header}>
+        <div className={styles.container}>
           <div
             style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
           >
@@ -23,8 +23,8 @@ const Skeleton = () => {
             <div className={styles.text__lg} />
             <div className={styles.title__lg} />
           </div>
-          <div className={styles.container__md}>
-            {Array.from({ length: 4 }).map((_, i) => (
+          <div className={styles.container}>
+            {Array.from({ length: 5 }).map((_, i) => (
               <div key={i} className={styles.button} />
             ))}
           </div>
@@ -35,7 +35,7 @@ const Skeleton = () => {
         </div>
 
         {/* Summary */}
-        <div className={styles.container__md}>
+        <div className={styles.container__grid}>
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className={styles.card}>
               <div className={styles.title} />
@@ -45,7 +45,7 @@ const Skeleton = () => {
         </div>
 
         {/* Chart */}
-        <div className={styles.container__lg}>
+        <div className={styles.card__lg}>
           <div className={styles.zeroLine} />
 
           <div className={styles.bars}>
