@@ -11,8 +11,6 @@ html, body, #root {
 Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
-  background: #0b0f19;
-  color: #f3f4f6;
 }
 
 /* =========================
@@ -21,8 +19,6 @@ GLOBAL TEXT
 
 body {
   line-height: 1.5;
-  color: #f3f4f6;
-  background: #0b0f19;
 }
 
 /* =========================
@@ -46,26 +42,5 @@ input,
 select,
 textarea {
   font-family: inherit;
-  color: #f3f4f6;
-}
-
-/* =========================
-SCROLLBAR (optional but huge upgrade)
-========================= */
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0b0f19;
-}
-
-::-webkit-scrollbar-thumb { 
-  background: #1f2937;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #374151;
+  color: inherit;
 }

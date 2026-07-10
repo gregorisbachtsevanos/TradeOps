@@ -3,12 +3,12 @@
    ============================================ */
 
 .trades-table {
-  background: rgba(17, 24, 39, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--panel);
+  border: 1px solid var(--border);
   border-radius: 22px;
   overflow: hidden;
   backdrop-filter: blur(14px);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+  box-shadow: var(--shadow);
 }
 
 /* =========================
@@ -20,11 +20,11 @@
   justify-content: space-between;
   align-items: center;
   padding: 22px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid var(--border);
 
   h3 {
     margin: 0;
-    color: #f9fafb;
+    color: var(--text);
     font-size: 18px;
     font-weight: 700;
     letter-spacing: -0.02em;
@@ -32,17 +32,17 @@
 
   select {
     padding: 10px 14px;
-    background: #0f172a;
-    border: 1px solid #2a3441;
+    background: var(--panel-muted);
+    border: 1px solid var(--border-strong);
     border-radius: 12px;
-    color: #f3f4f6;
+    color: var(--text);
     font-size: 14px;
     transition: all 0.2s ease;
 
     &:focus {
       outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent);
     }
   }
 }
@@ -62,9 +62,9 @@ table {
 
 th {
   padding: 16px 18px;
-  background: rgba(255, 255, 255, 0.02);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  color: #9ca3af;
+  background: color-mix(in srgb, var(--text) 2%, transparent);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
   text-align: left;
   font-size: 12px;
   font-weight: 700;
@@ -78,8 +78,8 @@ th {
 
 td {
   padding: 16px 18px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  color: #f3f4f6;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-soft);
   font-size: 14px;
 }
 
@@ -92,7 +92,7 @@ tbody {
     transition: all 0.18s ease;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.025);
+      background: var(--accent-soft);
     }
   }
 }
@@ -103,7 +103,7 @@ tbody {
 
 .symbol {
   font-weight: 700;
-  color: #f9fafb;
+  color: var(--text);
   letter-spacing: 0.02em;
 }
 
@@ -116,13 +116,13 @@ tbody {
   letter-spacing: 0.04em;
 
   &.buy {
-    color: #22c55e;
-    text-shadow: 0 0 10px rgba(34, 197, 94, 0.22);
+    color: var(--positive);
+    text-shadow: 0 0 10px color-mix(in srgb, var(--positive) 22%, transparent);
   }
 
   &.sell {
-    color: #ef4444;
-    text-shadow: 0 0 10px rgba(239, 68, 68, 0.22);
+    color: var(--negative);
+    text-shadow: 0 0 10px color-mix(in srgb, var(--negative) 22%, transparent);
   }
 }
 
@@ -134,13 +134,13 @@ tbody {
   font-weight: 700;
 
   &.positive {
-    color: #22c55e;
-    text-shadow: 0 0 10px rgba(34, 197, 94, 0.2);
+    color: var(--positive);
+    text-shadow: 0 0 10px color-mix(in srgb, var(--positive) 20%, transparent);
   }
 
   &.negative {
-    color: #ef4444;
-    text-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+    color: var(--negative);
+    text-shadow: 0 0 10px color-mix(in srgb, var(--negative) 20%, transparent);
   }
 }
 
@@ -163,25 +163,25 @@ tbody {
 /* OPEN */
 
 .badge-open {
-  background: rgba(59, 130, 246, 0.14);
-  color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 /* CLOSED */
 
 .badge-closed {
-  background: rgba(107, 114, 128, 0.16);
-  color: #d1d5db;
-  border: 1px solid rgba(107, 114, 128, 0.18);
+  background: color-mix(in srgb, var(--text-muted) 16%, transparent);
+  color: var(--text-soft);
+  border: 1px solid color-mix(in srgb, var(--text-muted) 18%, transparent);
 }
 
 /* REJECTED */
 
 .badge-rejected {
-  background: rgba(239, 68, 68, 0.14);
-  color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: color-mix(in srgb, var(--negative) 14%, transparent);
+  color: var(--negative);
+  border: 1px solid color-mix(in srgb, var(--negative) 20%, transparent);
 }
 
 /* =========================
@@ -190,10 +190,7 @@ tbody {
 
 .btn-close {
   padding: 8px 14px;
-  background:
-    linear-gradient(135deg,
-      #dc2626,
-      #ef4444);
+  background: linear-gradient(135deg, #dc2626, #ef4444);
   border: none;
   border-radius: 10px;
   color: white;
@@ -224,24 +221,24 @@ tbody {
   align-items: center;
   gap: 14px;
   padding: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--border);
 
   span {
-    color: #9ca3af;
+    color: var(--text-muted);
     font-size: 14px;
   }
 
   button {
     padding: 10px 14px;
-    background: #111827;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--panel-muted);
+    border: 1px solid var(--border);
     border-radius: 10px;
-    color: #f3f4f6;
+    color: var(--text);
     cursor: pointer;
     transition: all 0.2s ease;
 
     &:hover:not(:disabled) {
-      background: #1f2937;
+      background: var(--border-strong);
     }
 
     &:disabled {
@@ -258,7 +255,7 @@ tbody {
 .empty-state {
   text-align: center;
   padding: 60px 20px;
-  color: #6b7280;
+  color: var(--text-muted);
   font-size: 14px;
 }
 

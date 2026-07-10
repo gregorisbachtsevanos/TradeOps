@@ -1,19 +1,19 @@
 .strategy-performance {
-  background: rgba(17, 24, 39, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--panel);
+  border: 1px solid var(--border);
   border-radius: 22px;
   padding: 24px;
   backdrop-filter: blur(14px);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+  box-shadow: var(--shadow);
 }
 
 .pnl-history {
   margin-top: 22px;
   padding: 22px;
   background:
-    radial-gradient(circle at top right, rgba(34, 197, 94, 0.1), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015));
-  border: 1px solid rgba(255, 255, 255, 0.06);
+    radial-gradient(circle at top right, color-mix(in srgb, var(--positive) 10%, transparent), transparent 34%),
+    var(--panel-muted);
+  border: 1px solid var(--border);
   border-radius: 22px;
 }
 

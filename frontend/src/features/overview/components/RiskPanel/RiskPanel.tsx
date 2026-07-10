@@ -12,12 +12,10 @@ const RiskPanel = ({ accountId }: IRiskPanelProps) => {
 
   const maxExposure = info.balance * 0.5;
   const exposurePercent = (info.exposure / maxExposure) * 100;
-  const riskColor =
-    exposurePercent > 80
-      ? "#ff4757"
-      : exposurePercent > 60
-        ? "#ffa502"
-        : "#2ed573";
+
+  // CSS class-based risk colour — no inline styles
+  const riskLevel =
+    exposurePercent > 80 ? "high" : exposurePercent > 60 ? "mid" : "low";
 
   return (
     <div className={styles["risk-panel"]}>
@@ -33,18 +31,15 @@ const RiskPanel = ({ accountId }: IRiskPanelProps) => {
         </div>
         <div className={styles.metric}>
           <span className={styles.label}>Exposure %</span>
-          <span className={styles.value} style={{ color: riskColor }}>
+          <span className={`${styles.value} ${styles[`risk-${riskLevel}`]}`}>
             {exposurePercent.toFixed(1)}%
           </span>
         </div>
       </div>
       <div className={styles["risk-bar"]}>
         <div
-          className={styles["risk-fill"]}
-          style={{
-            width: `${Math.min(exposurePercent, 100)}%`,
-            backgroundColor: riskColor,
-          }}
+          className={`${styles["risk-fill"]} ${styles[`risk-fill-${riskLevel}`]}`}
+          style={{ width: `${Math.min(exposurePercent, 100)}%` }}
         />
       </div>
       <p className={styles["risk-note"]}>

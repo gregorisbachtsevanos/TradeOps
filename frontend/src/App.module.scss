@@ -27,6 +27,24 @@
     var(--bg);
   color: var(--text);
 
+  /* Scoped scrollbar — dark theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--border-strong) 150%, transparent);
+  }
+
   &[data-theme="light"] {
     --bg: #eef2f7;
     --bg-soft: #f8fafc;
@@ -47,62 +65,6 @@
       radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 25%),
       radial-gradient(circle at bottom right, rgba(22, 163, 74, 0.1), transparent 25%),
       var(--bg);
-
-    .account-selector,
-    .equity-overview,
-    .risk-panel,
-    .trades-table,
-    .strategy-performance {
-      background: var(--panel);
-      border-color: var(--border);
-      box-shadow: var(--shadow);
-    }
-
-    .equity-overview h3,
-    .risk-panel h3,
-    .trades-header h3,
-    .pnl-history h3,
-    .empty-title,
-    .symbol,
-    .metric-card .value,
-    .metric .value,
-    .equity-item .value {
-      color: var(--text);
-    }
-
-    .account-selector label,
-    .metric-card .label,
-    .metric .label,
-    .equity-item .label,
-    .no-accounts,
-    th,
-    .pagination span,
-    .risk-note,
-    .empty-state,
-    .empty {
-      color: var(--text-muted);
-    }
-
-    .account-selector select,
-    .trades-header select,
-    .pagination button {
-      background: var(--panel-muted);
-      border-color: var(--border-strong);
-      color: var(--text);
-    }
-
-    .equity-item,
-    .metric,
-    .metric-card,
-    th {
-      background: rgba(15, 23, 42, 0.025);
-      border-color: var(--border);
-    }
-
-    td {
-      color: var(--text-soft);
-      border-bottom-color: var(--border);
-    }
   }
 }
 
@@ -131,7 +93,7 @@
     &:focus {
       outline: none;
       border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 12%, transparent);
     }
   }
 }

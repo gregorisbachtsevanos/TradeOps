@@ -3,12 +3,12 @@
    ============================================ */
 
 .risk-panel {
-  background: rgba(17, 24, 39, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--panel);
+  border: 1px solid var(--border);
   border-radius: 22px;
   padding: 24px;
   backdrop-filter: blur(14px);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+  box-shadow: var(--shadow);
 
   /* =========================
      TITLE
@@ -16,7 +16,7 @@
 
   h3 {
     margin: 0 0 22px;
-    color: #f9fafb;
+    color: var(--text);
     font-size: 18px;
     font-weight: 700;
     letter-spacing: -0.02em;
@@ -40,11 +40,8 @@
 
 .metric {
   padding: 16px;
-  background:
-    linear-gradient(180deg,
-      rgba(255, 255, 255, 0.03),
-      rgba(255, 255, 255, 0.015));
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--panel-muted);
+  border: 1px solid var(--border);
   border-radius: 18px;
   display: flex;
   flex-direction: column;
@@ -52,7 +49,7 @@
 
   &:hover {
     transform: translateY(-2px);
-    border-color: rgba(59, 130, 246, 0.2);
+    border-color: color-mix(in srgb, var(--accent) 20%, transparent);
   }
 
   /* =========================
@@ -61,7 +58,7 @@
 
   .label {
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--text-muted);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -75,10 +72,23 @@
   .value {
     font-size: 22px;
     font-weight: 800;
-    color: #f9fafb;
+    color: var(--text);
     letter-spacing: -0.03em;
   }
 }
+
+/* =========================
+   RISK COLOUR CLASSES
+   (replaces inline style={{ color/backgroundColor: riskColor }})
+   ========================= */
+
+.risk-low  { color: var(--positive); }
+.risk-mid  { color: #f59e0b; }   /* warning orange — intentional semantic colour */
+.risk-high { color: var(--negative); }
+
+.risk-fill-low  { background-color: var(--positive); }
+.risk-fill-mid  { background-color: #f59e0b; }
+.risk-fill-high { background-color: var(--negative); }
 
 /* =========================
    RISK BAR
@@ -87,18 +97,18 @@
 .risk-bar {
   width: 100%;
   height: 10px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--border);
   border-radius: 999px;
   overflow: hidden;
   margin: 16px 0 10px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
 }
 
 .risk-fill {
   height: 100%;
   border-radius: 999px;
   transition: width 0.3s ease, background-color 0.3s ease;
-  box-shadow: 0 0 18px rgba(34, 197, 94, 0.25);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--positive) 25%, transparent);
 }
 
 /* =========================
@@ -108,7 +118,7 @@
 .risk-note {
   margin: 0;
   font-size: 13px;
-  color: #9ca3af;
+  color: var(--text-muted);
   text-align: right;
 }
 

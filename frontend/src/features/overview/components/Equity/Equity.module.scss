@@ -3,11 +3,11 @@
    ============================================ */
 
 .equity-overview {
-  background: rgba(17, 24, 39, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--panel);
+  border: 1px solid var(--border);
   border-radius: 22px;
   padding: 24px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+  box-shadow: var(--shadow);
   backdrop-filter: blur(14px);
 
   /* =========================
@@ -16,7 +16,7 @@
 
   h3 {
     margin: 0 0 22px;
-    color: #f9fafb;
+    color: var(--text);
     font-size: 18px;
     font-weight: 700;
     letter-spacing: -0.02em;
@@ -40,11 +40,8 @@
 .equity-item {
   position: relative;
   padding: 18px;
-  background:
-    linear-gradient(180deg,
-      rgba(255, 255, 255, 0.03),
-      rgba(255, 255, 255, 0.015));
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--panel-muted);
+  border: 1px solid var(--border);
   border-radius: 18px;
   display: flex;
   flex-direction: column;
@@ -53,8 +50,8 @@
 
   &:hover {
     transform: translateY(-2px);
-    border-color: rgba(59, 130, 246, 0.2);
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+    border-color: color-mix(in srgb, var(--accent) 20%, transparent);
+    box-shadow: var(--shadow);
   }
 
   /* =========================
@@ -63,7 +60,7 @@
 
   .label {
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--text-muted);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -78,25 +75,26 @@
     font-size: 28px;
     font-weight: 800;
     letter-spacing: -0.04em;
-    color: #f9fafb;
+    color: var(--text);
 
     /* =========================
        POSITIVE / NEGATIVE
        ========================= */
 
     &.positive {
-      color: #22c55e;
-      text-shadow: 0 0 12px rgba(34, 197, 94, 0.28);
+      color: var(--positive);
+      text-shadow: 0 0 12px color-mix(in srgb, var(--positive) 28%, transparent);
     }
 
     &.negative {
-      color: #ef4444;
-      text-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
+      color: var(--negative);
+      text-shadow: 0 0 12px color-mix(in srgb, var(--negative) 25%, transparent);
     }
   }
 
   /* =========================
      SPECIAL GLOW EFFECTS
+     (decorative top-border accents — intentional brand colours)
      ========================= */
 
   &:nth-child(1)::before {

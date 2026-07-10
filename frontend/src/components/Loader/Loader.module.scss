@@ -1,20 +1,19 @@
-.loader-container{
-  
+.loader-container {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 7rem;
-    
+
   .loader {
-  display: block;
-  --height-of-loader: 4px;
-  --loader-color: #0071e2;
-  width: 130px;
-  height: var(--height-of-loader);
-  border-radius: 30px;
-  background-color: rgba(0,0,0,0.2);
-  position: relative;
-  
+    display: block;
+    --height-of-loader: 4px;
+    --loader-color: #0071e2;
+    width: 130px;
+    height: var(--height-of-loader);
+    border-radius: 30px;
+    background-color: var(--border);
+    position: relative;
+
     &::before {
       content: "";
       position: absolute;
