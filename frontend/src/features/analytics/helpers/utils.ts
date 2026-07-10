@@ -1,4 +1,4 @@
-import { IDailyPnL } from "../types/analytics.types";
+import { IAnalyticsMetrics, IDailyPnL } from "../types/analytics.types";
 
 export const buildPnlSeries = (days: IDailyPnL[], rangeDays: number) => {
   const pnlByDate = new Map(days.map((day) => [day.date, day.pnl]));
@@ -44,3 +44,17 @@ export const formatProfitFactor = (value: number | null | undefined) =>
   typeof value === "number" && Number.isFinite(value)
     ? value.toFixed(2)
     : "N/A";
+
+export const metricCards = (metrics: NoInfer<IAnalyticsMetrics>) => [
+  ["Total Trades", metrics.totalTrades],
+  ["Win Rate", `${(metrics.winRate ?? 0).toFixed(1)}%`],
+  ["Wins/Losses", `${metrics.totalWinningTrades}/${metrics.totalLosingTrades}`],
+  ["Total Profit", formatMoney(metrics.totalProfit)],
+  ["Total Loss", formatMoney(metrics.totalLoss)],
+  ["Profit Factor", formatProfitFactor(metrics.profitFactor)],
+  ["Max Drawdown", formatPercent(metrics.maxDrawdown)],
+  [
+    "Avg Win/Loss",
+    `${formatMoney(metrics.averageWin)} / ${formatMoney(metrics.averageLoss)}`,
+  ],
+];
