@@ -4,10 +4,10 @@
     "userId": "user_mock_1",
     "externalId": "MT5-DEMO-001",
     "balance": 100000,
-    "equity": 100825.41057717983,
-    "exposure": 11766.60678943828,
+    "equity": 103055.56671025451,
+    "exposure": 3691.9468995969983,
     "isActive": true,
     "createdAt": "2026-05-01T09:10:00.000Z",
-    "updatedAt": "2026-07-10T10:12:20.225Z"
+    "updatedAt": "2026-07-10T12:36:39.347Z"
   }
 ]

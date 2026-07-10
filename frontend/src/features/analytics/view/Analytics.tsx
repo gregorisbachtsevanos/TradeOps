@@ -1,9 +1,10 @@
-import { ErrorGuard, LoaderGuard } from "@/features/Guard/Guard.js";
+import { ErrorGuard } from "@/features/Guard/Guard.js";
 import { useMemo, useState } from "react";
 import Metrics from "../components/Metrics/Metrics.js";
 import PnlChart from "../components/PnlChart/PnlChart.js";
 import PnlHeader from "../components/PnlHeader/PnlHeader.js";
 import PnlSummary from "../components/PnlSummary/PnlSummary.js";
+import Skeleton from "../components/Skeleton/Skeleton.js";
 import { pnlRanges } from "../helpers/contants.js";
 import { buildPnlSeries } from "../helpers/utils.js";
 import { useAccountMetrics, useDailyPnL } from "../hooks/useAnalytics.js";
@@ -61,7 +62,7 @@ const Analytics = ({ accountId }: IAnalyticsProps) => {
     [dailyPnL],
   );
 
-  if (metricsLoading || pnlLoading) return <LoaderGuard />;
+  if (true) return <Skeleton />;
 
   if (!metrics || !dailyPnLData)
     return (

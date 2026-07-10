@@ -1,0 +1,120 @@
+@use '@/assets/styles/skeleton.module.scss' as *;
+
+.analytics {
+  background: rgba(17, 24, 39, 0.92);
+  border-radius: 22px;
+  padding: 24px;
+
+  .container {
+    &__sm {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 16px;
+    }
+
+    &__md {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    &__lg {
+      @include skeleton;
+
+      height: 280px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.025);
+      position: relative;
+      padding: 20px;
+    }
+
+    &__xl {
+      margin-top: 22px;
+      padding: 22px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 20px;
+  }
+
+  .card {
+    padding: 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+
+    &__md {
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+  }
+
+  .title {
+    @include skeleton;
+    width: 70px;
+    height: 12px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+
+    &__lg {
+      @include skeleton;
+      width: 220px;
+      height: 12px;
+      border-radius: 4px;
+    }
+  }
+
+  .text {
+    @include skeleton;
+    width: 90px;
+    height: 24px;
+    border-radius: 6px;
+
+    &__md {
+      @include skeleton;
+      width: 130px;
+      height: 24px;
+      border-radius: 6px;
+    }
+
+    &__lg {
+      @include skeleton;
+      width: 180px;
+      height: 28px;
+      border-radius: 6px;
+    }
+  }
+
+  .button {
+    @include skeleton;
+    width: 54px;
+    height: 36px;
+    border-radius: 999px;
+  }
+
+  .zeroLine {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+@media (max-width: 900px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
