@@ -1,15 +1,15 @@
-import { ErrorGuard } from "@/features/Guard/Guard.js";
-import { useMemo, useState } from "react";
-import Metrics from "../components/Metrics/Metrics.js";
-import PnlChart from "../components/PnlChart/PnlChart.js";
-import PnlHeader from "../components/PnlHeader/PnlHeader.js";
-import PnlSummary from "../components/PnlSummary/PnlSummary.js";
-import Skeleton from "../components/Skeleton/Skeleton.js";
-import { pnlRanges } from "../helpers/contants.js";
-import { buildPnlSeries } from "../helpers/utils.js";
-import { useAccountMetrics, useDailyPnL } from "../hooks/useAnalytics.js";
-import { IAnalyticsProps } from "../types/analytics.types.js";
-import styles from "./Analytics.module.scss";
+import { ErrorGuard } from '@/features/Guard/Guard.js';
+import { useMemo, useState } from 'react';
+import Metrics from '../components/Metrics/Metrics.js';
+import PnlChart from '../components/PnlChart/PnlChart.js';
+import PnlHeader from '../components/PnlHeader/PnlHeader.js';
+import PnlSummary from '../components/PnlSummary/PnlSummary.js';
+import Skeleton from '../components/Skeleton/Skeleton.js';
+import { pnlRanges } from '../helpers/contants.js';
+import { buildPnlSeries } from '../helpers/utils.js';
+import { useAccountMetrics, useDailyPnL } from '../hooks/useAnalytics.js';
+import { IAnalyticsProps } from '../types/analytics.types.js';
+import styles from './Analytics.module.scss';
 
 const Analytics = ({ accountId }: IAnalyticsProps) => {
   const [selectedRange, setSelectedRange] = useState<
@@ -55,14 +55,14 @@ const Analytics = ({ accountId }: IAnalyticsProps) => {
       dailyPnL.map((day) => ({
         ...day,
         label: new Date(day.date).toLocaleDateString(undefined, {
-          month: "short",
-          day: "numeric",
+          month: 'short',
+          day: 'numeric',
         }),
       })),
     [dailyPnL],
   );
 
-  if (true) return <Skeleton />;
+  if (metricsLoading || pnlLoading) return <Skeleton />;
 
   if (!metrics || !dailyPnLData)
     return (
@@ -70,9 +70,9 @@ const Analytics = ({ accountId }: IAnalyticsProps) => {
     );
 
   return (
-    <div className={styles["strategy-performance"]}>
+    <div className={styles['strategy-performance']}>
       <Metrics metrics={metrics} />
-      <div className={styles["pnl-history"]}>
+      <div className={styles['pnl-history']}>
         <PnlHeader
           selectedRange={selectedRange}
           pnlStats={pnlStats}
