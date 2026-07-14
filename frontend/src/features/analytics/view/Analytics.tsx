@@ -62,7 +62,6 @@ const Analytics = ({ accountId }: IAnalyticsProps) => {
     [dailyPnL],
   );
 
-  if (true) return <Skeleton />;
   if (metricsLoading || pnlLoading) return <Skeleton />;
 
   if (!metrics || !dailyPnLData)
