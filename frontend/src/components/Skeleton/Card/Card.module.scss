@@ -1,0 +1,36 @@
+@use '@/assets/styles/skeleton.module.scss' as *;
+
+.card {
+  padding: 14px;
+  border-radius: 16px;
+  background: var(--panel-muted);
+
+  &__md {
+    padding: 18px;
+    border-radius: 18px;
+    background: var(--panel-muted);
+  }
+
+  &__lg {
+    @include skeleton;
+    height: 280px;
+    border-radius: 20px;
+    background: var(--panel-muted);
+    position: relative;
+    padding: 20px;
+  }
+
+  &__xl {
+    margin-top: 22px;
+    padding: 22px;
+    border-radius: 22px;
+    background: var(--border);
+  }
+
+  &__no_bg {
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

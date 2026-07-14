@@ -1,60 +1,56 @@
+import {
+  SkeletonCard,
+  SkeletonContainer,
+  SkeletonLine,
+} from '@/components/Skeleton';
 import styles from './Skeleton.module.scss';
+import SkeletonButton from '@/components/Skeleton/Button/Button';
 
 const Skeleton = () => {
   return (
     <div className={styles.analytics}>
       {/* Metrics */}
-      <div className={styles.container__grid_repeat}>
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className={styles.card__md}>
-            <div className={styles.title} />
-            <div className={styles.text} />
-          </div>
-        ))}
-      </div>
+      <SkeletonContainer variant="grid_repeat" repeat={8}>
+        {(i) => (
+          <SkeletonCard key={i} variant="md">
+            <SkeletonLine type="title" />
+            <SkeletonLine type="text" />
+          </SkeletonCard>
+        )}
+      </SkeletonContainer>
 
-      <div className={styles.card__xl}>
+      <SkeletonCard variant="xl">
         {/* Header */}
-        <div className={styles.container}>
-          <div
-            style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
-          >
-            <div className={styles.title} />
-            <div className={styles.text__lg} />
-            <div className={styles.title__lg} />
-          </div>
-          <div className={styles.container}>
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className={styles.button} />
-            ))}
-          </div>
-          <div className={styles.card__md}>
-            <div className={styles.title} />
-            <div className={styles.text__md} />
-          </div>
-        </div>
+        <SkeletonContainer>
+          <SkeletonCard withBg={false}>
+            <SkeletonLine type="title" />
+            <SkeletonLine type="text" variant="lg" />
+            <SkeletonLine type="title" variant="lg" />
+          </SkeletonCard>
+          <SkeletonContainer repeat={5}>
+            {(i) => <SkeletonButton key={i} />}
+          </SkeletonContainer>
+          <SkeletonCard variant="md">
+            <SkeletonLine type="title" />
+            <SkeletonLine type="text" variant="md" />
+          </SkeletonCard>
+        </SkeletonContainer>
 
         {/* Summary */}
-        <div className={styles.container__grid}>
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className={styles.card}>
-              <div className={styles.title} />
-              <div className={styles.text__md} />
-            </div>
-          ))}
-        </div>
+        <SkeletonContainer variant="grid" repeat={4}>
+          {(i) => (
+            <SkeletonCard key={i} variant="md">
+              <SkeletonLine type="title" />
+              <SkeletonLine type="text" variant="md" />
+            </SkeletonCard>
+          )}
+        </SkeletonContainer>
 
         {/* Chart */}
-        <div className={styles.card__lg}>
+        <SkeletonCard variant="lg">
           <div className={styles.zeroLine} />
-
-          <div className={styles.bars}>
-            {Array.from({ length: 30 }).map((_, i) => (
-              <div key={i} />
-            ))}
-          </div>
-        </div>
-      </div>
+        </SkeletonCard>
+      </SkeletonCard>
     </div>
   );
 };

@@ -1,0 +1,37 @@
+@use '@/assets/styles/skeleton.module.scss' as *;
+
+.title {
+  @include skeleton;
+  width: 70px;
+  height: 12px;
+  border-radius: 4px;
+  margin-bottom: 14px;
+
+  &__lg {
+    @include skeleton;
+    width: 220px;
+    height: 12px;
+    border-radius: 4px;
+  }
+}
+
+.text {
+  @include skeleton;
+  width: 90px;
+  height: 24px;
+  border-radius: 6px;
+
+  &__md {
+    @include skeleton;
+    width: 130px;
+    height: 24px;
+    border-radius: 6px;
+  }
+
+  &__lg {
+    @include skeleton;
+    width: 180px;
+    height: 28px;
+    border-radius: 6px;
+  }
+}

@@ -1,0 +1,8 @@
+@use '@/assets/styles/skeleton.module.scss' as *;
+
+.button {
+  @include skeleton;
+  width: 54px;
+  height: 36px;
+  border-radius: 999px;
+}
